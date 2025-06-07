@@ -1,0 +1,47 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* resources/css/app.css atau file CSS utama Anda */
+
+@media print {
+    @page {
+        margin-top: 1cm;    /* Atur margin atas halaman */
+        margin-bottom: 1cm; /* Atur margin bawah halaman */
+        margin-left: 1.5cm; /* Atur margin kiri halaman */
+        margin-right: 1.5cm;/* Atur margin kanan halaman */
+        
+        /* Anda bisa mencoba margin: 0; jika ingin menghilangkan margin sepenuhnya,
+           tapi hati-hati konten bisa terpotong. */
+        /* @page { margin: 0; } */
+    }
+
+    /* Opsi untuk mencoba menyembunyikan header/footer bawaan browser secara lebih spesifik.
+       Dukungan dan hasilnya bisa sangat bervariasi antar browser.
+       Beberapa browser modern mungkin tidak sepenuhnya merespons properti ini
+       untuk menghilangkan teks default. */
+    @page :header {
+        display: none;
+    }
+    @page :footer {
+        display: none;
+    }
+
+    /* Anda juga bisa mengatur margin body jika @page margin di set ke 0 */
+    /* body {
+        margin: 1cm; /* Pastikan ada margin untuk konten jika @page margin: 0 */
+    /* } */
+}
+
+
+/* * {
+    border: 1px solid red;
+} */
