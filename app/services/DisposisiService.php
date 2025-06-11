@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\SuratMasuk;
+use App\Models\Disposisi;
+use App\Models\User;
+
+class DisposisiService
+{
+    /**
+     * Membuat record disposisi baru.
+     * Ini adalah satu-satunya "sumber kebenaran" untuk logika pembuatan disposisi.
+     *
+     * @param SuratMasuk $surat
+     * @param User $pengirim
+     * @param User $penerima
+     * @param string|null $catatan
+     * @param string|null $tanggal
+     * @return Disposisi
+     */
+    public function create(SuratMasuk $surat, User $pengirim, User $penerima, ?string $catatan, ?string $tanggal): Disposisi
+    {
+        // Logika inti untuk membuat disposisi
+        $disposisi = Disposisi::create([
+            'surat_id' => $surat->id,
+            'dari_user_id' => $pengirim->id,
+            'ke_user_id' => $penerima->id,
+            'catatan' => $catatan,
+            'tanggal_disposisi' => $tanggal ?? now(),
+            'status' => 'Terkirim',
+        ]);
+
+        // Setelah disposisi dibuat, update status surat menjadi 'Diproses'
+        $surat->update(['status' => 'Diproses']);
+
+        return $disposisi;
+    }
+}

@@ -44,39 +44,6 @@ class DisposisiController extends Controller
         return redirect()->back()->with('success', 'Disposisi berhasil disimpan.');
     }
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Disposisi $disposisi)
-    {
-        // Otorisasi sederhana: Pastikan hanya admin atau pengirim asli yang bisa edit
-        $user = auth()->user();
-        if ($user->id !== $disposisi->dari_user_id && $user->role->name !== 'Super Admin Surat') {
-            abort(403, 'AKSES DITOLAK');
-        }
-
-        // Ambil semua user untuk pilihan dropdown 'KEPADA'
-        $users = User::orderBy('name')->get();
-
-        return view('pages.super-admin.disposisi-edit', compact('disposisi', 'users'));
-    }
-
-    /**
-     * Memperbarui disposisi yang ada di database.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Disposisi  $disposisi
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function update(Request $request, Disposisi $disposisi)
     {
         // Otorisasi sederhana: Sama seperti di metode edit
