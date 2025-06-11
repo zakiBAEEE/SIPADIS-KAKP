@@ -60,7 +60,7 @@
 
                     {{-- Kolom Aksi --}}
                     <td class="p-4 align-top text-center">
-                        <a href="{{ route('surat.show', $disposisi->surat_id) }}" class="...">
+                        <a href="{{ route('surat.show', ['id' => $disposisi->surat_id]) }}" class="...">
                             Lihat & Tindak Lanjut
                         </a>
                     </td>

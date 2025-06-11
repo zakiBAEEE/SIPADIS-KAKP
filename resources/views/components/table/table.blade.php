@@ -66,7 +66,7 @@
                     </td>
                     <td class="p-3">
                         <div class="flex flex-row gap-x-1">
-                            <a href="{{ route('surat.show', ['id' => $surat->id]) }}">
+                            <a href="{{ route('surat.show', ['surat' => $surat->id]) }}">
                                 @include('components.base.ikon-mata')
                             </a>
                             <a href="{{ route('surat.edit', ['surat' => $surat->id]) }}">
