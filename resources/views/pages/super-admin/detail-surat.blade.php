@@ -6,7 +6,6 @@
         <div class="flex flex-col gap-4">
             <div class="flex flex-row justify-between">
                 <h4 class="font-sans text-xl font-bold antialiased md:text-2xl lg:text-3xl text-gray-600">Detail Surat</h4>
-                {{-- @include('components.base.tombol-kembali') --}}
             </div>
             <hr class="w-full border-t border-gray-300 my-2" />
         </div>
@@ -135,16 +134,17 @@
                 </div>
 
                 <div id="tab2-group4" class="tab-content text-slate-800 hidden">
-                    @if (in_array(auth()->user()->role->name, ['Super Admin', 'Admin', 'Kepala LLDIKTI', 'Katimja']))
-                        <div class="flex justify-end">
-                            <div class="flex flex-row gap-2">
-                                @if (in_array(auth()->user()->role->name, ['Super Admin', 'Admin']))
-                                    @include('components.base.tombol-print-disposisi', ['surat' => $surat])
-                                @endif
+
+                    <div class="flex justify-end">
+                        <div class="flex flex-row gap-2">
+                            @if (in_array(auth()->user()->role->name, ['Super Admin', 'Admin']))
+                                @include('components.base.tombol-print-disposisi', ['surat' => $surat])
+                            @endif
+                            @if (in_array(auth()->user()->role->name, ['Super Admin', 'Kepala LLDIKTI', 'Katimja']))
                                 @include('components.layout.modal-tambah-disposisi')
-                            </div>
+                            @endif
                         </div>
-                    @endif
+                    </div>
                     <div class="p-4">
                         @include('components.table.table-disposisi', [
                             'disposisis' => $surat->disposisis,
