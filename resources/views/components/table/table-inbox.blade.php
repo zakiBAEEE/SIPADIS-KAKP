@@ -31,18 +31,18 @@
 
                     {{-- Kolom Nomor Surat (diambil dari relasi) --}}
                     <td class="p-4 align-top">
-                        <p class="text-sm font-medium">{{ $disposisi->surat->nomor_surat ?? 'N/A' }}</p>
+                        <p class="text-sm font-medium">{{ $disposisi->suratMasuk->nomor_surat ?? 'N/A' }}</p>
                     </td>
 
                     {{-- Kolom Tanggal Surat (diambil dari relasi) --}}
                     <td class="p-4 align-top">
                         <p class="text-sm">
-                            {{ \Carbon\Carbon::parse($disposisi->surat->tanggal_surat)->translatedFormat('d M Y') }}</p>
+                            {{ \Carbon\Carbon::parse($disposisi->suratMasuk->tanggal_surat)->translatedFormat('d M Y') }}</p>
                     </td>
 
                     {{-- Kolom Perihal (diambil dari relasi) --}}
                     <td class="p-4 align-top">
-                        <p class="text-sm">{{ $disposisi->surat->perihal ?? 'Perihal tidak ditemukan.' }}</p>
+                        <p class="text-sm">{{ $disposisi->suratMasuk->perihal ?? 'Perihal tidak ditemukan.' }}</p>
                     </td>
 
                     {{-- Kolom Asal Disposisi (diambil dari relasi) --}}
@@ -60,7 +60,7 @@
 
                     {{-- Kolom Aksi --}}
                     <td class="p-4 align-top text-center">
-                        <a href="{{ route('surat.show', ['id' => $disposisi->surat_id]) }}" class="...">
+                        <a href="{{ route('surat.show', ['surat' => $disposisi->surat_id]) }}" class="...">
                             Lihat & Tindak Lanjut
                         </a>
                     </td>

@@ -20,7 +20,7 @@ class InboxController extends Controller
         // Langsung ambil data disposisi untuk user yang login
         $disposisis = Disposisi::where('ke_user_id', Auth::id())
                                 ->whereIn('status', ['Terkirim', 'Dilihat']) // Hanya tampilkan disposisi aktif
-                                ->with(['surat', 'pengirim.role']) // Eager loading untuk performa
+                                ->with(['suratMasuk', 'pengirim.role']) // Eager loading untuk performa
                                 ->latest('tanggal_disposisi')
                                 ->paginate(10)
                                 ->appends($request->query());
