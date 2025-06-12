@@ -12,6 +12,7 @@ class Disposisi extends Model
         'ke_user_id',
         'catatan',
         'tanggal_disposisi',
+        'status'
     ];
     
     public function suratMasuk() {
