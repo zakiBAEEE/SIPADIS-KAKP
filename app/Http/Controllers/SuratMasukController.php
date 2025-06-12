@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Services\UserService;      // <-- Import Service
+
 
 class SuratMasukController extends Controller
 {
@@ -19,12 +21,15 @@ class SuratMasukController extends Controller
     protected $rekapService;
     protected $suratMasukService;
     protected $disposisiService;
+    protected $userService;
 
 
-    public function __construct(SuratRekapitulasiService $rekapService, SuratMasukService $suratMasukService, DisposisiService $disposisiService)
+    public function __construct(SuratRekapitulasiService $rekapService, SuratMasukService $suratMasukService, DisposisiService $disposisiService, UserService $userService)
     {
         $this->rekapService = $rekapService;
         $this->suratMasukService = $suratMasukService;
+        $this->disposisiService = $disposisiService;
+        $this->userService = $userService;
     }
 
     public function dashboard(Request $request)
@@ -268,36 +273,13 @@ class SuratMasukController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(SuratMasuk $surat) // Gunakan Route Model Binding
     {
-        $surat = SuratMasuk::with([
-            'disposisis.pengirim.divisi',
-            'disposisis.pengirim.role',
-            'disposisis.penerima.divisi',
-            'disposisis.penerima.role'
-        ])->findOrFail($id);
+        $this->disposisiService->tandaiSebagaiDilihat($surat, Auth::user());
 
-        $users = User::with(['divisi', 'role'])->get();
+        $daftarUser = $this->userService->getUsersForDisposisiDropdown();
 
-        $daftarUser = $users->filter(function ($user) {
-            if ($user->divisi) {
-                return $user->role && $user->role->name === 'Katimja';
-            }
-            return true;
-        })->map(function ($user) {
-            if ($user->divisi && $user->role && $user->role->name === 'Katimja') {
-                return [
-                    'value' => $user->id,
-                    'display' => $user->divisi->nama_divisi,
-                ];
-            } else {
-                $role = optional($user->role)->name ?? 'Tanpa Role';
-                return [
-                    'value' => $user->id,
-                    'display' => $role,
-                ];
-            }
-        });
+        $surat->load(['disposisis.pengirim.role', 'disposisis.penerima.role']);
 
         return view('pages.super-admin.detail-surat', compact('surat', 'daftarUser'));
     }
@@ -334,7 +316,7 @@ class SuratMasukController extends Controller
 
         $surat->update($validated);
 
-        return redirect()->route('surat.show', ['id' => $surat->id])->with('success', 'Surat berhasil diperbarui!');
+        return redirect()->route('surat.show', ['surat' => $surat->id])->with('success', 'Surat berhasil diperbarui!');
     }
 
 

@@ -36,4 +36,21 @@ class DisposisiService
 
         return $disposisi;
     }
+
+    public function tandaiSebagaiDilihat(SuratMasuk $surat, User $currentUser): void
+    {
+        $adminRoles = ['Super Admin', 'Admin'];
+        if (in_array($currentUser->role->name, $adminRoles)) {
+            return; // Hentikan fungsi jika yang membuka adalah Admin
+        }
+
+        $disposisi = $surat->disposisis()
+            ->where('ke_user_id', $currentUser->id)
+            ->where('status', 'Terkirim')
+            ->first();
+
+        if ($disposisi) {
+            $disposisi->update(['status' => 'Dilihat']);
+        }
+    }
 }
