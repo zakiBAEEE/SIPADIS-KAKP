@@ -61,7 +61,7 @@
                     {{-- Kolom Aksi --}}
                     <td class="p-4 align-top text-center">
                         <a href="{{ route('surat.show', ['surat' => $disposisi->surat_id]) }}" class="...">
-                            Lihat & Tindak Lanjut
+                            @include('components.base.ikon-mata')
                         </a>
                     </td>
                 </tr>

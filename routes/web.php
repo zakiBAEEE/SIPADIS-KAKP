@@ -30,7 +30,6 @@ Route::middleware(['auth'])->group(function () {
 
     // == RUTE UMUM (Bisa diakses oleh semua peran yang sudah login) ==
     Route::get('/surat-masuk/{surat}', [SuratMasukController::class, 'show'])->name('surat.show');
-    Route::get('/disposisi/{id}/cetak', [DisposisiController::class, 'cetak'])->name('disposisi.cetak');
 
 
     // =====================================================================
@@ -72,6 +71,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Disposisi ke kepala
         Route::post('/surat-masuk/{surat}/kirim-ke-kepala', [App\Http\Controllers\SuratMasukController::class, 'kirimKeKepala'])->name('surat.kirimKeKepala');
+        Route::get('/disposisi/{id}/cetak', [DisposisiController::class, 'cetak'])->name('disposisi.cetak');
 
     });
 

@@ -133,15 +133,20 @@
                         </div>
                     </div>
                 </div>
+
                 <div id="tab2-group4" class="tab-content text-slate-800 hidden">
-                    <div class="flex justify-end">
-                        <div class="flex flex-row gap-2">
-                            @include('components.base.tombol-print-disposisi', ['surat' => $surat])
-                            @include('components.layout.modal-tambah-disposisi')
+                    @if (in_array(auth()->user()->role->name, ['Super Admin', 'Admin']))
+                        <div class="flex justify-end">
+                            <div class="flex flex-row gap-2">
+                                @include('components.base.tombol-print-disposisi', ['surat' => $surat])
+                                @include('components.layout.modal-tambah-disposisi')
+                            </div>
                         </div>
-                    </div>
+                    @endif
                     <div class="p-4">
-                        @include('components.table.table-disposisi', ['disposisis' => $surat->disposisis])
+                        @include('components.table.table-disposisi', [
+                            'disposisis' => $surat->disposisis,
+                        ])
                     </div>
                 </div>
             </div>
