@@ -55,14 +55,16 @@
                             </button>
 
                             {{-- FORM HAPUS --}}
-                            <form method="POST" action="{{ route('disposisi.destroy', $disposisi->id) }}"
-                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus disposisi ini?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900">
-                                    @include('components.base.ikon-hapus')
-                                </button>
-                            </form>
+                            @if (in_array(auth()->user()->role->name, ['Super Admin']))
+                                <form method="POST" action="{{ route('disposisi.destroy', $disposisi->id) }}"
+                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus disposisi ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-900">
+                                        @include('components.base.ikon-hapus')
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                     </td>
                 </tr>
