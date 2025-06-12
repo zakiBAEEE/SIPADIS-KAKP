@@ -135,10 +135,12 @@
                 </div>
 
                 <div id="tab2-group4" class="tab-content text-slate-800 hidden">
-                    @if (in_array(auth()->user()->role->name, ['Super Admin', 'Admin']))
+                    @if (in_array(auth()->user()->role->name, ['Super Admin', 'Admin', 'Kepala LLDIKTI', 'Katimja']))
                         <div class="flex justify-end">
                             <div class="flex flex-row gap-2">
-                                @include('components.base.tombol-print-disposisi', ['surat' => $surat])
+                                @if (in_array(auth()->user()->role->name, ['Super Admin', 'Admin']))
+                                    @include('components.base.tombol-print-disposisi', ['surat' => $surat])
+                                @endif
                                 @include('components.layout.modal-tambah-disposisi')
                             </div>
                         </div>

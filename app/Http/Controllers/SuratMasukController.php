@@ -277,7 +277,7 @@ class SuratMasukController extends Controller
     {
         $this->disposisiService->tandaiSebagaiDilihat($surat, Auth::user());
 
-        $daftarUser = $this->userService->getUsersForDisposisiDropdown();
+        $daftarUser = $this->userService->getRecipientListFor(Auth::user());
 
         $surat->load(['disposisis.pengirim.role', 'disposisis.penerima.role']);
 

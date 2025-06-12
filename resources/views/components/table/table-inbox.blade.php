@@ -37,7 +37,8 @@
                     {{-- Kolom Tanggal Surat (diambil dari relasi) --}}
                     <td class="p-4 align-top">
                         <p class="text-sm">
-                            {{ \Carbon\Carbon::parse($disposisi->suratMasuk->tanggal_surat)->translatedFormat('d M Y') }}</p>
+                            {{ \Carbon\Carbon::parse($disposisi->suratMasuk->tanggal_surat)->translatedFormat('d M Y') }}
+                        </p>
                     </td>
 
                     {{-- Kolom Perihal (diambil dari relasi) --}}
@@ -60,9 +61,11 @@
 
                     {{-- Kolom Aksi --}}
                     <td class="p-4 align-top text-center">
-                        <a href="{{ route('surat.show', ['surat' => $disposisi->surat_id]) }}" class="...">
-                            @include('components.base.ikon-mata')
-                        </a>
+                        <div class="flex flex-row gap-x-1">
+                            <a href="{{ route('surat.show', ['surat' => $disposisi->surat_id]) }}" class="...">
+                                @include('components.base.ikon-mata')
+                            </a>
+                        </div>
                     </td>
                 </tr>
             @empty

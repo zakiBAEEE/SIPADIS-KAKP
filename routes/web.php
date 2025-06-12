@@ -87,8 +87,8 @@ Route::middleware(['auth'])->group(function () {
     // == GRUP RUTE AKSI DISPOSISI (Yang bisa melakukan disposisi) ==
     // =====================================================================
     // Admin juga bisa melakukan disposisi (manual), jadi kita tambahkan di sini
-    Route::middleware(['role:Super Admin,Admin,Kepala,KBU,Katimja'])->group(function () {
-        Route::post('/surat-masuk/{suratId}/disposisi', [DisposisiController::class, 'store'])->name('disposisi.store');
+    Route::middleware(['role:Super Admin,Admin,Kepala LLDIKTI,KBU,Katimja'])->group(function () {
+        Route::post('/surat-masuk/{surat}/disposisi', [DisposisiController::class, 'store'])->name('disposisi.store');
         Route::put('/disposisi/{disposisi}', [DisposisiController::class, 'update'])->name('disposisi.update');
         Route::delete('/disposisi/{disposisi}', [DisposisiController::class, 'destroy'])->name('disposisi.destroy');
     });

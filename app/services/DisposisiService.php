@@ -53,4 +53,38 @@ class DisposisiService
             $disposisi->update(['status' => 'Dilihat']);
         }
     }
+
+    public function forward(SuratMasuk $surat, User $pengirim, User $penerima, array $data): Disposisi
+    {
+        // 1. Cari disposisi SEBELUMNYA yang ditujukan ke pengirim saat ini
+        $previousDisposisi = $surat->disposisis()
+            ->where('ke_user_id', $pengirim->id)
+            ->whereIn('status', ['Terkirim', 'Dilihat'])
+            ->first();
+
+        // 2. Jika ada, ubah statusnya menjadi 'Diteruskan'
+        if ($previousDisposisi) {
+            $previousDisposisi->update(['status' => 'Diteruskan']);
+        }
+
+        // 3. Buat record disposisi BARU
+        $newDisposisi = Disposisi::create([
+            'surat_id' => $surat->id,
+            'dari_user_id' => $pengirim->id,
+            'ke_user_id' => $penerima->id,
+            'catatan' => $data['catatan'],
+            'tanggal_disposisi' => $data['tanggal_disposisi'],
+            'status' => 'Terkirim',
+        ]);
+
+        // 4. Pastikan status surat adalah 'Diproses'
+        if ($surat->status !== 'Diproses') {
+            $surat->update(['status' => 'Diproses']);
+        }
+
+        return $newDisposisi;
+    }
+
+    // Metode create() yang lebih sederhana bisa kita hapus atau buat private
+    // jika semua pembuatan disposisi akan melalui metode yang lebih spesifik seperti forward().
 }

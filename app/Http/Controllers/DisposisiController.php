@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Services\DisposisiService; // Pastikan service di-import
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,6 +16,11 @@ use App\Models\Lembaga;
 
 class DisposisiController extends Controller
 {
+    protected $disposisiService;
+    public function __construct(DisposisiService $disposisiService)
+    {
+        $this->disposisiService = $disposisiService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -30,18 +37,32 @@ class DisposisiController extends Controller
 
     }
 
-    public function store(Request $request, $suratId)
+    public function store(Request $request, SuratMasuk $surat)
     {
+        // 1. Validasi input dari form modal
         $validated = $request->validate([
-            'dari_user_id' => 'required|exists:users,id',
-            'ke_user_id' => 'required|exists:users,id|different:dari_user_id',
+            'ke_user_id' => 'required|exists:users,id',
             'catatan' => 'nullable|string',
             'tanggal_disposisi' => 'required|date',
         ]);
-        // Inject surat_id ke array yang sudah tervalidasi
-        $validated['surat_id'] = $suratId;
-        Disposisi::create($validated);
-        return redirect()->back()->with('success', 'Disposisi berhasil disimpan.');
+
+        $pengirim = Auth::user();
+        $penerima = User::find($validated['ke_user_id']);
+
+
+        if ($pengirim->id === $penerima->id) {
+            return redirect()->back()->with('error', 'Tidak bisa mendisposisikan surat ke diri sendiri.');
+        }
+
+        // 2. Panggil SATU fungsi di service untuk melakukan semua pekerjaan
+        $this->disposisiService->forward(
+            $surat,
+            $pengirim,
+            $penerima,
+            $validated // Mengirim semua data tervalidasi
+        );
+
+        return redirect()->route('surat.show', $surat->id)->with('success', 'Disposisi berhasil diteruskan.');
     }
 
     public function update(Request $request, Disposisi $disposisi)
