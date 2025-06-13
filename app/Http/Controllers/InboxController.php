@@ -31,4 +31,21 @@ class InboxController extends Controller
             'pageTitle' => 'Inbox Disposisi'
         ]);
     }
+
+    public function outbox(Request $request)
+    {
+        // Perubahan kuncinya ada di sini:
+        // Kita mencari disposisi di mana PENGIRIMNYA adalah user yang login.
+        $disposisis = Disposisi::where('dari_user_id', Auth::id())
+            ->with(['surat', 'penerima.role']) // Sekarang kita butuh info penerima
+            ->latest('tanggal_disposisi')
+            ->paginate(10)
+            ->appends($request->query());
+
+        // Kita akan membuat view outbox yang baru
+        return view('pages.shared.outbox', [
+            'disposisis' => $disposisis,
+            'pageTitle' => 'Outbox: Riwayat Disposisi Terkirim'
+        ]);
+    }
 }

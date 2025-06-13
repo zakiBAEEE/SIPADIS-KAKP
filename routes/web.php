@@ -82,6 +82,8 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {
         Route::get('/inbox', [InboxController::class, 'index'])->name('inbox.index');
         Route::post('/disposisi/{disposisi}/kembalikan', [DisposisiController::class, 'kembalikan'])->name('disposisi.kembalikan');
+        Route::get('/outbox', [InboxController::class, 'outbox'])->name('outbox.index');
+
     });
 
     // =====================================================================
@@ -103,6 +105,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/agenda-kepala', [AgendaController::class, 'agendaKepala'])->name('surat.agendaKepala');
         Route::get('/print-agenda-kbu', [AgendaController::class, 'printAgendaKbu'])->name('surat.printAgendaKbu');
         Route::get('/print-agenda-kepala', [AgendaController::class, 'printAgendaKepala'])->name('surat.printAgendaKepala');
+
+
     });
 
 });
