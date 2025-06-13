@@ -35,7 +35,7 @@
                         <p class="text-xs text-gray-500">{{ $disposisi->penerima->role->name ?? '' }}</p>
                     </td>
                     <td class="p-4 align-top">
-                        <p class="text-sm">{{ $disposisi->surat->perihal ?? '...' }}</p>
+                        <p class="text-sm">{{ $disposisi->suratMasuk->perihal ?? '...' }}</p>
                     </td>
                     <td class="p-4 align-top text-center">
                         {{-- Kolom status ini menjadi sangat berguna di Outbox --}}
