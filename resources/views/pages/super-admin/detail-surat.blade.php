@@ -140,8 +140,28 @@
                             @if (in_array(auth()->user()->role->name, ['Super Admin', 'Admin']))
                                 @include('components.base.tombol-print-disposisi', ['surat' => $surat])
                             @endif
-                            @if (in_array(auth()->user()->role->name, ['Super Admin', 'Kepala LLDIKTI', 'Katimja']))
+                            {{-- @if (in_array(auth()->user()->role->name, ['Super Admin', 'Kepala LLDIKTI', 'KBU', 'Katimja']))
                                 @include('components.layout.modal-tambah-disposisi')
+                            @endif --}}
+                            {{-- ====================================================== --}}
+                            {{-- AWAL DARI LOGIKA OTORISASI TOMBOL AKSI --}}
+                            {{-- ====================================================== --}}
+                            @php
+                                // 1. Cari disposisi terakhir yang statusnya masih aktif ('Terkirim' atau 'Dilihat')
+                                $activeDisposisi = $surat->disposisis
+                                    ->whereIn('status', ['Terkirim', 'Dilihat'])
+                                    ->sortByDesc('created_at')
+                                    ->first();
+                            @endphp
+
+                            {{-- 2. Tampilkan tombol aksi HANYA JIKA ada disposisi aktif DAN 
+                   pengguna yang login adalah penerima disposisi aktif tersebut --}}
+                            @if ($activeDisposisi && $activeDisposisi->ke_user_id === auth()->id())
+                                {{-- Tombol untuk memicu modal "Tambah/Teruskan Disposisi" --}}
+                                @include('components.layout.modal-tambah-disposisi')
+
+                                {{-- Tombol untuk mengembalikan disposisi (jika sudah dibuat) --}}
+                                {{-- <button type="button" ...>Kembalikan</button> --}}
                             @endif
                         </div>
                     </div>
