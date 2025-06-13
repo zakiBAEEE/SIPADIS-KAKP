@@ -37,7 +37,7 @@ class InboxController extends Controller
         // Perubahan kuncinya ada di sini:
         // Kita mencari disposisi di mana PENGIRIMNYA adalah user yang login.
         $disposisis = Disposisi::where('dari_user_id', Auth::id())
-            ->with(['surat', 'penerima.role']) // Sekarang kita butuh info penerima
+            ->with(['suratMasuk', 'penerima.role']) // Sekarang kita butuh info penerima
             ->latest('tanggal_disposisi')
             ->paginate(10)
             ->appends($request->query());
