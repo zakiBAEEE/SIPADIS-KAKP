@@ -29,13 +29,6 @@ class DisposisiController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
-    }
 
     public function store(Request $request, SuratMasuk $surat)
     {
@@ -63,6 +56,35 @@ class DisposisiController extends Controller
         );
 
         return redirect()->route('surat.show', $surat->id)->with('success', 'Disposisi berhasil diteruskan.');
+    }
+
+    // app/Http/Controllers/DisposisiController.php
+    public function kembalikan(Request $request, Disposisi $disposisi)
+    {
+        $request->validate(['catatan_pengembalian' => 'required|string|max:1000']);
+
+       
+        // Otorisasi: Pastikan yang mengembalikan adalah penerima asli
+        if (Auth::id() !== $disposisi->ke_user_id) {
+            abort(403, 'AKSES DITOLAK');
+        }
+
+
+        // 1. Ubah status disposisi asli menjadi 'Dikembalikan'
+        $disposisi->update(['status' => 'Dikembalikan']);
+
+        // 2. Buat disposisi baru dengan arah sebaliknya menggunakan service
+        // Pastikan DisposisiService sudah di-inject di constructor
+        $this->disposisiService->create(
+            $disposisi->suratMasuk,                  // Suratnya tetap sama
+            Auth::user(),                               // Pengirimnya adalah user saat ini (yang mengembalikan)
+            $disposisi->pengirim,               // Penerimanya adalah pengirim disposisi sebelumnya
+            $request->input('catatan_pengembalian'),    // Catatannya adalah alasan pengembalian
+            now()
+        );
+
+        // Redirect ke halaman inbox, karena tugasnya sudah selesai (dikembalikan)
+        return redirect()->route('inbox.index')->with('success', 'Disposisi telah dikembalikan ke pengirim.');
     }
 
     public function update(Request $request, Disposisi $disposisi)

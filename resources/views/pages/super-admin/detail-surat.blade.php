@@ -161,7 +161,9 @@
                                 @include('components.layout.modal-tambah-disposisi')
 
                                 {{-- Tombol untuk mengembalikan disposisi (jika sudah dibuat) --}}
-                                {{-- <button type="button" ...>Kembalikan</button> --}}
+                                @include('components.layout.modal-kembalikan-disposisi', [
+                                    'disposisi' => $activeDisposisi,
+                                ])
                             @endif
                         </div>
                     </div>
