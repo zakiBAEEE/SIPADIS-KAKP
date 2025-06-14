@@ -16,7 +16,7 @@
             {{-- Pengecekan keamanan: pastikan user sudah login & punya peran --}}
             @if (auth()->check() && auth()->user()->role)
 
-                
+
                 @if (in_array(auth()->user()->role->name, ['Super Admin', 'Admin']))
                     <li>
                         <a href="{{ route('surat.home') }}"
@@ -84,12 +84,11 @@
                             <ul class="flex flex-col gap-0.5 min-w-60">
                                 <li>
                                     <a href="{{ route('surat.denganDisposisi') }}"
-                                        class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Terdisposisi</a>
+                                        class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Terkirim</a>
                                 </li>
                                 <li>
                                     <a href="{{ route('surat.tanpaDisposisi') }}"
-                                        class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Belum
-                                        Terdisposisi</a>
+                                        class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Draft</a>
                                 </li>
                             </ul>
                         </div>

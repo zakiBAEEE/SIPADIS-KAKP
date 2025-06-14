@@ -96,7 +96,6 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/disposisi/{disposisi}', [DisposisiController::class, 'destroy'])->name('disposisi.destroy');
     });
 
-
     // =====================================================================
     // == GRUP RUTE KHUSUS AGENDA & CETAK (Admin ditambahkan) ==
     // =====================================================================
@@ -105,8 +104,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/agenda-kepala', [AgendaController::class, 'agendaKepala'])->name('surat.agendaKepala');
         Route::get('/print-agenda-kbu', [AgendaController::class, 'printAgendaKbu'])->name('surat.printAgendaKbu');
         Route::get('/print-agenda-kepala', [AgendaController::class, 'printAgendaKepala'])->name('surat.printAgendaKepala');
-
-
     });
 
 });

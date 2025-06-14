@@ -19,7 +19,7 @@
         <hr class="w-full border-t border-gray-300 my-4" />
         <div>
             <div class="flex-col transition-[max-height] duration-300 ease-in-out max-h-0 mt-1" id="collapseFilterAgendaKbu">
-                <form action="{{ route('surat.agendaKbu') }}" method="GET">
+                <form action="{{ route('surat.agendaKepala') }}" method="GET">
                     <div class="px-4 py-2">
                         <div class="mb-4 space-y-1.5 w-full">
                             @include('components.base.input-surat', [

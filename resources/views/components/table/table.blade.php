@@ -69,11 +69,11 @@
                             <a href="{{ route('surat.show', ['surat' => $surat->id]) }}">
                                 @include('components.base.ikon-mata')
                             </a>
-                            <a href="{{ route('surat.edit', ['surat' => $surat->id]) }}">
-                                @include('components.base.ikon-edit')
-                            </a>
                             {{-- Tampilkan tombol "Kirim ke Kepala" HANYA JIKA surat belum punya disposisi --}}
                             @if (!$surat->disposisis()->exists())
+                                <a href="{{ route('surat.edit', ['surat' => $surat->id]) }}">
+                                    @include('components.base.ikon-edit')
+                                </a>
                                 <form method="POST" action="{{ route('surat.kirimKeKepala', $surat->id) }}"
                                     onsubmit="return confirm('Anda yakin ingin mengirim surat ini ke Kepala?');">
                                     @csrf
@@ -87,9 +87,6 @@
                                         </svg>
                                     </button>
                                 </form>
-                            @endif
-                            {{-- Tombol Hapus Surat (mungkin hanya untuk surat yang belum diproses) --}}
-                            @if (!$surat->disposisis()->exists())
                                 <form method="POST" action="{{ route('surat.destroy', $surat->id) }}"
                                     class="inline-block"
                                     onsubmit="return confirm('PENTING: Menghapus surat ini akan menghapus seluruh data disposisi terkait. Apakah Anda yakin ingin melanjutkan?');">
