@@ -158,7 +158,9 @@
                    pengguna yang login adalah penerima disposisi aktif tersebut --}}
                             @if ($activeDisposisi && $activeDisposisi->ke_user_id === auth()->id())
                                 {{-- Tombol untuk memicu modal "Tambah/Teruskan Disposisi" --}}
-                                @include('components.layout.modal-tambah-disposisi')
+                                @if (!in_array(auth()->user()->role->name, ['Staf']))
+                                    @include('components.layout.modal-tambah-disposisi')
+                                @endif
 
                                 {{-- Tombol untuk mengembalikan disposisi (jika sudah dibuat) --}}
                                 @include('components.layout.modal-kembalikan-disposisi', [
