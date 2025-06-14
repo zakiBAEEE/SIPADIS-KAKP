@@ -73,6 +73,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/surat-masuk/{surat}/kirim-ke-kepala', [App\Http\Controllers\SuratMasukController::class, 'kirimKeKepala'])->name('surat.kirimKeKepala');
         Route::get('/disposisi/{id}/cetak', [DisposisiController::class, 'cetak'])->name('disposisi.cetak');
 
+        // Arsip Surat
+        Route::get('/arsip-surat', [SuratMasukController::class, 'arsipSurat'])->name('surat.arsip');
     });
 
 
