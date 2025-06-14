@@ -212,6 +212,19 @@
                                 Outbox
                             </a>
                         </li>
+                        <li>
+                            <a href=""
+                                class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
+                                <span class="grid place-items-center shrink-0 me-2.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" class="h-5 w-5"
+                                        viewBox="0 -8 528 528">
+                                        <path
+                                            d="M264 56Q318 56 364 83 410 110 437 156 464 202 464 256 464 310 437 356 410 402 364 429 318 456 264 456 210 456 164 429 118 402 91 356 64 310 64 256 64 202 91 156 118 110 164 83 210 56 264 56ZM232 144L232 272 296 272 296 144 232 144ZM232 304L232 368 296 368 296 304 232 304Z" />
+                                    </svg>
+                                </span>
+                                Ditolak
+                            </a>
+                        </li>
                     @endif
                 @endif
                 {{-- AKHIR BLOK NON-ADMIN --}}
