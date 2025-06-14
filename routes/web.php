@@ -25,7 +25,7 @@ require __DIR__ . '/auth.php';
 */
 Route::middleware(['auth'])->group(function () {
 
-    // == HALAMAN UTAMA / DASHBOARD (Umum untuk semua peran) ==
+    // == HALAMAN UTAMA / DASHBOARD (Umum untuk Admin) ==
     Route::get('/', [SuratMasukController::class, 'dashboard'])->name('surat.home');
 
     // == RUTE UMUM (Bisa diakses oleh semua peran yang sudah login) ==
@@ -80,10 +80,10 @@ Route::middleware(['auth'])->group(function () {
     // == GRUP RUTE ALUR KERJA (Pimpinan & Pelaksana) ==
     // =====================================================================
     Route::middleware(['role:Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {
-        Route::get('/inbox', [InboxController::class, 'index'])->name('inbox.index');
+
+        Route::get('/', [InboxController::class, 'index'])->name('inbox.index');
         Route::post('/disposisi/{disposisi}/kembalikan', [DisposisiController::class, 'kembalikan'])->name('disposisi.kembalikan');
         Route::get('/outbox', [InboxController::class, 'outbox'])->name('outbox.index');
-
     });
 
     // =====================================================================

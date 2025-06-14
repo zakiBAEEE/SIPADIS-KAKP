@@ -1,9 +1,9 @@
 <div class="w-full rounded-lg border shadow-sm bg-white border-slate-200 shadow-slate-950/5 max-w-[280px] h-screen">
-    <a href="{{ route('surat.home') }}" class="rounded m-2 mx-4 mt-4 h-max mb-4 flex flex-row gap-5 items-center">
+    <a href="{{ auth()->check() && in_array(optional(auth()->user())->role->name, ['Super Admin', 'Admin']) ? route('dashboard') : route('inbox.index') }}"
+        class="rounded m-2 mx-4 mt-4 h-max mb-4 flex flex-row gap-5 items-center">
         <img src="{{ asset('images/logo-lldikti.jpg') }}" alt="" class="h-10 w-auto">
         <p class="font-sans antialiased text-current text-2xl font-semibold">SIPADIS</p>
     </a>
-
     <hr class="-mx-3 border-slate-200" />
 
     <div>
@@ -197,19 +197,21 @@
                             Inbox
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('outbox.index') }}"
-                            class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
-                            <span class="grid place-items-center shrink-0 me-2.5">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.12-1.588H6.88a2.25 2.25 0 00-2.12 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z" />
-                                </svg>
-                            </span>
-                            Outbox
-                        </a>
-                    </li>
+                    @if (!in_array(auth()->user()->role->name, ['Staf']))
+                        <li>
+                            <a href="{{ route('outbox.index') }}"
+                                class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
+                                <span class="grid place-items-center shrink-0 me-2.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.12-1.588H6.88a2.25 2.25 0 00-2.12 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z" />
+                                    </svg>
+                                </span>
+                                Outbox
+                            </a>
+                        </li>
+                    @endif
                 @endif
                 {{-- AKHIR BLOK NON-ADMIN --}}
 
