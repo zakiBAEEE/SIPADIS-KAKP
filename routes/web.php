@@ -81,7 +81,7 @@ Route::middleware(['auth'])->group(function () {
     // =====================================================================
     Route::middleware(['role:Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {
 
-        Route::get('/', [InboxController::class, 'index'])->name('inbox.index');
+        Route::get('/inbox', [InboxController::class, 'index'])->name('inbox.index');
         Route::post('/disposisi/{disposisi}/kembalikan', [DisposisiController::class, 'kembalikan'])->name('disposisi.kembalikan');
         Route::get('/outbox', [InboxController::class, 'outbox'])->name('outbox.index');
     });

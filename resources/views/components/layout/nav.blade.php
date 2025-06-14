@@ -1,5 +1,5 @@
 <div class="w-full rounded-lg border shadow-sm bg-white border-slate-200 shadow-slate-950/5 max-w-[280px] h-screen">
-    <a href="{{ auth()->check() && in_array(optional(auth()->user())->role->name, ['Super Admin', 'Admin']) ? route('dashboard') : route('inbox.index') }}"
+    <a href="{{ auth()->check() && in_array(optional(auth()->user())->role->name, ['Super Admin', 'Admin']) ? route('surat.home') : route('inbox.index') }}"
         class="rounded m-2 mx-4 mt-4 h-max mb-4 flex flex-row gap-5 items-center">
         <img src="{{ asset('images/logo-lldikti.jpg') }}" alt="" class="h-10 w-auto">
         <p class="font-sans antialiased text-current text-2xl font-semibold">SIPADIS</p>
@@ -16,9 +16,7 @@
             {{-- Pengecekan keamanan: pastikan user sudah login & punya peran --}}
             @if (auth()->check() && auth()->user()->role)
 
-                {{-- ====================================================== --}}
-                {{-- == BLOK MENU KHUSUS UNTUK ADMIN & SUPER ADMIN == --}}
-                {{-- ====================================================== --}}
+                
                 @if (in_array(auth()->user()->role->name, ['Super Admin', 'Admin']))
                     <li>
                         <a href="{{ route('surat.home') }}"
