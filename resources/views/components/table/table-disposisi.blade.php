@@ -47,7 +47,7 @@
                     <td class="p-3">
                         <div class="flex flex-row gap-x-3 items-center">
                             {{-- TOMBOL EDIT YANG MEMICU MODAL --}}
-                            @if (auth()->check() && (auth()->id() === $disposisi->dari_user_id || auth()->user()->role->name === 'Super Admin'))
+                            {{-- @if (auth()->check() && (auth()->id() === $disposisi->dari_user_id || auth()->user()->role->name === 'Super Admin'))
                                 <button type="button"
                                     class="js-edit-disposisi-btn text-yellow-600 hover:text-yellow-900"
                                     data-update-url="{{ route('disposisi.update', $disposisi->id) }}"
@@ -56,7 +56,7 @@
                                     data-catatan="{{ $disposisi->catatan }}">
                                     @include('components.base.ikon-edit')
                                 </button>
-                            @endif
+                            @endif --}}
 
                             {{-- FORM HAPUS --}}
                             @if (in_array(auth()->user()->role->name, ['Super Admin']))

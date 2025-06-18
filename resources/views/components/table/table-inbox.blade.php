@@ -20,6 +20,9 @@
                     <p class="text-sm leading-none font-semibold">Status</p>
                 </th>
                 <th class="p-4 text-center">
+                    <p class="text-sm leading-none font-semibold">Tipe Aksi</p>
+                </th>
+                <th class="p-4 text-center">
                     <p class="text-sm leading-none font-semibold">Aksi</p>
                 </th>
             </tr>
@@ -57,6 +60,16 @@
                     {{-- Kolom Status Disposisi (langsung dari disposisi) --}}
                     <td class="p-4 align-top text-center">
                         <span class="px-3 py-1 text-xs font-bold ...">{{ $disposisi->status }}</span>
+                    </td>
+                    <td class="p-4 align-top text-center">
+                        {{-- Kolom status ini menjadi sangat berguna di Outbox --}}
+                        @if ($disposisi->tipe_aksi === 'Kembalikan')
+                            <span class="... bg-red-100 text-gray-800">Reject</span>
+                        @elseif($disposisi->tipe_aksi === 'Teruskan')
+                            <span class="... bg-green-200 text-gray-800">Disposisi</span>
+                        @elseif($disposisi->tipe_aksi === 'Revisi')
+                            <span class="... bg-blue-200 text-gray-800">Revisi</span>
+                        @endif
                     </td>
 
                     {{-- Kolom Aksi --}}

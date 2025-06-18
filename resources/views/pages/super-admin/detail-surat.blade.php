@@ -149,7 +149,7 @@
                             @php
                                 // 1. Cari disposisi terakhir yang statusnya masih aktif ('Terkirim' atau 'Dilihat')
                                 $activeDisposisi = $surat->disposisis
-                                    ->whereIn('status', ['Terkirim', 'Dilihat'])
+                                    ->whereIn('status', ['Menunggu', 'Dilihat'])
                                     ->sortByDesc('created_at')
                                     ->first();
                             @endphp

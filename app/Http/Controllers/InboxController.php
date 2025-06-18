@@ -18,8 +18,9 @@ class InboxController extends Controller
     public function index(Request $request)
     {
         // Langsung ambil data disposisi untuk user yang login
-        $disposisis = Disposisi::where('ke_user_id', Auth::id())
-            ->whereIn('status', ['Terkirim', 'Dilihat']) // Hanya tampilkan disposisi aktif
+        $disposisis = Disposisi::where('ke_user_id', operator: Auth::id())
+            ->whereIn('tipe_aksi', ['Teruskan', 'Revisi'])
+            ->whereIn('status', ['Menunggu', 'Dilihat']) // Hanya tampilkan disposisi aktif
             ->with(['suratMasuk', 'pengirim.role']) // Eager loading untuk performa
             ->latest('tanggal_disposisi')
             ->paginate(10)
@@ -47,5 +48,18 @@ class InboxController extends Controller
             'disposisis' => $disposisis,
             'pageTitle' => 'Outbox: Riwayat Disposisi Terkirim'
         ]);
+    }
+
+    // app/Http/Controllers/InboxController.php
+    public function ditolak(Request $request)
+    {
+        $disposisis = Disposisi::where('ke_user_id', Auth::id())
+            ->where('tipe_aksi', 'Kembalikan') // <-- Kunci query
+            ->whereIn('status', ['Menunggu', 'Dilihat'])
+            ->with(['suratMasuk', 'pengirim.role'])
+            ->latest('tanggal_disposisi')
+            ->paginate(10);
+
+        return view('pages.shared.ditolak', compact('disposisis'));
     }
 }

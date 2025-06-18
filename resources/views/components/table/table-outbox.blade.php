@@ -18,6 +18,9 @@
                     <p>Status di Penerima</p>
                 </th> {{-- <- Judul Kolom Disesuaikan --}}
                 <th class="p-4 text-center">
+                    <p>Tipe Aksi</p>
+                </th> {{-- <- Judul Kolom Disesuaikan --}}
+                <th class="p-4 text-center">
                     <p>Aksi</p>
                 </th>
             </tr>
@@ -39,12 +42,24 @@
                     </td>
                     <td class="p-4 align-top text-center">
                         {{-- Kolom status ini menjadi sangat berguna di Outbox --}}
-                        @if ($disposisi->status === 'Terkirim')
-                            <span class="... bg-blue-100 text-blue-800">Terkirim</span>
+                        @if ($disposisi->status === 'Menunggu')
+                            <span class="... bg-yellow-100 text-gray-800">Menunggu</span>
                         @elseif($disposisi->status === 'Dilihat')
-                            <span class="... bg-gray-200 text-gray-800">Dilihat</span>
+                            <span class="... bg-blue-200 text-gray-800">Dilihat</span>
+                        @elseif($disposisi->status === 'Dikembalikan')
+                            <span class="... bg-red-200 text-gray-800">Dikembalikan</span>
                         @else
                             <span class="... bg-green-100 text-green-800">{{ $disposisi->status }}</span>
+                        @endif
+                    </td>
+                    <td class="p-4 align-top text-center">
+                        {{-- Kolom status ini menjadi sangat berguna di Outbox --}}
+                        @if ($disposisi->tipe_aksi === 'Kembalikan')
+                            <span class="... bg-red-100 text-gray-800">Reject</span>
+                        @elseif($disposisi->tipe_aksi === 'Teruskan')
+                            <span class="... bg-blue-200 text-gray-800">Disposisi</span>
+                        @elseif($disposisi->tipe_aksi == 'Revisi')
+                            <span class="... bg-blue-200 text-gray-800">Revisi</span>
                         @endif
                     </td>
                     <td class="p-4 align-top text-center">
@@ -54,7 +69,6 @@
                     </td>
                 </tr>
             @empty
-                {{-- ... --}}
             @endforelse
         </tbody>
     </table>

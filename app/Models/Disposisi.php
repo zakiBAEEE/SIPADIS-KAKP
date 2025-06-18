@@ -12,10 +12,12 @@ class Disposisi extends Model
         'ke_user_id',
         'catatan',
         'tanggal_disposisi',
-        'status'
+        'status',
+        'tipe_aksi'
     ];
-    
-    public function suratMasuk() {
+
+    public function suratMasuk()
+    {
         return $this->belongsTo(SuratMasuk::class, 'surat_id');
     }
     public function pengirim()

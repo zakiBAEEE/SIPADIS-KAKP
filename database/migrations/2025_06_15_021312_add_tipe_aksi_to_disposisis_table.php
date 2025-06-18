@@ -8,16 +8,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('disposisis', function (Blueprint $table) {
-            // Menambahkan kolom status setelah kolom 'catatan'
-            // Status default-nya adalah 'Terkirim'
-            $table->string('status')->after('catatan')->default('Menunggu');
+            // Kolom ini mencatat JENIS aksinya. Defaultnya adalah 'teruskan'.
+            $table->string('tipe_aksi')->after('status')->default('teruskan');
         });
     }
 
     public function down(): void
     {
         Schema::table('disposisis', function (Blueprint $table) {
-            $table->dropColumn('status');
+            $table->dropColumn('tipe_aksi');
         });
     }
 };

@@ -17,7 +17,6 @@ use App\Http\Controllers\AgendaController;
 */
 require __DIR__ . '/auth.php';
 
-
 /*
 |--------------------------------------------------------------------------
 | Rute Aplikasi Inti (Wajib Login)
@@ -25,41 +24,40 @@ require __DIR__ . '/auth.php';
 */
 Route::middleware(['auth'])->group(function () {
 
-    // == HALAMAN UTAMA / DASHBOARD (Umum untuk Admin) ==
+    // ----------------- DASHBOARD UTAMA -----------------
     Route::get('/', [SuratMasukController::class, 'dashboard'])->name('surat.home');
 
-    // == RUTE UMUM (Bisa diakses oleh semua peran yang sudah login) ==
+    // ----------------- RUTE UMUM (semua peran login) -----------------
     Route::get('/surat-masuk/{surat}', [SuratMasukController::class, 'show'])->name('surat.show');
 
-
-    // =====================================================================
-    // == GRUP RUTE KHUSUS ADMIN (Nama peran sudah diperbaiki) ==
-    // =====================================================================
+    /*
+    |--------------------------------------------------------------------------
+    | RUTE UNTUK ADMIN & SUPER ADMIN
+    |--------------------------------------------------------------------------
+    */
     Route::middleware(['role:Super Admin,Admin'])->group(function () {
 
-        // Daftar Surat Masuk (versi Admin)
+        // ---- Manajemen Surat Masuk ----
         Route::get('/surat-masuk-disposisi', [SuratMasukController::class, 'suratDenganDisposisi'])->name('surat.denganDisposisi');
         Route::get('/surat-masuk-tanpa-disposisi', [SuratMasukController::class, 'suratTanpaDisposisi'])->name('surat.tanpaDisposisi');
-
-        // CRUD Surat Masuk
         Route::get('/surat-masuk-tambah', [SuratMasukController::class, 'add'])->name('surat.tambah');
         Route::post('/surat-masuk', [SuratMasukController::class, 'store'])->name('surat.store');
         Route::get('/surat-masuk/{surat}/edit', [SuratMasukController::class, 'edit'])->name('surat.edit');
         Route::post('/surat-masuk/{surat}', [SuratMasukController::class, 'update'])->name('surat.update');
         Route::delete('/surat-masuk/{surat}', [SuratMasukController::class, 'destroy'])->name('surat.destroy');
-        Route::post('/surat-masuk/{surat}/kirim-ke-kepala', [SuratMasukController::class, 'kirimKeKepala'])->name('surat.kirimKeKepala');
-
-        // Laporan & Lainnya
+        Route::post('/surat-masuk/{surat}/kirim-ke-kepala', [DisposisiController::class, 'kirimKeKepala'])->name('surat.kirimKeKepala');
+        Route::post('/surat-masuk/{surat}/kirim-ulang-ke-kepala', [DisposisiController::class, 'kirimUlangKeKepala'])->name('surat.kirimUlangKeKepala');
         Route::get('/surat/klasifikasi', [SuratMasukController::class, 'detailByKlasifikasi'])->name('surat.klasifikasi');
+        Route::get('/arsip-surat', [SuratMasukController::class, 'arsipSurat'])->name('surat.arsip');
 
-        // Manajemen Pegawai (User)
+        // ---- Manajemen Pegawai ----
         Route::get('/pegawai', [UserController::class, 'index'])->name('pegawai.index');
         Route::post('/pegawai', [UserController::class, 'store'])->name('pegawai.store');
         Route::get('/pegawai/{user}/edit', [UserController::class, 'edit'])->name('pegawai.edit');
         Route::put('/pegawai/{user}', [UserController::class, 'update'])->name('pegawai.update');
         Route::delete('/pegawai/{user}', [UserController::class, 'destroy'])->name('pegawai.destroy');
 
-        // Manajemen Tim Kerja & Lembaga
+        // ---- Tim Kerja & Lembaga ----
         Route::get('/tim-kerja', [TimKerjaController::class, 'index'])->name('timKerja.index');
         Route::post('/tim-kerja', [TimKerjaController::class, 'store'])->name('timKerja.store');
         Route::post('/tim-kerja/{id}/edit', [TimKerjaController::class, 'update'])->name('timKerja.update');
@@ -68,39 +66,45 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/lembaga', [LembagaController::class, 'index'])->name('lembaga.index');
         Route::get('/lembaga/edit', [LembagaController::class, 'edit'])->name('lembaga.edit');
         Route::post('/lembaga/update', [LembagaController::class, 'update'])->name('lembaga.update');
-
-        // Disposisi ke kepala
-        Route::post('/surat-masuk/{surat}/kirim-ke-kepala', [App\Http\Controllers\SuratMasukController::class, 'kirimKeKepala'])->name('surat.kirimKeKepala');
-        Route::get('/disposisi/{id}/cetak', [DisposisiController::class, 'cetak'])->name('disposisi.cetak');
-
-        // Arsip Surat
-        Route::get('/arsip-surat', [SuratMasukController::class, 'arsipSurat'])->name('surat.arsip');
     });
 
-
-    // =====================================================================
-    // == GRUP RUTE ALUR KERJA (Pimpinan & Pelaksana) ==
-    // =====================================================================
+    /*
+    |--------------------------------------------------------------------------
+    | RUTE UNTUK PIMPINAN & PELAKSANA (Kepala, KBU, Katimja, Staf)
+    |--------------------------------------------------------------------------
+    */
     Route::middleware(['role:Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {
-
         Route::get('/inbox', [InboxController::class, 'index'])->name('inbox.index');
         Route::post('/disposisi/{disposisi}/kembalikan', [DisposisiController::class, 'kembalikan'])->name('disposisi.kembalikan');
-        Route::get('/outbox', [InboxController::class, 'outbox'])->name('outbox.index');
+        // Route pengiriman ulang revisi ke kepala
+        // Route::post('/inbox/ditolak/{surat}/kirim-ulang', [DisposisiController::class, 'kirimUlangKeKepala'])->name('surat.kirimUlangKeKepala');
     });
 
-    // =====================================================================
-    // == GRUP RUTE AKSI DISPOSISI (Yang bisa melakukan disposisi) ==
-    // =====================================================================
-    // Admin juga bisa melakukan disposisi (manual), jadi kita tambahkan di sini
+    /*
+    |--------------------------------------------------------------------------
+    | RUTE UNTUK SEMUA YANG TERLIBAT SURAT (Admin + Pimpinan + Staf)
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware(['role:Admin,Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {
+        Route::get('/outbox', [InboxController::class, 'outbox'])->name('outbox.index');
+        Route::get('/inbox/ditolak', [InboxController::class, 'ditolak'])->name('inbox.ditolak');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | RUTE DISPOSISI (yang bisa mendisposisikan: Admin, Kepala, KBU, Katimja)
+    |--------------------------------------------------------------------------
+    */
     Route::middleware(['role:Super Admin,Admin,Kepala LLDIKTI,KBU,Katimja'])->group(function () {
         Route::post('/surat-masuk/{surat}/disposisi', [DisposisiController::class, 'store'])->name('disposisi.store');
-        Route::put('/disposisi/{disposisi}', [DisposisiController::class, 'update'])->name('disposisi.update');
-        Route::delete('/disposisi/{disposisi}', [DisposisiController::class, 'destroy'])->name('disposisi.destroy');
+        Route::get('/disposisi/{id}/cetak', [DisposisiController::class, 'cetak'])->name('disposisi.cetak');
     });
 
-    // =====================================================================
-    // == GRUP RUTE KHUSUS AGENDA & CETAK (Admin ditambahkan) ==
-    // =====================================================================
+    /*
+    |--------------------------------------------------------------------------
+    | AGENDA & CETAK (Admin + Pimpinan)
+    |--------------------------------------------------------------------------
+    */
     Route::middleware(['role:Kepala,KBU,Super Admin,Admin'])->group(function () {
         Route::get('/agenda-kbu', [AgendaController::class, 'agendaKbu'])->name('surat.agendaKbu');
         Route::get('/agenda-kepala', [AgendaController::class, 'agendaKepala'])->name('surat.agendaKepala');

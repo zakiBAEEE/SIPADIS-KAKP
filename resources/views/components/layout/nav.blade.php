@@ -73,12 +73,14 @@
                             id="suratmasukcollapselist">
                             <ul class="flex flex-col gap-0.5 min-w-60">
                                 <li>
-                                    <a href=""
+                                    <a href="{{ route('inbox.ditolak') }}"
                                         class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Ditolak</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('surat.denganDisposisi') }}"
-                                        class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Terkirim</a>
+
+                                    {{-- {{ route('surat.denganDisposisi') }} --}}
+                                    <a href="{{ route('outbox.index') }}"
+                                        class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Outbox</a>
                                 </li>
                                 <li>
                                     <a href="{{ route('surat.tanpaDisposisi') }}"
@@ -213,7 +215,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href=""
+                            <a href="{{ route('inbox.ditolak') }}"
                                 class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
                                 <span class="grid place-items-center shrink-0 me-2.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" class="h-5 w-5"
@@ -227,10 +229,6 @@
                         </li>
                     @endif
                 @endif
-                {{-- AKHIR BLOK NON-ADMIN --}}
-
-
-                {{-- MENU LOGOUT UNTUK SEMUA --}}
                 <hr class="-mx-3 my-3 border-slate-200" />
                 <li>
                     <form method="POST" action="{{ route('logout') }}" style="display: inline;">

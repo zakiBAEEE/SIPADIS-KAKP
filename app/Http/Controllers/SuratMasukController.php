@@ -409,37 +409,9 @@ class SuratMasukController extends Controller
         }
     }
 
-    public function kirimKeKepala(SuratMasuk $surat, DisposisiService $disposisiService)
-    {
-        try {
-            // 1. Cari user Kepala
-            $kepala = User::whereHas('role', function ($query) {
-                $query->where('name', 'Kepala LLDIKTI');
-            })->firstOrFail(); // Gunakan firstOrFail untuk langsung error jika tidak ada
 
-            // 2. Cek duplikat
-            if ($surat->disposisis()->exists()) {
-                return redirect()->back()->with('error', 'Surat ini sudah dalam proses disposisi.');
-            }
 
-            // 3. PANGGIL SERVICE UNTUK MELAKUKAN PEKERJAANNYA
-            $disposisiService->create(
-                $surat,                      // Surat yang didisposisikan
-                Auth::user(),                // Pengirim adalah Admin yang login
-                $kepala,                     // Penerima adalah user Kepala
-                'Mohon arahan pimpinan.',    // Catatan default
-                now()                        // Tanggal saat ini
-            );
 
-            return redirect()->back()->with('success', 'Surat berhasil dikirim ke Kepala.');
-
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return redirect()->back()->with('error', 'Aksi gagal. Pengguna dengan peran "Kepala" tidak ditemukan.');
-        } catch (\Exception $e) {
-            Log::error('Gagal mengirim surat ke kepala: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Terjadi kesalahan sistem saat mengirim surat.');
-        }
-    }
 
 }
 
