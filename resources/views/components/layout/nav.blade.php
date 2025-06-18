@@ -72,10 +72,20 @@
                         <div class="overflow-hidden transition-[max-height] duration-300 ease-in-out max-h-0"
                             id="suratmasukcollapselist">
                             <ul class="flex flex-col gap-0.5 min-w-60">
-                                <li>
+                                <li class="relative inline-flex">
                                     <a href="{{ route('inbox.ditolak') }}"
-                                        class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Ditolak</a>
+                                        class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800 relative">
+                                        Ditolak
+
+                                        @if ($jumlahSuratDitolakBelumDilihat > 0)
+                                            <span
+                                                class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 min-h-[10px] min-w-[10px] rounded-full border border-red-500 bg-red-500 px-1 py-0.5 text-xs leading-none text-red-50">
+                                                {{ $jumlahSuratDitolakBelumDilihat }}
+                                            </span>
+                                        @endif
+                                    </a>
                                 </li>
+
                                 <li>
 
                                     {{-- {{ route('surat.denganDisposisi') }} --}}
@@ -187,9 +197,13 @@
 
                 {{-- MENU BARU UNTUK NON-ADMIN --}}
                 @if (in_array(auth()->user()->role->name, ['Kepala LLDIKTI', 'KBU', 'Katimja', 'Staf']))
+
+
+
                     <li>
                         <a href="{{ route('inbox.index') }}"
-                            class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
+                            class="relative flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
+
                             <span class="grid place-items-center shrink-0 me-2.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
@@ -198,8 +212,18 @@
                                 </svg>
                             </span>
                             Inbox
+
+                            @if ($jumlahSuratInboxBelumDilihat > 0)
+                                <span
+                                    class="absolute -top-1.5 -right-1.5 grid min-h-[16px] min-w-[16px] place-items-center rounded-full border border-red-500 bg-red-500 px-1.5 text-xs leading-none text-white">
+                                    {{ $jumlahSuratInboxBelumDilihat }}
+                                </span>
+                            @endif
                         </a>
                     </li>
+
+
+
                     @if (!in_array(auth()->user()->role->name, ['Staf']))
                         <li>
                             <a href="{{ route('outbox.index') }}"
@@ -214,19 +238,28 @@
                                 Outbox
                             </a>
                         </li>
-                        <li>
+                        <li class="relative inline-flex">
                             <a href="{{ route('inbox.ditolak') }}"
                                 class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
-                                <span class="grid place-items-center shrink-0 me-2.5">
+                                <span class="grid place-items-center shrink-0 me-2.5 relative">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" class="h-5 w-5"
                                         viewBox="0 -8 528 528">
                                         <path
                                             d="M264 56Q318 56 364 83 410 110 437 156 464 202 464 256 464 310 437 356 410 402 364 429 318 456 264 456 210 456 164 429 118 402 91 356 64 310 64 256 64 202 91 156 118 110 164 83 210 56 264 56ZM232 144L232 272 296 272 296 144 232 144ZM232 304L232 368 296 368 296 304 232 304Z" />
                                     </svg>
+
+                                    {{-- Badge di pojok kanan atas ikon --}}
+                                    @if ($jumlahSuratDitolakBelumDilihat > 0)
+                                        <span
+                                            class="absolute -top-1.5 -right-1.5 grid min-h-[10px] min-w-[10px] place-items-center rounded-full border border-red-500 bg-red-500 px-1 py-0.5 text-xs leading-none text-red-50">
+                                            {{ $jumlahSuratDitolakBelumDilihat }}
+                                        </span>
+                                    @endif
                                 </span>
                                 Ditolak
                             </a>
                         </li>
+
                     @endif
                 @endif
                 <hr class="-mx-3 my-3 border-slate-200" />
