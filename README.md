@@ -110,9 +110,10 @@ Setelah menjalankan `db:seed`, Anda bisa login menggunakan akun default berikut:
 
 | Peran | Username | Password |
 | :--- | :--- | :--- |
-| Super Admin | `superadmin01` | `password` |
-| Admin | `adminsurat01` | `password` |
+| Admin | `superadmin01` | `password` |
 | Kepala | `kepala01` | `password` |
+| KBU | `kbu01` | `password` |
+| Pj/Katimja | `kbu01` | `password` |
 | KBU | `kbu01` | `password` |
 
 ---
