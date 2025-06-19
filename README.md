@@ -1,66 +1,118 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SIPADIS (Sistem Informasi Persuratan dan Disposisi)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+SIPADIS adalah aplikasi berbasis web yang dirancang untuk mengelola alur kerja surat masuk dan proses disposisi secara digital di lingkungan LLDIKTI Wilayah 2. Aplikasi ini bertujuan untuk menggantikan sistem manual yang kurang terintegrasi, meningkatkan efisiensi, dan menyediakan jejak audit yang jelas untuk setiap alur persuratan.
 
-## About Laravel
+## Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   **Manajemen Surat Masuk:** Pencatatan (CRUD) semua surat masuk beserta metadatanya.
+-   **Penyimpanan Dokumen:** Kemampuan untuk mengunggah dan menyimpan file scan dari surat fisik.
+-   **Alur Kerja Disposisi Digital:** Mekanisme untuk meneruskan, mengembalikan, dan menindaklanjuti disposisi secara elektronik antar peran.
+-   **Akses Multi-Peran:** Sistem hak akses yang terdefinisi dengan jelas untuk berbagai peran seperti Admin, Kepala, KBU, Katimja, dan Staf.
+-   **Pelacakan & Riwayat:** Fitur Inbox, Outbox, dan Riwayat Disposisi lengkap untuk setiap surat.
+-   **Monitoring & Agenda:** Halaman khusus untuk Admin memantau agenda dan aktivitas pimpinan.
+-   **Pencarian & Filter:** Kemampuan untuk mencari dan memfilter data surat berdasarkan berbagai kriteria.
+-   **Cetak Dokumen:** Fitur untuk mencetak lembar disposisi dan laporan agenda.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Teknologi yang Digunakan
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   **Backend:** PHP 8.2+, [Laravel](https://laravel.com/) 11.x
+-   **Frontend:** HTML5, [Tailwind CSS](https://tailwindcss.com/), JavaScript
+-   **Database:** MySQL
+-   **Server Pengembangan:** `php artisan serve`
+-   **Build Tool:** [Vite](https://vitejs.dev/)
 
-## Learning Laravel
+## Prasyarat Sistem
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Pastikan environment lokal Anda memenuhi kebutuhan berikut sebelum instalasi:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+-   PHP >= 8.2
+-   Composer 2.x
+-   Node.js >= 18.x
+-   NPM atau Yarn
+-   Database MySQL
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Panduan Instalasi & Setup Lokal
 
-## Laravel Sponsors
+Ikuti langkah-langkah berikut untuk menjalankan proyek ini di mesin lokal Anda:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1.  **Clone Repository**
+    ```bash
+    git clone [URL_REPOSITORY_ANDA]
+    cd nama-folder-proyek
+    ```
 
-### Premium Partners
+2.  **Install Dependensi PHP**
+    Jalankan Composer untuk menginstal semua package PHP yang dibutuhkan.
+    ```bash
+    composer install
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+3.  **Buat File Environment**
+    Salin file `.env.example` menjadi file `.env` baru. File ini akan menyimpan semua konfigurasi Anda.
+    ```bash
+    cp .env.example .env
+    ```
 
-## Contributing
+4.  **Generate Application Key**
+    Setiap aplikasi Laravel membutuhkan kunci enkripsi yang unik.
+    ```bash
+    php artisan key:generate
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5.  **Konfigurasi Database**
+    Buka file `.env` dan sesuaikan pengaturan database sesuai dengan konfigurasi lokal Anda:
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=nama_database_anda
+    DB_USERNAME=root
+    DB_PASSWORD=password_anda
+    ```
+    Pastikan Anda sudah membuat database kosong dengan nama yang sesuai di MySQL Anda.
 
-## Code of Conduct
+6.  **Jalankan Migrasi & Seeder**
+    Perintah ini akan membuat semua tabel di database dan mengisinya dengan data awal (termasuk data peran dan akun user default).
+    ```bash
+    php artisan migrate --seed
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+7.  **Install Dependensi Frontend**
+    Jalankan NPM (atau Yarn) untuk menginstal semua package JavaScript yang dibutuhkan.
+    ```bash
+    npm install
+    ```
 
-## Security Vulnerabilities
+8.  **Link Storage**
+    Perintah ini akan membuat symbolic link dari `public/storage` ke `storage/app/public` agar file yang diunggah bisa diakses secara publik.
+    ```bash
+    php artisan storage:link
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+9.  **Jalankan Server Pengembangan**
+    Aplikasi Anda sekarang siap dijalankan. Jalankan dua perintah ini di dua terminal terpisah:
 
-## License
+    -   Terminal 1 (Untuk menjalankan server backend Laravel):
+        ```bash
+        php artisan serve
+        ```
+    -   Terminal 2 (Untuk mengkompilasi aset frontend dan memantau perubahan):
+        ```bash
+        npm run dev
+        ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+10. **Akses Aplikasi**
+    Buka browser Anda dan kunjungi alamat yang diberikan oleh `php artisan serve` (biasanya `http://127.0.0.1:8000`).
+
+## Akun Default
+
+Setelah menjalankan `db:seed`, Anda bisa login menggunakan akun default berikut:
+
+| Peran | Username | Password |
+| :--- | :--- | :--- |
+| Super Admin | `superadmin01` | `password` |
+| Admin | `adminsurat01` | `password` |
+| Kepala | `kepala01` | `password` |
+| KBU | `kbu01` | `password` |
+
+---
