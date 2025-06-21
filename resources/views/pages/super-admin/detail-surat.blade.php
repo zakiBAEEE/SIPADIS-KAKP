@@ -137,7 +137,7 @@
 
                     <div class="flex justify-end">
                         <div class="flex flex-row gap-2">
-                            @if (in_array(auth()->user()->role->name, ['Super Admin', 'Admin']))
+                            @if (in_array(auth()->user()->role->name, ['Admin']))
                                 @include('components.base.tombol-print-disposisi', ['surat' => $surat])
                             @endif
                             {{-- @if (in_array(auth()->user()->role->name, ['Super Admin', 'Kepala LLDIKTI', 'KBU', 'Katimja']))
@@ -161,6 +161,7 @@
                                 @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin']))
                                     @include('components.layout.modal-tambah-disposisi')
                                 @endif
+                                
 
                                 {{-- Tombol untuk mengembalikan disposisi (jika sudah dibuat) --}}
                                 @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin']))

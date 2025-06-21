@@ -1,7 +1,6 @@
 <div
     class="relative flex flex-col w-full max-h-[500px] overflow-y-auto text-gray-700 bg-white shadow-md rounded-lg bg-clip-border border border-gray-200">
     <table class="w-full text-left table-auto text-slate-800 min-w-max">
-
         {{-- ... (struktur div dan table sama persis) ... --}}
         <thead class="sticky top-0 z-10">
             <tr class="text-slate-600 ...">

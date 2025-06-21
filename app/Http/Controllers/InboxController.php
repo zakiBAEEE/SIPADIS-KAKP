@@ -22,7 +22,7 @@ class InboxController extends Controller
             ->whereIn('tipe_aksi', ['Teruskan', 'Revisi'])
             ->whereIn('status', ['Menunggu', 'Dilihat']) // Hanya tampilkan disposisi aktif
             ->with(['suratMasuk', 'pengirim.role']) // Eager loading untuk performa
-            ->latest('tanggal_disposisi')
+            ->orderBy('created_at', 'desc')
             ->paginate(10)
             ->appends($request->query());
 
@@ -39,7 +39,7 @@ class InboxController extends Controller
         // Kita mencari disposisi di mana PENGIRIMNYA adalah user yang login.
         $disposisis = Disposisi::where('dari_user_id', Auth::id())
             ->with(['suratMasuk', 'penerima.role']) // Sekarang kita butuh info penerima
-            ->latest('tanggal_disposisi')
+            ->orderBy('created_at', 'desc')
             ->paginate(10)
             ->appends($request->query());
 
@@ -57,7 +57,7 @@ class InboxController extends Controller
             ->where('tipe_aksi', 'Kembalikan') // <-- Kunci query
             ->whereIn('status', ['Menunggu', 'Dilihat'])
             ->with(['suratMasuk', 'pengirim.role'])
-            ->latest('tanggal_disposisi')
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return view('pages.shared.ditolak', compact('disposisis'));

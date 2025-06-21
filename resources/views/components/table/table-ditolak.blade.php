@@ -42,14 +42,18 @@
                             <a href="{{ route('surat.edit', ['surat' => $disposisi->surat_id]) }}">
                                 @include('components.base.ikon-edit')
                             </a>
-                            <form method="POST" action="{{ route('surat.kirimUlangKeKepala', $disposisi->surat_id) }}"
-                                onsubmit="return confirm('Anda yakin ingin mengirim ulang surat ini setelah direvisi?');">
-                                @csrf
-                                <button type="submit"
-                                    class="px-4 py-2 bg-green-600 text-white rounded-md text-xs font-semibold hover:bg-green-700">
-                                    Kirim Ulang
-                                </button>
-                            </form>
+
+                            @if (in_array(auth()->user()->role->name, ['Admin']))
+                                <form method="POST"
+                                    action="{{ route('surat.kirimUlangKeKepala', $disposisi->surat_id) }}"
+                                    onsubmit="return confirm('Anda yakin ingin mengirim ulang surat ini setelah direvisi?');">
+                                    @csrf
+                                    <button type="submit"
+                                        class="px-4 py-2 bg-green-600 text-white rounded-md text-xs font-semibold hover:bg-green-700">
+                                        Kirim Ulang
+                                    </button>
+                                </form>
+                            @endif
                         </div>
 
                     </td>
