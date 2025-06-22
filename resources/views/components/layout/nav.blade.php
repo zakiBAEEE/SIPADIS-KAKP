@@ -204,21 +204,21 @@
                         <a href="{{ route('inbox.index') }}"
                             class="relative flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
 
-                            <span class="grid place-items-center shrink-0 me-2.5">
+                            <span class="grid place-items-center shrink-0 me-2.5 relative">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.12-1.588H6.88a2.25 2.25 0 00-2.12 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z" />
                                 </svg>
+
+                                @if ($jumlahSuratInboxBelumDilihat > 0)
+                                    <span
+                                        class="absolute -top-2 -right-2 grid min-h-[16px] min-w-[16px] place-items-center rounded-full border border-red-500 bg-red-500 px-1.5 text-xs leading-none text-white">
+                                        {{ $jumlahSuratInboxBelumDilihat }}
+                                    </span>
+                                @endif
                             </span>
                             Inbox
-
-                            @if ($jumlahSuratInboxBelumDilihat > 0)
-                                <span
-                                    class="absolute -top-1.5 -right-1.5 grid min-h-[16px] min-w-[16px] place-items-center rounded-full border border-red-500 bg-red-500 px-1.5 text-xs leading-none text-white">
-                                    {{ $jumlahSuratInboxBelumDilihat }}
-                                </span>
-                            @endif
                         </a>
                     </li>
 
@@ -241,6 +241,7 @@
                         <li class="relative inline-flex">
                             <a href="{{ route('inbox.ditolak') }}"
                                 class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
+
                                 <span class="grid place-items-center shrink-0 me-2.5 relative">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" class="h-5 w-5"
                                         viewBox="0 -8 528 528">
@@ -251,7 +252,7 @@
                                     {{-- Badge di pojok kanan atas ikon --}}
                                     @if ($jumlahSuratDitolakBelumDilihat > 0)
                                         <span
-                                            class="absolute -top-1.5 -right-1.5 grid min-h-[10px] min-w-[10px] place-items-center rounded-full border border-red-500 bg-red-500 px-1 py-0.5 text-xs leading-none text-red-50">
+                                            class="absolute -top-2 -right-2 grid min-h-[16px] min-w-[16px] place-items-center rounded-full border border-red-500 bg-red-500 px-1.5 text-xs leading-none text-white">
                                             {{ $jumlahSuratDitolakBelumDilihat }}
                                         </span>
                                     @endif
@@ -259,6 +260,7 @@
                                 Ditolak
                             </a>
                         </li>
+
                     @endif
                 @endif
                 <hr class="-mx-3 my-3 border-slate-200" />
