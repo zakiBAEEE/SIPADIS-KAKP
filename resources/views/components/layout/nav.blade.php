@@ -72,23 +72,7 @@
                         <div class="overflow-hidden transition-[max-height] duration-300 ease-in-out max-h-0"
                             id="suratmasukcollapselist">
                             <ul class="flex flex-col gap-0.5 min-w-60">
-                                <li class="relative inline-flex">
-                                    <a href="{{ route('inbox.ditolak') }}"
-                                        class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800 relative">
-                                        Ditolak
-
-                                        @if ($jumlahSuratDitolakBelumDilihat > 0)
-                                            <span
-                                                class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 min-h-[10px] min-w-[10px] rounded-full border border-red-500 bg-red-500 px-1 py-0.5 text-xs leading-none text-red-50">
-                                                {{ $jumlahSuratDitolakBelumDilihat }}
-                                            </span>
-                                        @endif
-                                    </a>
-                                </li>
-
                                 <li>
-
-                                    {{-- {{ route('surat.denganDisposisi') }} --}}
                                     <a href="{{ route('outbox.index') }}"
                                         class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Terkirim</a>
                                 </li>
@@ -96,9 +80,28 @@
                                     <a href="{{ route('surat.tanpaDisposisi') }}"
                                         class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Draft</a>
                                 </li>
+                                <li class="relative inline-flex">
+                                    <a href="{{ route('inbox.ditolak') }}"
+                                        class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800 relative">
+
+                                        <span class="flex items-center gap-2">
+                                            Ditolak
+                                            @if ($jumlahSuratDitolakBelumDilihat > 0)
+                                                <span
+                                                    class="grid min-h-[16px] min-w-[16px] place-items-center rounded-full border border-red-500 bg-red-500 px-1.5 text-xs leading-none text-white">
+                                                    {{ $jumlahSuratDitolakBelumDilihat }}
+                                                </span>
+                                            @endif
+                                        </span>
+                                    </a>
+                                </li>
+
+
+
                             </ul>
                         </div>
                     </li>
+
 
                     <li>
                         <div data-toggle="collapse" data-target="#agendasuratcollapselist" aria-expanded="false"
