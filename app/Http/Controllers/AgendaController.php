@@ -47,8 +47,10 @@ class AgendaController extends Controller
 
     public function printAgendaKbu(Request $request)
     {
-        $query = $this->suratMasukWithDisposisi->suratMasukWithDisposisi($request);
-        $suratMasuk = $query->orderBy('tanggal_terima')->get();
+        // $query = $this->suratMasukWithDisposisi->suratMasukWithDisposisi($request);
+        // $suratMasuk = $query->orderBy('tanggal_terima')->get();
+
+         $suratMasuk = $this->getAgendaForRole('KBU', $request);
 
         return view('pages.super-admin.print-agenda-kbu', [
             'suratMasuk' => $suratMasuk,
