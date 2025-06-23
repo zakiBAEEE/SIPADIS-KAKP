@@ -60,7 +60,7 @@ class AgendaController extends Controller
     {
         $query = $this->suratMasukWithDisposisi->suratMasukWithDisposisi($request);
 
-        $suratMasuk = $query->orderBy('tanggal_terima')->get();
+        $suratMasuk = $query->orderByDesc('tanggal_terima')->get();
 
         $suratMasuk = $this->disposisisFilterService->filterByKepalaDisposisi($suratMasuk);
 

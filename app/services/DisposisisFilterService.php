@@ -14,22 +14,30 @@ class DisposisisFilterService
         $kepala = User::whereHas('role', function ($q) {
             $q->where('name', 'Kepala LLDIKTI');
         })->first();
-        if ($kepala) {
-            $kepalaId = $kepala->id;
-            $suratMasuk = $suratMasuk->filter(function ($surat) use ($kepalaId) {
-                $firstDisposisi = $surat->disposisis->sortBy('created_at')->first();
-                return $firstDisposisi && $firstDisposisi->dari_user_id == $kepalaId;
-            })->map(function ($surat) {
-                $surat->disposisis = collect([$surat->disposisis->sortBy('created_at')->first()]);
-                return $surat;
-            });
-        } else {
-            $suratMasuk = collect();
-        }
-        return $suratMasuk;
+
+        if (!$kepala)
+            return collect();
+
+        $kepalaId = $kepala->id;
+
+        return $suratMasuk->filter(function ($surat) use ($kepalaId) {
+            // Cek apakah ada disposisi dari kepala
+            return $surat->disposisis->contains(fn($d) => $d->dari_user_id == $kepalaId);
+        })->map(function ($surat) use ($kepalaId) {
+            // Hanya ambil disposisi pertama yang dari Kepala
+            $firstDariKepala = $surat->disposisis
+                ->filter(fn($d) => $d->dari_user_id == $kepalaId)
+                ->sortBy('created_at')
+                ->first();
+
+            $surat->disposisis = collect([$firstDariKepala]);
+
+            return $surat;
+        });
     }
 
- 
+
+
 }
 
 
