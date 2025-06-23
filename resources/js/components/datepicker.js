@@ -51,6 +51,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    flatpickr("#filter_tanggal_terkirim", {
+        mode: "range",  // Memungkinkan pemilihan rentang tanggal
+        dateFormat: "Y-m-d",  // Format tanggal yang ditampilkan
+    });
+});
+
 
 document.addEventListener('DOMContentLoaded', function () {
     flatpickr("#cetak-agenda-tanggal-surat", {

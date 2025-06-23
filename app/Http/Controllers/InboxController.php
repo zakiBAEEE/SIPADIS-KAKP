@@ -33,17 +33,58 @@ class InboxController extends Controller
         ]);
     }
 
+    // public function outbox(Request $request)
+    // {
+    //     // Perubahan kuncinya ada di sini:
+    //     // Kita mencari disposisi di mana PENGIRIMNYA adalah user yang login.
+    //     $disposisis = Disposisi::where('dari_user_id', Auth::id())
+    //         ->with(['suratMasuk', 'penerima.role']) // Sekarang kita butuh info penerima
+    //         ->orderBy('created_at', 'desc')
+    //         ->paginate(10)
+    //         ->appends($request->query());
+
+    //     // Kita akan membuat view outbox yang baru
+    //     return view('pages.shared.outbox', [
+    //         'disposisis' => $disposisis,
+    //         'pageTitle' => 'Outbox: Riwayat Disposisi Terkirim'
+    //     ]);
+    // }
+
     public function outbox(Request $request)
     {
-        // Perubahan kuncinya ada di sini:
-        // Kita mencari disposisi di mana PENGIRIMNYA adalah user yang login.
-        $disposisis = Disposisi::where('dari_user_id', Auth::id())
-            ->with(['suratMasuk', 'penerima.role']) // Sekarang kita butuh info penerima
-            ->orderBy('created_at', 'desc')
+        $query = Disposisi::where('dari_user_id', Auth::id())
+            ->with(['suratMasuk', 'penerima.role']);
+
+        // ✅ Filter: Status penerima
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // ✅ Filter: Tipe Aksi
+        if ($request->filled('tipe_aksi')) {
+            $query->where('tipe_aksi', $request->tipe_aksi);
+        }
+
+        // ✅ Filter: Perihal surat
+        if ($request->filled('perihal')) {
+            $query->whereHas('suratMasuk', function ($q) use ($request) {
+                $q->where('perihal', 'like', '%' . $request->perihal . '%');
+            });
+        }
+
+        // ✅ Filter: Rentang tanggal kirim (created_at)
+        if ($request->filled('filter_tanggal_terkirim')) {
+            $range = explode(' to ', $request->filter_tanggal_terkirim);
+            if (count($range) === 2) {
+                $query->whereBetween('tanggal_disposisi', [$range[0], $range[1]]);
+            }
+        }
+
+        // ✅ Ambil hasil akhir
+        $disposisis = $query->orderBy('created_at', 'desc')
             ->paginate(10)
             ->appends($request->query());
 
-        // Kita akan membuat view outbox yang baru
         return view('pages.shared.outbox', [
             'disposisis' => $disposisis,
             'pageTitle' => 'Outbox: Riwayat Disposisi Terkirim'

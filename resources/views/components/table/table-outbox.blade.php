@@ -1,70 +1,73 @@
 <div
-    class="relative flex flex-col w-full max-h-[500px] overflow-y-auto text-gray-700 bg-white shadow-md rounded-lg bg-clip-border border border-gray-200">
-    <table class="w-full text-left table-auto text-slate-800 min-w-max">
-        {{-- ... (struktur div dan table sama persis) ... --}}
-        <thead class="sticky top-0 z-10">
-            <tr class="text-slate-600 ...">
-                <th class="p-4">
-                    <p>Tgl. Kirim</p>
+    class="relative flex flex-col w-full max-h-[400px] overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border h-[400px]">
+    <table class="w-full text-left table-auto text-slate-800 min-w-0">
+        <thead>
+            <tr class="text-slate-500 border-b border-slate-300 bg-slate-50">
+                <th class="p-3">
+                    <p class="text-sm leading-none font-normal">Tgl. Kirim</p>
                 </th>
-                <th class="p-4">
-                    <p>Tujuan Disposisi</p>
-                </th> {{-- <- PERUBAHAN 1: Judul Kolom --}}
-                <th class="p-4">
-                    <p>Perihal Surat</p>
+                <th class="p-3">
+                    <p class="text-sm leading-none font-normal">Tujuan Disposisi</p>
                 </th>
-                <th class="p-4 text-center">
-                    <p>Status di Penerima</p>
-                </th> {{-- <- Judul Kolom Disesuaikan --}}
-                <th class="p-4 text-center">
-                    <p>Tipe Aksi</p>
-                </th> {{-- <- Judul Kolom Disesuaikan --}}
-                <th class="p-4 text-center">
-                    <p>Aksi</p>
+                <th class="p-3">
+                    <p class="text-sm leading-none font-normal">Perihal Surat</p>
+                </th>
+                <th class="p-3 text-center">
+                    <p class="text-sm leading-none font-normal">Status di Penerima</p>
+                </th>
+                <th class="p-3 text-center">
+                    <p class="text-sm leading-none font-normal">Tipe Aksi</p>
+                </th>
+                <th class="p-3 text-center">
+                    <p class="text-sm leading-none font-normal">Aksi</p>
                 </th>
             </tr>
         </thead>
         <tbody>
             @forelse ($disposisis as $disposisi)
-                <tr class="hover:bg-slate-50 ...">
-                    <td class="p-4 align-top">
+                <tr class="hover:bg-slate-50">
+                    <td class="p-3">
                         <p class="text-sm font-medium">
-                            {{ \Carbon\Carbon::parse($disposisi->created_at)->translatedFormat('d F Y H:i') }} </p>
+                            {{ \Carbon\Carbon::parse($disposisi->created_at)->translatedFormat('d F Y H:i') }}
+                        </p>
                     </td>
-                    <td class="p-4 align-top">
+                    <td class="p-3">
                         <p class="text-sm font-medium">{{ $disposisi->penerima->name ?? 'N/A' }}</p>
                         <p class="text-xs text-gray-500">{{ $disposisi->penerima->role->name ?? '' }}</p>
                     </td>
-                    <td class="p-4 align-top">
+                    <td class="p-3">
                         <p class="text-sm">{{ $disposisi->suratMasuk->perihal ?? '...' }}</p>
                     </td>
-                    <td class="p-4 align-top text-center">
+                    <td class="p-3 text-center">
                         @if ($disposisi->status === 'Menunggu')
-                            <span class="... bg-yellow-100 text-gray-800">Menunggu</span>
+                            <span class="bg-yellow-100 text-gray-800 px-2 py-1 text-xs rounded-full">Menunggu</span>
                         @elseif($disposisi->status === 'Dilihat')
-                            <span class="... bg-blue-200 text-gray-800">Dilihat</span>
+                            <span class="bg-blue-200 text-gray-800 px-2 py-1 text-xs rounded-full">Dilihat</span>
                         @elseif($disposisi->status === 'Dikembalikan')
-                            <span class="... bg-red-200 text-gray-800">Dikembalikan</span>
+                            <span class="bg-red-200 text-gray-800 px-2 py-1 text-xs rounded-full">Dikembalikan</span>
                         @else
-                            <span class="... bg-green-100 text-green-800">{{ $disposisi->status }}</span>
+                            <span class="bg-green-100 text-green-800 px-2 py-1 text-xs rounded-full">{{ $disposisi->status }}</span>
                         @endif
                     </td>
-                    <td class="p-4 align-top text-center">
+                    <td class="p-3 text-center">
                         @if ($disposisi->tipe_aksi === 'Kembalikan')
-                            <span class="... bg-red-100 text-gray-800">Reject</span>
+                            <span class="bg-red-100 text-gray-800 px-2 py-1 text-xs rounded-full">Reject</span>
                         @elseif($disposisi->tipe_aksi === 'Teruskan')
-                            <span class="... bg-blue-200 text-gray-800">Disposisi</span>
-                        @elseif($disposisi->tipe_aksi == 'Revisi')
-                            <span class="... bg-blue-200 text-gray-800">Revisi</span>
+                            <span class="bg-blue-200 text-gray-800 px-2 py-1 text-xs rounded-full">Teruskan</span>
+                        @elseif($disposisi->tipe_aksi === 'Revisi')
+                            <span class="bg-blue-200 text-gray-800 px-2 py-1 text-xs rounded-full">Revisi</span>
                         @endif
                     </td>
-                    <td class="p-4 align-top text-center">
-                        <a href="{{ route('surat.show', $disposisi->surat_id) }}" class="...">
+                    <td class="p-3 text-center">
+                        <a href="{{ route('surat.show', $disposisi->surat_id) }}" class="text-blue-600 hover:text-blue-900 text-sm underline">
                             Lihat Detail
                         </a>
                     </td>
                 </tr>
             @empty
+                <tr>
+                    <td colspan="6" class="p-3 text-center text-sm text-gray-500">Tidak ada data disposisi.</td>
+                </tr>
             @endforelse
         </tbody>
     </table>
