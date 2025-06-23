@@ -54,7 +54,7 @@
                                     $penerima = $disposisi->penerima;
                                     $penerimaRole = $penerima->role->name ?? null;
                                 @endphp
-                                {{ $penerimaRole === 'katimja' ? $penerima->divisi->nama_divisi ?? '-' : ucfirst($penerimaRole ?? '-') }}
+                                {{ $penerimaRole === 'Katimja' ? $penerima->divisi->nama_divisi ?? '-' : ucfirst($penerimaRole ?? '-') }}
                             @else
                                 -
                             @endif

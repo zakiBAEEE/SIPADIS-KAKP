@@ -25,7 +25,7 @@
             @forelse ($surat->disposisis as $disposisi)
                 <tr class="even:bg-slate-100">
                     <td class="p-3">
-                        {{ \Carbon\Carbon::parse($disposisi->tanggal_disposisi)->translatedFormat('d F Y') }}
+                        {{ \Carbon\Carbon::parse($disposisi->created_at)->translatedFormat('d F Y H:i') }}
                     </td>
                     <td class="p-3">
                         @if ($disposisi->pengirim && $disposisi->pengirim->divisi)

@@ -33,33 +33,32 @@ class UserService
                 $query->whereHas('role', fn($q) => $q->where('name', 'Kepala'));
                 break;
 
-            case 'Kepala LLDIKTI': // Pastikan nama ini sama persis dengan di database Anda
-                // Ambil ID peran KBU dan Kepala untuk query
+            case 'Kepala LLDIKTI':
                 $kbuRoleId = Role::where('name', 'KBU')->value('id');
+                $katimjaRoleId = Role::where('name', 'Katimja')->value('id');
                 $kepalaRoleId = $currentUser->role_id;
 
-                // Kepala bisa mengirim ke:
-                // 1. Semua user dengan peran KBU, ATAU
-                // 2. Semua user dengan peran Katimja yang divisinya melapor langsung ke Kepala
-                $query->where(function ($q) use ($kbuRoleId, $kepalaRoleId) {
+                $query->where(function ($q) use ($kbuRoleId, $katimjaRoleId, $kepalaRoleId) {
                     $q->whereHas('role', fn($rq) => $rq->where('id', $kbuRoleId))
-                      ->orWhereHas('divisi', fn($dq) => $dq->where('parent_role_id', $kepalaRoleId));
+                        ->orWhere(function ($nested) use ($katimjaRoleId, $kepalaRoleId) {
+                            $nested->whereHas('role', fn($r) => $r->where('id', $katimjaRoleId))
+                                ->whereHas('divisi', fn($d) => $d->where('parent_role_id', $kepalaRoleId));
+                        });
                 });
                 break;
-
             case 'KBU':
                 // KBU hanya bisa mengirim ke Katimja yang divisinya berada di bawah KBU
                 $kbuRoleId = $currentUser->role_id;
                 $query->whereHas('role', fn($q) => $q->where('name', 'Katimja'))
-                      ->whereHas('divisi', fn($dq) => $dq->where('parent_role_id', $kbuRoleId));
+                    ->whereHas('divisi', fn($dq) => $dq->where('parent_role_id', $kbuRoleId));
                 break;
 
             case 'Katimja':
                 // Katimja hanya bisa mengirim ke Staf di dalam divisinya sendiri
                 $query->where('divisi_id', $currentUser->divisi_id)
-                      ->whereHas('role', fn($q) => $q->where('name', 'Staf'));
+                    ->whereHas('role', fn($q) => $q->where('name', 'Staf'));
                 break;
-            
+
             default:
                 // Staf atau peran lain tidak bisa mengirim ke siapa-siapa
                 return collect();
@@ -67,7 +66,7 @@ class UserService
 
         // Ambil user yang cocok dan format untuk dropdown
         $users = $query->with('role', 'divisi')->orderBy('name')->get();
-        
+
         return $users->map(function ($user) {
             $display = $user->name;
             if ($user->role) {
