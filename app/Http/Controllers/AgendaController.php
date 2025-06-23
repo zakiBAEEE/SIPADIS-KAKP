@@ -176,6 +176,4 @@ class AgendaController extends Controller
             ->paginate(10)
             ->appends($request->query());
     }
-
-
 }
