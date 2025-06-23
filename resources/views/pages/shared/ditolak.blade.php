@@ -12,23 +12,7 @@
                 <div class="px-4 py-2">
 
                     <div class="flex flex-row gap-3">
-                        <div class="mb-4 space-y-1.5 w-1/3">
-                            @include('components.base.dropdown', [
-                                'label' => 'Status Penerima',
-                                'value' => ['Menunggu', 'Dilihat', 'Diteruskan', 'Dikembalikan'],
-                                'name' => 'status',
-                                'selected' => request('status'),
-                            ])
-                        </div>
-                        <div class="mb-4 space-y-1.5 w-1/3">
-                            @include('components.base.dropdown', [
-                                'label' => 'Tipe Aksi',
-                                'value' => ['Teruskan', 'Revisi', 'Kembalikan'],
-                                'name' => 'tipe_aksi',
-                                'selected' => request('tipe_aksi'),
-                            ])
-                        </div>
-                        <div class="mb-4 space-y-1.5 w-1/3">
+                        <div class="mb-4 space-y-1.5 w-full">
                             @include('components.base.datepicker', [
                                 'label' => 'Tanggal Kirim',
                                 'placeholder' => 'Pilih Tanggal Terikirim',
