@@ -1,6 +1,6 @@
-<div class="relative flex flex-col w-full ...">
-    <table class="w-full text-left table-auto ...">
-        <thead class="sticky top-0 ...">
+<div class="relative flex flex-col w-full">
+    <table class="w-full text-left table-auto">
+        <thead class="sticky top-0 bg-white shadow-sm z-10">
             <tr>
                 <th class="p-4 w-2/12">
                     <p>Dikembalikan Oleh</p>
@@ -18,31 +18,25 @@
         </thead>
         <tbody>
             @forelse ($disposisis as $disposisi)
-                <tr class="hover:bg-slate-50 ...">
+                <tr class="hover:bg-slate-50 cursor-pointer"
+                    onclick="window.location.href='{{ route('surat.show', ['surat' => $disposisi->surat_id]) }}'">
                     <td class="p-4 align-top">
                         <p class="font-medium">{{ $disposisi->pengirim->name ?? 'N/A' }}</p>
                         <p class="text-xs text-gray-500">
-                            {{ \Carbon\Carbon::parse($disposisi->tanggal_disposisi)->translatedFormat('d M Y') }}</p>
-                    </td>
-                    <td class="p-4 align-top">
-                        <p class="text-sm">{{ $disposisi->suratMasuk->perihal ?? 'N/A' }}</p>
-                        <p class="text-xs text-gray-500">No. Surat: {{ $disposisi->suratMasuk->nomor_surat ?? 'N/A' }}
+                            {{ \Carbon\Carbon::parse($disposisi->tanggal_disposisi)->translatedFormat('d M Y') }}
                         </p>
                     </td>
                     <td class="p-4 align-top">
-                        {{-- Ini adalah kolom paling penting di halaman ini --}}
+                        <p class="text-sm">{{ $disposisi->suratMasuk->perihal ?? 'N/A' }}</p>
+                        <p class="text-xs text-gray-500">No. Surat:
+                            {{ $disposisi->suratMasuk->nomor_surat ?? 'N/A' }}
+                        </p>
+                    </td>
+                    <td class="p-4 align-top">
                         <p class="text-sm text-red-600 italic">"{{ $disposisi->catatan }}"</p>
                     </td>
                     <td class="p-4 align-top text-center">
-                        <div class="flex flex-row gap-x-1">
-                            {{-- Tombol ini akan memicu pengiriman ulang --}}
-                            <a href="{{ route('surat.show', ['surat' => $disposisi->surat_id]) }}">
-                                @include('components.base.ikon-mata')
-                            </a>
-                            <a href="{{ route('surat.edit', ['surat' => $disposisi->surat_id]) }}">
-                                @include('components.base.ikon-edit')
-                            </a>
-
+                        <div class="flex flex-row gap-x-1" onclick="event.stopPropagation();">
                             @if (in_array(auth()->user()->role->name, ['Admin']))
                                 <form method="POST"
                                     action="{{ route('surat.kirimUlangKeKepala', $disposisi->surat_id) }}"
@@ -55,7 +49,6 @@
                                 </form>
                             @endif
                         </div>
-
                     </td>
                 </tr>
             @empty

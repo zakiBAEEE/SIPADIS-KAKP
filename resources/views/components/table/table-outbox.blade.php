@@ -29,10 +29,9 @@
                 <tr class="hover:bg-slate-50 ...">
                     <td class="p-4 align-top">
                         <p class="text-sm font-medium">
-                            {{ \Carbon\Carbon::parse($disposisi->tanggal_disposisi)->translatedFormat('d M Y') }}</p>
+                            {{ \Carbon\Carbon::parse($disposisi->created_at)->translatedFormat('d F Y H:i') }} </p>
                     </td>
                     <td class="p-4 align-top">
-                        {{-- PERUBAHAN 2: Menampilkan PENERIMA, bukan pengirim --}}
                         <p class="text-sm font-medium">{{ $disposisi->penerima->name ?? 'N/A' }}</p>
                         <p class="text-xs text-gray-500">{{ $disposisi->penerima->role->name ?? '' }}</p>
                     </td>
@@ -40,7 +39,6 @@
                         <p class="text-sm">{{ $disposisi->suratMasuk->perihal ?? '...' }}</p>
                     </td>
                     <td class="p-4 align-top text-center">
-                        {{-- Kolom status ini menjadi sangat berguna di Outbox --}}
                         @if ($disposisi->status === 'Menunggu')
                             <span class="... bg-yellow-100 text-gray-800">Menunggu</span>
                         @elseif($disposisi->status === 'Dilihat')
@@ -52,7 +50,6 @@
                         @endif
                     </td>
                     <td class="p-4 align-top text-center">
-                        {{-- Kolom status ini menjadi sangat berguna di Outbox --}}
                         @if ($disposisi->tipe_aksi === 'Kembalikan')
                             <span class="... bg-red-100 text-gray-800">Reject</span>
                         @elseif($disposisi->tipe_aksi === 'Teruskan')

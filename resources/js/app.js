@@ -10,6 +10,15 @@ window.Alpine = Alpine;
 Alpine.start();
 
 
+function konfirmasiLogout(event) {
+    event.preventDefault(); // Cegah logout langsung
+
+    if (confirm('Apakah Anda yakin ingin logout?')) {
+        document.getElementById('logout-form').submit();
+    }
+}
+
+
 
 // Initialize all components in your app
 initMaterialTailwind();

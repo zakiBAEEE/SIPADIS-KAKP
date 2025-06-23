@@ -29,12 +29,14 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        // Logic pengalihan setelah login
-        if ($user->role->name === 'Admin') {
-            return redirect()->route('surat.home');  // Admin diarahkan ke dashboard
+        // Asumsikan user->role adalah relasi belongsTo
+        $role = $user->role->name ?? null;
+
+        if ($role === 'Admin') {
+            return redirect()->route('surat.home');
         }
 
-        return redirect()->route('inbox.index');  // Non-admin diarahkan ke halaman lain
+        return redirect()->route('inbox.index');
     }
 
     /**

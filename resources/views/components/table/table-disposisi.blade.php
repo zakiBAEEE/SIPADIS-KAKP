@@ -46,19 +46,6 @@
                     </td>
                     <td class="p-3">
                         <div class="flex flex-row gap-x-3 items-center">
-                            {{-- TOMBOL EDIT YANG MEMICU MODAL --}}
-                            {{-- @if (auth()->check() && (auth()->id() === $disposisi->dari_user_id || auth()->user()->role->name === 'Super Admin'))
-                                <button type="button"
-                                    class="js-edit-disposisi-btn text-yellow-600 hover:text-yellow-900"
-                                    data-update-url="{{ route('disposisi.update', $disposisi->id) }}"
-                                    data-tanggal="{{ \Carbon\Carbon::parse($disposisi->tanggal_disposisi)->format('Y-m-d') }}"
-                                    data-ke_user_id="{{ $disposisi->ke_user_id }}"
-                                    data-catatan="{{ $disposisi->catatan }}">
-                                    @include('components.base.ikon-edit')
-                                </button>
-                            @endif --}}
-
-                            {{-- FORM HAPUS --}}
                             @if (in_array(auth()->user()->role->name, ['Super Admin']))
                                 <form method="POST" action="{{ route('disposisi.destroy', $disposisi->id) }}"
                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus disposisi ini?');">
@@ -74,7 +61,6 @@
                 </tr>
             @empty
                 <tr>
-                    {{-- Menggunakan colspan="5" karena sekarang ada 5 kolom --}}
                     <td colspan="5" class="text-center p-3">Belum ada disposisi.</td>
                 </tr>
             @endforelse
