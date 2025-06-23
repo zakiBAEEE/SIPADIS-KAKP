@@ -124,15 +124,49 @@ class InboxController extends Controller
     }
 
     // app/Http/Controllers/InboxController.php
+    // public function ditolak(Request $request)
+    // {
+    //     $disposisis = Disposisi::where('ke_user_id', Auth::id())
+    //         ->where('tipe_aksi', 'Kembalikan') // <-- Kunci query
+    //         ->whereIn('status', ['Menunggu', 'Dilihat'])
+    //         ->with(['suratMasuk', 'pengirim.role'])
+    //         ->orderBy('created_at', 'desc')
+    //         ->paginate(10);
+
+    //     return view('pages.shared.ditolak', compact('disposisis'));
+    // }
+
     public function ditolak(Request $request)
     {
-        $disposisis = Disposisi::where('ke_user_id', Auth::id())
-            ->where('tipe_aksi', 'Kembalikan') // <-- Kunci query
-            ->whereIn('status', ['Menunggu', 'Dilihat'])
-            ->with(['suratMasuk', 'pengirim.role'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $query = Disposisi::query()
+            ->where('ke_user_id', Auth::id())
+            ->where('tipe_aksi', 'Kembalikan')
+            ->whereIn('status', ['Menunggu', 'Dilihat']) // atau sesuaikan dengan kebutuhan
+            ->with(['suratMasuk', 'pengirim.role']);
+
+        // ✅ Filter: Perihal
+        if ($request->filled('perihal')) {
+            $query->whereHas('suratMasuk', function ($q) use ($request) {
+                $q->where('perihal', 'like', '%' . $request->perihal . '%');
+            });
+        }
+
+        // ✅ Filter: Tanggal Kirim (range)
+        if ($request->filled('filter_tanggal_terkirim')) {
+            $range = explode(' to ', $request->filter_tanggal_terkirim);
+            if (count($range) === 2) {
+                $start = $range[0] . ' 00:00:00';
+                $end = $range[1] . ' 23:59:59';
+                $query->whereBetween('created_at', [$start, $end]);
+            }
+        }
+
+        // Ambil hasil
+        $disposisis = $query->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->appends($request->query());
 
         return view('pages.shared.ditolak', compact('disposisis'));
     }
+
 }

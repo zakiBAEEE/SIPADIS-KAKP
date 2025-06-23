@@ -8,7 +8,7 @@
         <x-slot:filterId>filterDitolak</x-slot:filterId>
 
         <x-slot:filterForm>
-            <form action="{{ route('inbox.index') }}" method="GET">
+            <form action="{{ route('inbox.ditolak') }}" method="GET">
                 <div class="px-4 py-2">
 
                     <div class="flex flex-row gap-3">
@@ -22,7 +22,6 @@
                             ])
                         </div>
                     </div>
-
                     <div class="space-y-1.5 mb-4">
                         @include('components.base.input-surat', [
                             'label' => 'Perihal',
@@ -31,9 +30,8 @@
                             'value' => request('perihal'),
                         ])
                     </div>
-
                     <div class="flex flex-row justify-end mb-5 gap-4">
-                        <a href="{{ route('inbox.index') }}"
+                        <a href="{{ route('inbox.ditolak') }}"
                             class="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-red-800 border-red-800 text-slate-50 hover:bg-slate-700 hover:border-slate-700">
                             Reset
                         </a>
