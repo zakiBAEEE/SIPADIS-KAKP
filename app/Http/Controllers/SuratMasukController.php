@@ -35,8 +35,6 @@ class SuratMasukController extends Controller
     public function dashboard(Request $request)
     {
 
-        
-
         $todayStart = now()->startOfDay();
         $todayEnd = now()->endOfDay();
 
