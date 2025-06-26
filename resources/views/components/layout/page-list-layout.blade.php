@@ -28,8 +28,5 @@
 
     {{ $tableContent }}
 
-    {{-- <div class="mt-4 flex flex-row justify-end">
-        {{ $paginationLinks }}
-    </div> --}}
 
 </div>

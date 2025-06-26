@@ -31,15 +31,8 @@
         <x-slot:tableContent>
             @include('components.table.table', ['surats' => $surats]) {{-- Asumsi tabel surat --}}
         </x-slot:tableContent>
-
-        {{-- Isi slot "paginationLinks" --}}
-
-
-        {{-- <x-slot:paginationLinks>
-            {{ $surats->links() }}
-        </x-slot:paginationLinks> --}}
-
     </x-layout.page-list-layout>
+    
     <div class="mt-4 flex flex-row justify-end">
         @include('components.base.pagination', ['surats' => $surats])
     </div>
