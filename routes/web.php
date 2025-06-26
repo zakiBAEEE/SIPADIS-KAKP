@@ -25,7 +25,7 @@ require __DIR__ . '/auth.php';
 Route::middleware(['auth'])->group(function () {
 
     // ----------------- DASHBOARD UTAMA -----------------
-    Route::get('/', [SuratMasukController::class, 'dashboard'])->name('surat.home');
+
 
     // ----------------- RUTE UMUM (semua peran login) -----------------
     Route::get('/surat-masuk/{surat}', [SuratMasukController::class, 'show'])->name('surat.show');
@@ -35,7 +35,9 @@ Route::middleware(['auth'])->group(function () {
     | RUTE UNTUK ADMIN & SUPER ADMIN
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['role:Super Admin,Admin'])->group(function () {
+    Route::middleware(['role:Admin'])->group(function () {
+
+        Route::get('/', [SuratMasukController::class, 'dashboard'])->name('surat.home');
 
         // ---- Manajemen Surat Masuk ----
         Route::get('/surat-masuk-disposisi', [SuratMasukController::class, 'suratDenganDisposisi'])->name('surat.denganDisposisi');
