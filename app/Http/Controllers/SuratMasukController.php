@@ -170,7 +170,7 @@ class SuratMasukController extends Controller
         ]);
     }
 
-    public function suratTanpaDisposisi(Request $request)
+    public function suratMasukDraft(Request $request)
     {
         $query = SuratMasuk::doesntHave('disposisis');
 
@@ -225,7 +225,7 @@ class SuratMasukController extends Controller
             ->appends($request->query());
 
 
-        return view('pages.super-admin.surat-masuk-tanpa-disposisi', compact('surats'));
+        return view('pages.super-admin.surat-masuk-draft', compact('surats'));
 
     }
 

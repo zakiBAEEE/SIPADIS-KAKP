@@ -16,8 +16,7 @@
             {{-- Pengecekan keamanan: pastikan user sudah login & punya peran --}}
             @if (auth()->check() && auth()->user()->role)
 
-
-                @if (in_array(auth()->user()->role->name, ['Super Admin', 'Admin']))
+                @if (in_array(auth()->user()->role->name, ['Admin']))
                     <li>
                         <a href="{{ route('surat.home') }}"
                             class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
@@ -77,7 +76,7 @@
                                         class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Terkirim</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('surat.tanpaDisposisi') }}"
+                                    <a href="{{ route('surat.draft') }}"
                                         class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Draft</a>
                                 </li>
                                 <li class="relative inline-flex">

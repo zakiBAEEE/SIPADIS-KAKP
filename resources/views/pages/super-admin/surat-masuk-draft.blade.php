@@ -20,10 +20,10 @@
         <div>
             <div class="flex-col transition-[max-height] duration-300 ease-in-out max-h-0 mt-1"
                 id='filterSuratTanpaDisposisi'>
-                <form action="{{ route('surat.tanpaDisposisi') }}" method="GET">
+                <form action="{{ route('surat.draft') }}" method="GET">
                     @include('components.layout.input-filter-surat')
                     <div class="flex flex-row justify-end mb-5 gap-4">
-                        <a href="{{ route('surat.tanpaDisposisi') }}"
+                        <a href="{{ route('surat.draft') }}"
                             class="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-red-800 border-red-800 text-slate-50 hover:bg-slate-700 hover:border-slate-700">
                             Reset
                         </a>
@@ -34,7 +34,6 @@
                     </div>
                 </form>
             </div>
-
         </div>
         @include('components.table.table', ['surats' => $surats])
         <div class="mt-4 flex flex-row justify-end">

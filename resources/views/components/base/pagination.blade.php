@@ -8,7 +8,6 @@
         </svg>Sebelumnya
     </a>
 
-    {{-- Nomor halaman --}}
     @for ($i = 1; $i <= $surats->lastPage(); $i++)
         <a href="{{ $surats->url($i) }}"
             class="inline-grid min-h-[36px] min-w-[36px] select-none place-items-center rounded-md border {{ $i == $surats->currentPage() ? 'border-slate-800 bg-slate-800 text-slate-50 hover:bg-slate-700 hover:border-slate-700' : 'border-transparent bg-transparent text-slate-800 hover:border-slate-800/5 hover:bg-slate-800/5' }} text-center align-middle text-sm font-medium leading-none transition-all duration-300 ease-in">
@@ -16,7 +15,6 @@
         </a>
     @endfor
 
-    {{-- Tombol "Selanjutnya" --}}
     <a href="{{ $surats->nextPageUrl() }}"
         class="inline-flex select-none items-center justify-center rounded-md border border-transparent bg-transparent px-3.5 py-2.5 text-center align-middle text-sm font-medium leading-none text-slate-800 transition-all duration-300 ease-in hover:border-slate-800/5 hover:bg-slate-800/5 {{ !$surats->hasMorePages() ? 'pointer-events-none opacity-50' : '' }}">
         Selanjutnya
