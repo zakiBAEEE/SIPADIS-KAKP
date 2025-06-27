@@ -87,9 +87,7 @@ class SuratMasukController extends Controller
         $query = SuratMasuk::query();
 
         // Filter berdasarkan berbagai parameter
-        if ($request->filled('nomor_agenda')) {
-            $query->where('nomor_agenda', 'like', '%' . $request->nomor_agenda . '%');
-        }
+
 
         if ($request->filled('nomor_surat')) {
             $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
@@ -175,9 +173,7 @@ class SuratMasukController extends Controller
         $query = SuratMasuk::doesntHave('disposisis');
 
         // Filter berdasarkan berbagai parameter
-        if ($request->filled('nomor_agenda')) {
-            $query->where('nomor_agenda', 'like', '%' . $request->nomor_agenda . '%');
-        }
+
 
         if ($request->filled('nomor_surat')) {
             $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
@@ -236,9 +232,6 @@ class SuratMasukController extends Controller
 
 
         // Filter berdasarkan berbagai parameter
-        if ($request->filled('nomor_agenda')) {
-            $query->where('nomor_agenda', 'like', '%' . $request->nomor_agenda . '%');
-        }
 
         if ($request->filled('nomor_surat')) {
             $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
@@ -295,11 +288,46 @@ class SuratMasukController extends Controller
         return view('pages.super-admin.tambah-surat-masuk');
     }
 
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'nomor_surat' => 'required|string',
+    //         'pengirim' => 'required|string',
+    //         'tanggal_surat' => 'required|date',
+    //         'tanggal_terima' => 'required|date',
+    //         'perihal' => 'required|string',
+    //         'klasifikasi_surat' => 'nullable|string',
+    //         'sifat' => 'nullable|string',
+    //         'file_path' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
+    //     ]);
+
+    //     try {
+    //         if ($request->hasFile('file_path')) {
+    //             $path = $request->file('file_path')->store('surat', 'public');
+    //             $validated['file_path'] = $path;
+    //         }
+
+    //         $surat = SuratMasuk::create($validated);
+
+    //         if ($surat) {
+    //             return redirect()->route('surat.tambah')->with('success', 'Surat berhasil ditambahkan!');
+    //         } else {
+    //             return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat. Data tidak valid atau ada masalah lain.');
+    //         }
+
+    //     } catch (\Illuminate\Database\QueryException $e) {
+    //         Log::error('Database error saat menambahkan surat: ' . $e->getMessage()); // Catat error untuk debugging
+    //         return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat karena masalah database. Silakan coba lagi atau hubungi administrator.');
+    //     } catch (\Exception $e) {
+    //         Log::error('Error umum saat menambahkan surat: ' . $e->getMessage()); // Catat error untuk debugging
+    //         return redirect()->route('surat.tambah')->with('error', 'Terjadi kesalahan yang tidak terduga saat menambahkan surat.');
+    //     }
+    // }
+
+
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nomor_agenda' => 'required|string',
-            'nomor_surat' => 'required|string',
             'pengirim' => 'required|string',
             'tanggal_surat' => 'required|date',
             'tanggal_terima' => 'required|date',
@@ -310,27 +338,43 @@ class SuratMasukController extends Controller
         ]);
 
         try {
+            // Handle file upload
             if ($request->hasFile('file_path')) {
                 $path = $request->file('file_path')->store('surat', 'public');
                 $validated['file_path'] = $path;
             }
 
+            // Ambil tahun sekarang
+            $tahun = now()->format('Y');
+
+            // Hitung jumlah surat masuk di tahun ini
+            $jumlahSuratTahunIni = SuratMasuk::whereYear('created_at', $tahun)->count();
+
+            // Nomor urut berikutnya (increment)
+            $nomorUrut = str_pad($jumlahSuratTahunIni + 1, 3, '0', STR_PAD_LEFT);
+
+            // Susun nomor surat
+            $nomorSurat = "{$nomorUrut}/TU/{$tahun}";
+            $validated['nomor_surat'] = $nomorSurat;
+
+            // Simpan
             $surat = SuratMasuk::create($validated);
 
             if ($surat) {
                 return redirect()->route('surat.tambah')->with('success', 'Surat berhasil ditambahkan!');
             } else {
-                return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat. Data tidak valid atau ada masalah lain.');
+                return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat.');
             }
 
         } catch (\Illuminate\Database\QueryException $e) {
-            Log::error('Database error saat menambahkan surat: ' . $e->getMessage()); // Catat error untuk debugging
-            return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat karena masalah database. Silakan coba lagi atau hubungi administrator.');
+            Log::error('Database error saat menambahkan surat: ' . $e->getMessage());
+            return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat karena masalah database.');
         } catch (\Exception $e) {
-            Log::error('Error umum saat menambahkan surat: ' . $e->getMessage()); // Catat error untuk debugging
-            return redirect()->route('surat.tambah')->with('error', 'Terjadi kesalahan yang tidak terduga saat menambahkan surat.');
+            Log::error('Error umum saat menambahkan surat: ' . $e->getMessage());
+            return redirect()->route('surat.tambah')->with('error', 'Terjadi kesalahan tak terduga saat menambahkan surat.');
         }
     }
+
 
     public function show(SuratMasuk $surat) // Gunakan Route Model Binding
     {
@@ -351,7 +395,6 @@ class SuratMasukController extends Controller
     public function update(Request $request, SuratMasuk $surat)
     {
         $validated = $request->validate([
-            'nomor_agenda' => 'nullable|string',
             'nomor_surat' => 'required|string',
             'pengirim' => 'required|string',
             'tanggal_surat' => 'required|date',

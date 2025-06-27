@@ -45,7 +45,7 @@
             @foreach ($surats as $surat)
                 <tr class="hover:bg-slate-50">
                     <td class="p-3">
-                        <p class="text-sm">{{ $surat->nomor_agenda }}</p>
+                        <p class="text-sm">{{ $surat->id }}</p>
                     </td>
                     <td class="p-3">
                         <p class="text-sm">{{ $surat->nomor_surat }}</p>

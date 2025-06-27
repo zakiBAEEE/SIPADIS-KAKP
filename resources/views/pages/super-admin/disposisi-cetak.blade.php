@@ -42,7 +42,7 @@
             <div class="flex flex-wrap">
                 <div class="w-full md:w-1/2 flex items-start border-b border-gray-200">
                     <div class="w-40 font-bold p-2 bg-gray-50">No. Agenda</div>
-                    <div class="flex-1 p-2">: {{ $surat->nomor_agenda }}</div>
+                    <div class="flex-1 p-2">: {{ $surat->id }}</div>
                 </div>
                 <div class="w-full md:w-1/2 flex items-start border-b border-gray-200">
                     <div class="w-40 font-bold p-2 bg-gray-50">Tanggal Diterima</div>

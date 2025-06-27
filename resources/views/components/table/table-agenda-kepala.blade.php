@@ -30,7 +30,7 @@
                 @foreach ($surat->disposisis as $disposisi)
                     <tr class="hover:bg-slate-50">
                         <td class="p-3">
-                            {{ $surat->nomor_agenda }}
+                            {{ $surat->id }}
                         </td>
                         <td class="p-3">
                             {{ \Carbon\Carbon::parse($surat->tanggal_terima)->translatedFormat('d M Y') }}

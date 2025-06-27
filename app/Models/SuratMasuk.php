@@ -9,7 +9,6 @@ class SuratMasuk extends Model
     protected $table = 'surat_masuk'; // Kalau nama tabel tidak jamak
 
     protected $fillable = [
-        'nomor_agenda',
         'nomor_surat',
         'pengirim',
         'tanggal_surat',
@@ -30,7 +29,6 @@ class SuratMasuk extends Model
     public function scopeFilter($query, array $filters)
     {
         return $query
-            ->when($filters['nomor_agenda'] ?? null, fn($q, $value) => $q->where('nomor_agenda', 'like', "%$value%"))
             ->when($filters['nomor_surat'] ?? null, fn($q, $value) => $q->where('nomor_surat', 'like', "%$value%"))
             ->when($filters['pengirim'] ?? null, fn($q, $value) => $q->where('pengirim', 'like', "%$value%"))
             ->when($filters['perihal'] ?? null, fn($q, $value) => $q->where('perihal', 'like', "%$value%"))

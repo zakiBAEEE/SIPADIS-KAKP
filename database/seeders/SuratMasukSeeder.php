@@ -12,7 +12,6 @@ class SuratMasukSeeder extends Seeder
     {
         SuratMasuk::insert([
             [
-                'nomor_agenda' => '0346/TU/2025',
                 'nomor_surat' => 'UMDP/2025/139',
                 'pengirim' => 'Universitas Multi Data Palembang',
                 'tanggal_surat' => '2025-02-25',
@@ -24,7 +23,6 @@ class SuratMasukSeeder extends Seeder
                 'status' => 'draft',
             ],
             [
-                'nomor_agenda' => '0347/TU/2025',
                 'nomor_surat' => 'UNSRI/2025/140',
                 'pengirim' => 'Universitas Sriwijaya',
                 'tanggal_surat' => '2025-02-26',
@@ -36,7 +34,6 @@ class SuratMasukSeeder extends Seeder
                 'status' => 'diverifikasi',
             ],
             [
-                'nomor_agenda' => '0348/TU/2025',
                 'nomor_surat' => 'POLSRI/2025/141',
                 'pengirim' => 'Politeknik Negeri Sriwijaya',
                 'tanggal_surat' => '2025-02-27',

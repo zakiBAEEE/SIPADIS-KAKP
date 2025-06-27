@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('surat_masuk', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor_agenda', 100);
             $table->string('nomor_surat', 100);
             $table->string('pengirim', 255);
             $table->date('tanggal_surat');

@@ -36,7 +36,7 @@
 
                     {{-- Modifikasi kelas pada <td> dan pembungkusan konten dengan <p> --}}
                     <td class="p-3">
-                        <p class="text-sm">{{ $surat->nomor_agenda ?? '-' }}</p>
+                        <p class="text-sm">{{ $surat->id ?? '-' }}</p>
                     </td>
                     <td class="p-3">
                         <p class="text-sm">

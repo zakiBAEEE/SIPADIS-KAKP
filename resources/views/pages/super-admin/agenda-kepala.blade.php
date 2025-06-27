@@ -17,17 +17,12 @@
             </div>
         </div>
         <hr class="w-full border-t border-gray-300 my-4" />
-        <div>
+        <div class="mb-5">
             <div class="flex-col transition-[max-height] duration-300 ease-in-out max-h-0 mt-1" id="collapseFilterAgendaKbu">
                 <form action="{{ route('surat.agendaKepala') }}" method="GET">
                     <div class="px-4 py-2">
                         <div class="mb-4 space-y-1.5 w-full">
-                            @include('components.base.input-surat', [
-                                'label' => 'Nomor Agenda',
-                                'placeholder' => 'Masukkan Nomor Agenda',
-                                'name' => 'nomor_agenda',
-                                'value' => request('nomor_agenda'),
-                            ])
+                           
                         </div>
                         <div class="flex flex-row gap-3">
                             <div class="mb-4 space-y-1.5 w-1/2">

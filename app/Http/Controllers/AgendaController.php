@@ -73,44 +73,6 @@ class AgendaController extends Controller
     }
 
 
-    // private function getAgendaForRole(string $roleName, Request $request): LengthAwarePaginator
-    // {
-    //     // 1. Dapatkan semua ID user yang memiliki peran yang diminta
-    //     $roleUserIds = User::whereHas('role', fn($q) => $q->where('name', $roleName))->pluck('id');
-
-    //     if ($roleUserIds->isEmpty()) {
-    //         return new LengthAwarePaginator([], 0, 10);
-    //     }
-
-    //     // 2. Buat query dasar untuk SuratMasuk
-    //     // Kita juga bisa memanfaatkan fungsi filter Anda jika diperlukan
-    //     $query = SuratMasuk::query();
-    //     if ($request->hasAny(['nomor_agenda', 'nomor_surat', 'pengirim', 'perihal'])) {
-    //         $query->filter($request->all()); // Memanggil scopeFilter di model SuratMasuk
-    //     }
-
-    //     // 3. Terapkan filter utama yang sesuai dengan aturan Anda
-    //     $query->whereHas('disposisis', function (Builder $q) use ($roleUserIds) {
-
-    //         // ATURAN 1: Hanya mengambil disposisi DARI peran ini (dari_user_id).
-    //         $q->whereIn('dari_user_id', $roleUserIds)
-
-    //             // ATURAN 2: TIDAK MENAMPILKAN yang statusnya 'Dikembalikan'.
-    //             ->where('status', '!=', 'Dikembalikan');
-    //     });
-
-    //     // 4. Lakukan paginasi dan eager load relasi yang dibutuhkan
-    //     return $query->with([
-    //         'disposisis' => function ($q) use ($roleUserIds) {
-    //             $q->whereIn('dari_user_id', $roleUserIds)->latest();
-    //         },
-    //         'disposisis.penerima.role'
-    //     ])
-    //         ->latest('updated_at')
-    //         ->paginate(10)
-    //         ->appends($request->query());
-    // }
-
     private function getAgendaForRole(string $roleName, Request $request): LengthAwarePaginator
     {
         // 1. Dapatkan semua ID user dengan peran tertentu
@@ -124,10 +86,7 @@ class AgendaController extends Controller
         $query = SuratMasuk::query();
 
         // 3. Filter berdasarkan input teks (opsional)
-        if ($request->filled('nomor_agenda')) {
-            $query->where('nomor_agenda', 'like', '%' . $request->nomor_agenda . '%');
-        }
-
+      
         if ($request->filled('nomor_surat')) {
             $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
         }
