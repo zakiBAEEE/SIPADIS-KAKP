@@ -1,5 +1,6 @@
 <div
     class="relative flex flex-col w-full max-h-[400px] overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border h-[400px]">
+
     <table class="w-full text-left table-auto text-slate-800 min-w-0">
         <thead>
             <tr class="text-slate-500 border-b border-slate-300 bg-slate-50">
@@ -46,7 +47,8 @@
                         @elseif($disposisi->status === 'Dikembalikan')
                             <span class="bg-red-200 text-gray-800 px-2 py-1 text-xs rounded-full">Dikembalikan</span>
                         @else
-                            <span class="bg-green-100 text-green-800 px-2 py-1 text-xs rounded-full">{{ $disposisi->status }}</span>
+                            <span
+                                class="bg-green-100 text-green-800 px-2 py-1 text-xs rounded-full">{{ $disposisi->status }}</span>
                         @endif
                     </td>
                     <td class="p-3 text-center">
@@ -59,14 +61,15 @@
                         @endif
                     </td>
                     <td class="p-3 text-center">
-                        <a href="{{ route('surat.show', $disposisi->surat_id) }}" class="text-blue-600 hover:text-blue-900 text-sm underline">
+                        <a href="{{ route('surat.show', $disposisi->surat_id) }}"
+                            class="text-blue-600 hover:text-blue-900 text-sm underline">
                             Lihat Detail
                         </a>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="p-3 text-center text-sm text-gray-500">Tidak ada data disposisi.</td>
+                    <td colspan="6" class="p-3 text-center text-sm text-gray-500">Menampilkan riwayat disposisi hari ini, gunakan filter untuk melihat data lainnya</td>
                 </tr>
             @endforelse
         </tbody>

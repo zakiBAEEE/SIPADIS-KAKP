@@ -5,33 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Disposisi;
+use Carbon\Carbon;
 
 class InboxController extends Controller
 {
-    /**
-     * Menampilkan halaman inbox untuk pengguna yang sedang login.
-     * Logika ini sekarang sama untuk semua peran non-admin.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
-     */
-    // public function index(Request $request)
-    // {
-    //     // Langsung ambil data disposisi untuk user yang login
-    //     $disposisis = Disposisi::where('ke_user_id', operator: Auth::id())
-    //         ->whereIn('tipe_aksi', ['Teruskan', 'Revisi'])
-    //         ->whereIn('status', ['Menunggu', 'Dilihat']) // Hanya tampilkan disposisi aktif
-    //         ->with(['suratMasuk', 'pengirim.role']) // Eager loading untuk performa
-    //         ->orderBy('created_at', 'desc')
-    //         ->paginate(10)
-    //         ->appends($request->query());
 
-    //     // Kirim data ke satu view generik yang sama
-    //     return view('pages.shared.inbox', [
-    //         'disposisis' => $disposisis,
-    //         'pageTitle' => 'Inbox Disposisi'
-    //     ]);
-    // }
 
     public function index(Request $request)
     {
@@ -80,8 +58,6 @@ class InboxController extends Controller
             'pageTitle' => 'Inbox Disposisi'
         ]);
     }
-
-
     public function outbox(Request $request)
     {
         $query = Disposisi::where('dari_user_id', Auth::id())
@@ -122,26 +98,47 @@ class InboxController extends Controller
             'pageTitle' => 'Outbox: Riwayat Disposisi Terkirim'
         ]);
     }
-
-    // app/Http/Controllers/InboxController.php
     // public function ditolak(Request $request)
+
     // {
-    //     $disposisis = Disposisi::where('ke_user_id', Auth::id())
-    //         ->where('tipe_aksi', 'Kembalikan') // <-- Kunci query
-    //         ->whereIn('status', ['Menunggu', 'Dilihat'])
-    //         ->with(['suratMasuk', 'pengirim.role'])
-    //         ->orderBy('created_at', 'desc')
-    //         ->paginate(10);
+    //     $query = Disposisi::query()
+    //         ->where('ke_user_id', Auth::id())
+    //         ->where('tipe_aksi', 'Kembalikan')
+    //         ->whereIn('status', ['Menunggu', 'Dilihat']) // atau sesuaikan dengan kebutuhan
+    //         ->with(['suratMasuk', 'pengirim.role']);
+
+    //     // ✅ Filter: Perihal
+    //     if ($request->filled('perihal')) {
+    //         $query->whereHas('suratMasuk', function ($q) use ($request) {
+    //             $q->where('perihal', 'like', '%' . $request->perihal . '%');
+    //         });
+    //     }
+
+    //     // ✅ Filter: Tanggal Kirim (range)
+    //     if ($request->filled('filter_tanggal_terkirim')) {
+    //         $range = explode(' to ', $request->filter_tanggal_terkirim);
+    //         if (count($range) === 2) {
+    //             $start = $range[0] . ' 00:00:00';
+    //             $end = $range[1] . ' 23:59:59';
+    //             $query->whereBetween('created_at', [$start, $end]);
+    //         }
+    //     }
+
+    //     // Ambil hasil
+    //     $disposisis = $query->orderBy('created_at', 'desc')
+    //         ->paginate(10)
+    //         ->appends($request->query());
 
     //     return view('pages.shared.ditolak', compact('disposisis'));
     // }
+
 
     public function ditolak(Request $request)
     {
         $query = Disposisi::query()
             ->where('ke_user_id', Auth::id())
             ->where('tipe_aksi', 'Kembalikan')
-            ->whereIn('status', ['Menunggu', 'Dilihat']) // atau sesuaikan dengan kebutuhan
+            ->whereIn('status', ['Menunggu', 'Dilihat'])
             ->with(['suratMasuk', 'pengirim.role']);
 
         // ✅ Filter: Perihal
@@ -159,14 +156,20 @@ class InboxController extends Controller
                 $end = $range[1] . ' 23:59:59';
                 $query->whereBetween('created_at', [$start, $end]);
             }
+        } else {
+            $today = Carbon::today();
+            $query->whereBetween('created_at', [
+                $today->copy()->startOfDay(),
+                $today->copy()->endOfDay()
+            ]);
         }
 
-        // Ambil hasil
         $disposisis = $query->orderBy('created_at', 'desc')
             ->paginate(10)
             ->appends($request->query());
 
         return view('pages.shared.ditolak', compact('disposisis'));
     }
+
 
 }
