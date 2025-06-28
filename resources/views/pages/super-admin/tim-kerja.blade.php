@@ -1,6 +1,38 @@
 @extends('layouts.super-admin-layout')
 
 @section('content')
+    {{-- Alert untuk pesan sukses (hijau) --}}
+    @if (session('success'))
+        <div role="alert"
+            class="js-dismissable-alert relative flex w-full items-center rounded-lg border border-green-500 bg-green-500 p-3 text-white shadow-lg mb-4 transition-opacity duration-300 ease-in-out">
+            <div class="m-1.5 w-full font-sans text-base font-medium leading-none">{{ session('success') }}</div>
+
+            {{-- Tombol Close --}}
+            <button type="button" class="js-close-alert p-1 absolute top-1 right-1" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="h-5 w-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    @endif
+
+    {{-- Alert untuk pesan error (merah) --}}
+    @if (session('error'))
+        <div role="alert"
+            class="js-dismissable-alert relative flex w-full items-center rounded-lg border border-red-500 bg-red-500 p-3 text-white shadow-lg mb-4 transition-opacity duration-300 ease-in-out">
+            <div class="m-1.5 w-full font-sans text-base font-medium leading-none">{{ session('error') }}</div>
+
+            {{-- Tombol Close --}}
+            <button type="button" class="js-close-alert p-1 absolute top-1 right-1" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="h-5 w-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    @endif
+
     <div class="bg-white w-full h-full rounded-xl shadow-neutral-400 shadow-lg overflow-scroll p-4">
         <div class="flex flex-row justify-between items-center w-full">
             <div>

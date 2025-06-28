@@ -10,7 +10,7 @@ class TimKerjaController extends Controller
     // INDEX: Tampilkan semua tim kerja
     public function index()
     {
-        $timKerja = Divisi::orderBy('created_at', 'desc')->paginate(8); 
+        $timKerja = Divisi::orderBy('created_at', 'desc')->paginate(8);
         return view('pages.super-admin.tim-kerja', compact('timKerja'));
     }
 
@@ -55,6 +55,11 @@ class TimKerjaController extends Controller
     public function destroy($id)
     {
         $divisi = Divisi::findOrFail($id);
+        
+        if ($divisi->users()->exists()) {
+            return back()->with('error', 'Divisi ini tidak dapat dihapus karena masih memiliki pengguna.');
+        }
+
         $divisi->delete();
 
         return redirect()->route('timKerja.index')->with('success', 'Tim kerja berhasil dihapus.');
