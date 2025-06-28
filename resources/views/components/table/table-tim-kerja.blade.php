@@ -15,21 +15,21 @@
             </tr>
         </thead>
         <tbody class="group text-sm text-slate-800">
-            @forelse ($timKerja as $item)
+            @forelse ($divisis as $divisi)
                 <tr class="even:bg-slate-100">
                     <td class="p-3">
-                        {{ $item->id }}
+                        {{ $divisi->id }}
                     </td>
                     <td class="p-3">
-                        {{ $item->nama_divisi }}
+                        {{ $divisi->nama_divisi }}
                     </td>
                     <td class="p-3">
                         <div class="flex flex-row gap-x-1">
                             @include('components.layout.modal-edit-tim-kerja', [
-                                'id' => $item->id,
-                                'namaDivisi' => $item->nama_divisi,
+                                'id' => $divisi->id,
+                                'namaDivisi' => $divisi->nama_divisi,
                             ])
-                            <form action="{{ route('tim-kerja.destroy', $item->id) }}" method="POST"
+                            <form action="{{ route('tim-kerja.destroy', $divisi->id) }}" method="POST"
                                 onsubmit="return confirm('Yakin ingin menghapus tim kerja ini?')">
                                 @csrf
                                 @method('DELETE')
@@ -43,7 +43,6 @@
             @empty
                 <tr>
                     <td colspan="4" class="text-center p-3">Belum ada disposisi.</td>
-
                 </tr>
             @endforelse
         </tbody>
