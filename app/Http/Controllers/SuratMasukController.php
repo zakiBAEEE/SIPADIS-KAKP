@@ -328,6 +328,7 @@ class SuratMasukController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'nomor_surat' => 'required|string',
             'pengirim' => 'required|string',
             'tanggal_surat' => 'required|date',
             'tanggal_terima' => 'required|date',
@@ -354,8 +355,8 @@ class SuratMasukController extends Controller
             $nomorUrut = str_pad($jumlahSuratTahunIni + 1, 3, '0', STR_PAD_LEFT);
 
             // Susun nomor surat
-            $nomorSurat = "{$nomorUrut}/TU/{$tahun}";
-            $validated['nomor_surat'] = $nomorSurat;
+            $idSurat = "{$nomorUrut}-TU-{$tahun}";
+            $validated['id'] = $idSurat;
 
             // Simpan
             $surat = SuratMasuk::create($validated);

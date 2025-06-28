@@ -11,18 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-    Schema::create('disposisis', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('surat_id')->constrained('surat_masuk');
-    $table->foreignId('dari_user_id')->constrained('users');
-    $table->foreignId('ke_user_id')->constrained('users');
-    $table->text('catatan')->nullable();
-    $table->timestamp('tanggal_disposisi'); // Admin input manual tanggal disposisi
-    $table->timestamps();
-});
+        Schema::create('disposisis', function (Blueprint $table) {
+            $table->id();
 
+            // Karena id di surat_masuk bertipe string, kita buat manual
+            $table->string('surat_id');
+            $table->foreign('surat_id')->references('id')->on('surat_masuk')->onDelete('cascade');
+
+            // Yang lain tetap pakai foreignId karena users.id tetap big integer
+            $table->foreignId('dari_user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('ke_user_id')->constrained('users')->onDelete('cascade');
+
+            $table->text('catatan')->nullable();
+            $table->timestamp('tanggal_disposisi');
+            $table->timestamps();
+        });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('disposisis');

@@ -19,7 +19,7 @@
                     <a href="#"
                         class="tab-link text-sm active inline-block py-2 px-4 text-slate-800 transition-colors duration-300 mr-1"
                         data-tab-target="tab1-group4">
-                        Metadata
+                        Data
                     </a>
                     <a href="#"
                         class="tab-link text-sm inline-block py-2 px-4 text-slate-800 transition-colors duration-300 mr-1"
