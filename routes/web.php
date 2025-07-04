@@ -40,7 +40,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [SuratMasukController::class, 'dashboard'])->name('surat.home');
 
         // ---- Manajemen Surat Masuk ----
-        Route::get('/surat-masuk-disposisi', [SuratMasukController::class, 'suratDenganDisposisi'])->name('surat.denganDisposisi');
         Route::get('/surat-masuk-draft', [SuratMasukController::class, 'suratMasukDraft'])->name('surat.draft');
         Route::get('/surat-masuk-tambah', [SuratMasukController::class, 'add'])->name('surat.tambah');
         Route::post('/surat-masuk', [SuratMasukController::class, 'store'])->name('surat.store');

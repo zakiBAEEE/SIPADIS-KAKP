@@ -59,7 +59,7 @@ class AgendaController extends Controller
     {
         $query = $this->suratMasukWithDisposisi->suratMasukWithDisposisi($request);
 
-        $suratMasuk = $query->orderByDesc('tanggal_terima')->get();
+        $suratMasuk = $query->orderByDesc('created_at')->get();
 
         $suratMasuk = $this->disposisisFilterService->filterByKepalaDisposisi($suratMasuk);
 
@@ -105,10 +105,10 @@ class AgendaController extends Controller
         }
 
         // 4. Filter berdasarkan rentang tanggal
-        if ($request->filled('filter_tanggal_terima')) {
-            $range = explode(' to ', $request->input('filter_tanggal_terima'));
+        if ($request->filled('filter_created_at')) {
+            $range = explode(' to ', $request->input('filter_created_at'));
             if (count($range) === 2) {
-                $query->whereBetween('tanggal_terima', [$range[0], $range[1]]);
+                $query->whereBetween('created_at', [$range[0], $range[1]]);
             }
         }
 

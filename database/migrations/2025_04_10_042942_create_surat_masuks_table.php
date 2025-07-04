@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('nomor_surat', 100);
             $table->string('pengirim', 255);
             $table->date('tanggal_surat');
-            $table->date('tanggal_terima');
+            // $table->date('tanggal_terima');
             $table->string('perihal', 255);
             $table->string('klasifikasi_surat', 100)->nullable();
             $table->string('sifat', 100)->nullable();

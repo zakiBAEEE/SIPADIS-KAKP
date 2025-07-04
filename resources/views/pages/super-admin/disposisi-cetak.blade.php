@@ -47,7 +47,7 @@
                 <div class="w-full md:w-1/2 flex items-start border-b border-gray-200">
                     <div class="w-40 font-bold p-2 bg-gray-50">Tanggal Diterima</div>
                     <div class="flex-1 p-2">:
-                        {{ \Carbon\Carbon::parse($surat->tanggal_terima)->locale('id')->translatedFormat('d F Y') }}
+                        {{ \Carbon\Carbon::parse($surat->created_at)->locale('id')->translatedFormat('d F Y') }}
                     </div>
                 </div>
             </div>

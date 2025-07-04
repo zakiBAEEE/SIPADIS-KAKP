@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         $nonDivisionalUsers = [
             ['name' => 'Ishak Iskandar', 'username' => 'kepala01', 'role' => 'Kepala LLDIKTI', 'password' => 'password'],
             ['name' => 'Fansyuri Dwi Putra', 'username' => 'kbu01', 'role' => 'KBU', 'password' => 'password'],
-            ['name' => 'Dimas Prakoso', 'username' => 'adminsurat01', 'role' => 'Admin Surat', 'password' => 'password'],
+            ['name' => 'Dimas Prakoso', 'username' => 'adminsurat01', 'role' => 'Admin', 'password' => 'password'],
         ];
 
         foreach ($nonDivisionalUsers as $user) {

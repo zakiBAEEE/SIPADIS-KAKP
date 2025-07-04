@@ -24,9 +24,9 @@
             @include('components.base.datepicker', [
                 'label' => 'Tanggal Terima',
                 'placeholder' => 'Pilih Tanggal Terima',
-                'id' => 'filter_tanggal_terima',
-                'name' => 'filter_tanggal_terima',
-                'value' => request('filter_tanggal_terima'),
+                'id' => 'filter_created_at',
+                'name' => 'filter_created_at',
+                'value' => request('filter_created_at'),
             ])
         </div>
     </div>

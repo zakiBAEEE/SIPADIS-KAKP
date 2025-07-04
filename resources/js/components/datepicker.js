@@ -6,11 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
         dateFormat: "Y-m-d",
     });
 });
-document.addEventListener("DOMContentLoaded", function () {
-    flatpickr("#tanggal_terima", {
-        dateFormat: "Y-m-d", // format tanggal
-    });
-});
+
 
 document.addEventListener("DOMContentLoaded", function () {
     flatpickr("#tanggal_disposisi", {
@@ -45,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    flatpickr("#filter_tanggal_terima", {
+    flatpickr("#filter_created_at", {
         mode: "range",  // Memungkinkan pemilihan rentang tanggal
         dateFormat: "Y-m-d",  // Format tanggal yang ditampilkan
     });

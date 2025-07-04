@@ -62,7 +62,7 @@
                                     <div class="relative w-full">
                                         <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
                                             id="modal_tgl_terima">
-                                            {{ \Carbon\Carbon::parse($surat->tanggal_terima)->translatedFormat('d F Y') }}
+                                            {{ \Carbon\Carbon::parse($surat->created_at)->translatedFormat('d F Y') }}
                                         </h6>
                                     </div>
                                 </div>

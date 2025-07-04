@@ -48,9 +48,9 @@
                                             @include('components.base.datepicker', [
                                                 'label' => 'Tanggal Terima',
                                                 'placeholder' => 'Pilih Tanggal Terima',
-                                                'id' => 'tanggal_terima',
-                                                'name' => 'tanggal_terima',
-                                                'value' => $surat->tanggal_terima,
+                                                'id' => 'created_at',
+                                                'name' => 'created_at',
+                                                'value' => $surat->created_at,
                                             ])
                                         </div>
                                     </div>

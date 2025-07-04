@@ -43,7 +43,7 @@ class SuratMasukService
         $filters = $request->only([
             'nomor_surat',
             'filter_tanggal_surat',
-            'filter_tanggal_terima',
+            'filter_created_at',
             'pengirim',
             'klasifikasi_surat',
             'sifat',
@@ -74,10 +74,10 @@ class SuratMasukService
             $query->whereBetween('tanggal_surat', [$start, $end]);
         }
 
-        // Apply filter for 'tanggal_terima'
-        if (!empty($filters['filter_tanggal_terima']) && str_contains($filters['filter_tanggal_terima'], ' to ')) {
-            [$start, $end] = explode(' to ', $filters['filter_tanggal_terima']);
-            $query->whereBetween('tanggal_terima', [$start, $end]);
+        // Apply filter for 'created_at'
+        if (!empty($filters['filter_created_at']) && str_contains($filters['filter_created_at'], ' to ')) {
+            [$start, $end] = explode(' to ', $filters['filter_created_at']);
+            $query->whereBetween('created_at', [$start, $end]);
         }
     }
 }

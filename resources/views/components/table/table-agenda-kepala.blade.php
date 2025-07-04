@@ -33,7 +33,7 @@
                             {{ $surat->id }}
                         </td>
                         <td class="p-3">
-                            {{ \Carbon\Carbon::parse($surat->tanggal_terima)->translatedFormat('d M Y') }}
+                            {{ \Carbon\Carbon::parse($surat->created_at)->translatedFormat('d M Y') }}
                         </td>
                         <td class="p-3">
                             {{ $surat->pengirim }}

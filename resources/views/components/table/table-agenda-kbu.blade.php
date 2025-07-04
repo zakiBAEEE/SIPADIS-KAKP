@@ -40,7 +40,7 @@
                     </td>
                     <td class="p-3">
                         <p class="text-sm">
-                            {{ $surat->tanggal_terima ? \Carbon\Carbon::parse($surat->tanggal_terima)->translatedFormat('d M Y') : '-' }}
+                            {{ $surat->created_at ? \Carbon\Carbon::parse($surat->created_at)->translatedFormat('d M Y') : '-' }}
                         </p>
                     </td>
                     <td class="p-3">

@@ -18,15 +18,15 @@ use App\Services\UserService;      // <-- Import Service
 class SuratMasukController extends Controller
 {
 
-    protected $rekapService;
+    protected $rekapitulasiService;
     protected $suratMasukService;
     protected $disposisiService;
     protected $userService;
 
 
-    public function __construct(SuratRekapitulasiService $rekapService, SuratMasukService $suratMasukService, DisposisiService $disposisiService, UserService $userService)
+    public function __construct(SuratRekapitulasiService $rekapitulasiService, SuratMasukService $suratMasukService, DisposisiService $disposisiService, UserService $userService)
     {
-        $this->rekapService = $rekapService;
+        $this->rekapitulasiService = $rekapitulasiService;
         $this->suratMasukService = $suratMasukService;
         $this->disposisiService = $disposisiService;
         $this->userService = $userService;
@@ -34,51 +34,31 @@ class SuratMasukController extends Controller
 
     public function dashboard(Request $request)
     {
-
-        $todayStart = now()->startOfDay();
-        $todayEnd = now()->endOfDay();
-
-        $rekapService = new SuratRekapitulasiService();
-
-        $totalToday = $rekapService->getRekapitulasiSurat($todayStart, $todayEnd);
-
         $tanggalRange = $request->input('tanggal_range');
-        $rekapRange = null;
-        $tanggalRangeDisplay = 'Per Hari ini';
-
-        // Default chart values
-        $series = [
-            ['name' => 'Umum', 'data' => []],
-            ['name' => 'Pengaduan', 'data' => []],
-            ['name' => 'Permintaan Informasi', 'data' => []],
-        ];
-        $categories = [];
+        $groupBy = $request->input('group_by', 'daily'); // default harian
 
         if ($tanggalRange) {
-            [$start, $end] = $rekapService->parseRangeTanggal($tanggalRange);
 
-            $rekapRange = $rekapService->getRekapitulasiSurat($start->copy()->startOfDay(), $end->copy()->endOfDay());
+            $range = explode(' to ', $tanggalRange);
 
-            $tanggalRangeDisplay = $start->translatedFormat('F Y') . ' - ' . $end->translatedFormat('F Y');
+            $start = Carbon::parse($range[0])->startOfDay();
+            $end = Carbon::parse($range[1])->endOfDay();
+            
+            $query = SuratMasuk::whereBetween('tanggal_surat', [$start, $end]);
 
-            $chart = $rekapService->getChartSeries($start, $end);
-            $series = [
-                ['name' => 'Umum', 'data' => $chart['series']['umum']],
-                ['name' => 'Pengaduan', 'data' => $chart['series']['pengaduan']],
-                ['name' => 'Permintaan Informasi', 'data' => $chart['series']['permintaan_informasi']],
-            ];
-            $categories = $chart['categories'];
+
+        } else {
+            $query = SuratMasuk::whereDate('created_at', now()->toDateString());
         }
 
+        $rekapRange = $this->rekapitulasiService->hitungRekapSurat(clone $query);
+        $chartData = $this->rekapitulasiService->getChartData(clone $query, $groupBy); // <-- tambahan groupBy
+
         return view('pages.super-admin.home', [
-            'totalToday' => $totalToday['total'],
-            'umumToday' => $totalToday['umum'],
-            'pengaduanToday' => $totalToday['pengaduan'],
-            'permintaanInformasiToday' => $totalToday['permintaan_informasi'],
+            'tanggalRange' => $tanggalRange,
             'rekapRange' => $rekapRange,
-            'tanggalRange' => $tanggalRangeDisplay,
-            'series' => $series,
-            'categories' => $categories
+            'series' => $chartData['series'],
+            'categories' => $chartData['categories'],
         ]);
     }
 
@@ -108,12 +88,12 @@ class SuratMasukController extends Controller
         }
 
         // Filter tanggal terima
-        if ($request->filled('filter_tanggal_terima')) {
-            $range = explode(' to ', $request->filter_tanggal_terima);
+        if ($request->filled('filter_created_at')) {
+            $range = explode(' to ', $request->filter_created_at);
             if (count($range) === 2) {
-                $query->whereBetween('tanggal_terima', [$range[0], $range[1]]);
+                $query->whereBetween('created_at', [$range[0], $range[1]]);
             } elseif (count($range) === 1) {
-                $query->whereDate('tanggal_terima', $range[0]);
+                $query->whereDate('created_at', $range[0]);
             }
         }
 
@@ -159,10 +139,34 @@ class SuratMasukController extends Controller
             $query->whereDate('created_at', now()->toDateString()); // Default: Hari ini
         }
 
-        $suratList = $query->orderBy('created_at', 'desc')->get();
+        // Filter tambahan dari form pencarian
+        if ($request->filled('nomor_surat')) {
+            $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
+        }
+
+        if ($request->filled('pengirim')) {
+            $query->where('pengirim', 'like', '%' . $request->pengirim . '%');
+        }
+
+        if ($request->filled('perihal')) {
+            $query->where('perihal', 'like', '%' . $request->perihal . '%');
+        }
+
+        if ($request->filled('klasifikasi_surat')) {
+            $query->where('klasifikasi_surat', $request->klasifikasi_surat);
+        }
+
+        if ($request->filled('sifat')) {
+            $query->where('sifat', $request->sifat);
+        }
+
+        // Pagination + mempertahankan parameter query
+        $surats = $query->orderBy('created_at', 'desc')
+            ->paginate(8)
+            ->appends($request->query());
 
         return view('pages.super-admin.klasifikasi-surat', [
-            'surats' => $suratList,
+            'surats' => $surats,
             'klasifikasi' => $klasifikasi,
             'tanggalRange' => $tanggalRange ?? 'Hari ini',
         ]);
@@ -185,21 +189,31 @@ class SuratMasukController extends Controller
 
         // Filter tanggal surat
         if ($request->filled('filter_tanggal_surat')) {
+
             $range = explode(' to ', $request->filter_tanggal_surat);
+            $start = Carbon::parse($range[0])->startOfDay();
             if (count($range) === 2) {
-                $query->whereBetween('tanggal_surat', [$range[0], $range[1]]);
+
+                $end = Carbon::parse($range[1])->endOfDay();
+                $query->whereBetween('tanggal_surat', [$start, $end]);
+
             } elseif (count($range) === 1) {
                 $query->whereDate('tanggal_surat', $range[0]);
             }
         }
 
         // Filter tanggal terima
-        if ($request->filled('filter_tanggal_terima')) {
-            $range = explode(' to ', $request->filter_tanggal_terima);
+        if ($request->filled('filter_created_at')) {
+
+            $range = explode(' to ', $request->filter_created_at);
+            $start = Carbon::parse($range[0])->startOfDay();
             if (count($range) === 2) {
-                $query->whereBetween('tanggal_terima', [$range[0], $range[1]]);
+
+                $end = Carbon::parse($range[1])->endOfDay();
+                $query->whereBetween('created_at', [$start, $end]);
+
             } elseif (count($range) === 1) {
-                $query->whereDate('tanggal_terima', $range[0]);
+                $query->whereDate('created_at', $range[0]);
             }
         }
 
@@ -225,105 +239,10 @@ class SuratMasukController extends Controller
 
     }
 
-    public function suratDenganDisposisi(Request $request)
-    {
-
-        $query = SuratMasuk::has('disposisis');
-
-
-        // Filter berdasarkan berbagai parameter
-
-        if ($request->filled('nomor_surat')) {
-            $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
-        }
-
-        if ($request->filled('pengirim')) {
-            $query->where('pengirim', 'like', '%' . $request->pengirim . '%');
-        }
-
-        // Filter tanggal surat
-        if ($request->filled('filter_tanggal_surat')) {
-            $range = explode(' to ', $request->filter_tanggal_surat);
-            if (count($range) === 2) {
-                $query->whereBetween('tanggal_surat', [$range[0], $range[1]]);
-            } elseif (count($range) === 1) {
-                $query->whereDate('tanggal_surat', $range[0]);
-            }
-        }
-
-        // Filter tanggal terima
-        if ($request->filled('filter_tanggal_terima')) {
-            $range = explode(' to ', $request->filter_tanggal_terima);
-            if (count($range) === 2) {
-                $query->whereBetween('tanggal_terima', [$range[0], $range[1]]);
-            } elseif (count($range) === 1) {
-                $query->whereDate('tanggal_terima', $range[0]);
-            }
-        }
-
-        if ($request->filled('perihal')) {
-            $query->where('perihal', 'like', '%' . $request->perihal . '%');
-        }
-
-        if ($request->filled('klasifikasi_surat')) {
-            $query->where('klasifikasi_surat', $request->klasifikasi_surat);
-        }
-
-        if ($request->filled('sifat')) {
-            $query->where('sifat', $request->sifat);
-        }
-
-        // Pagination dan kirim data ke view
-        $surats = $query->orderBy('created_at', 'desc')
-            ->paginate(8)
-            ->appends($request->query());
-
-
-        return view('pages.super-admin.surat-masuk-dengan-disposisi', compact('surats'));
-
-    }
-
     public function add()
     {
         return view('pages.super-admin.tambah-surat-masuk');
     }
-
-    // public function store(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'nomor_surat' => 'required|string',
-    //         'pengirim' => 'required|string',
-    //         'tanggal_surat' => 'required|date',
-    //         'tanggal_terima' => 'required|date',
-    //         'perihal' => 'required|string',
-    //         'klasifikasi_surat' => 'nullable|string',
-    //         'sifat' => 'nullable|string',
-    //         'file_path' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
-    //     ]);
-
-    //     try {
-    //         if ($request->hasFile('file_path')) {
-    //             $path = $request->file('file_path')->store('surat', 'public');
-    //             $validated['file_path'] = $path;
-    //         }
-
-    //         $surat = SuratMasuk::create($validated);
-
-    //         if ($surat) {
-    //             return redirect()->route('surat.tambah')->with('success', 'Surat berhasil ditambahkan!');
-    //         } else {
-    //             return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat. Data tidak valid atau ada masalah lain.');
-    //         }
-
-    //     } catch (\Illuminate\Database\QueryException $e) {
-    //         Log::error('Database error saat menambahkan surat: ' . $e->getMessage()); // Catat error untuk debugging
-    //         return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat karena masalah database. Silakan coba lagi atau hubungi administrator.');
-    //     } catch (\Exception $e) {
-    //         Log::error('Error umum saat menambahkan surat: ' . $e->getMessage()); // Catat error untuk debugging
-    //         return redirect()->route('surat.tambah')->with('error', 'Terjadi kesalahan yang tidak terduga saat menambahkan surat.');
-    //     }
-    // }
-
 
     public function store(Request $request)
     {
@@ -331,7 +250,6 @@ class SuratMasukController extends Controller
             'nomor_surat' => 'required|string|unique:surat_masuk,nomor_surat',
             'pengirim' => 'required|string',
             'tanggal_surat' => 'required|date',
-            'tanggal_terima' => 'required|date',
             'perihal' => 'required|string',
             'klasifikasi_surat' => 'nullable|string',
             'sifat' => 'nullable|string',
@@ -413,7 +331,6 @@ class SuratMasukController extends Controller
             'nomor_surat' => 'required|string',
             'pengirim' => 'required|string',
             'tanggal_surat' => 'required|date',
-            'tanggal_terima' => 'required|date',
             'perihal' => 'required|string',
             'klasifikasi_surat' => 'nullable|string',
             'sifat' => 'nullable|string',
