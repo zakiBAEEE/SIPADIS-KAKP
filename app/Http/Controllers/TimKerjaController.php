@@ -8,13 +8,7 @@ use Illuminate\Http\Request;
 
 class TimKerjaController extends Controller
 {
-    // INDEX: Tampilkan semua tim kerja
-    // public function index()
-    // {
-    //     $indukRoles = Role::whereIn('name', ['Kepala LLDIKTI', 'KBU'])->get();
-    //     $timKerja = Divisi::orderBy('created_at', 'desc')->paginate(8);
-    //     return view('pages.super-admin.tim-kerja', compact('timKerja'));
-    // }
+    
 
     public function index()
     {
@@ -57,7 +51,6 @@ class TimKerjaController extends Controller
     public function edit($id)
     {
         $divisi = Divisi::findOrFail($id);
-        // return view('pages.super-admin.tim-kerja.edit', compact('divisi'));
     }
 
     // UPDATE: Simpan perubahan

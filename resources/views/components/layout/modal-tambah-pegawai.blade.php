@@ -1,4 +1,3 @@
-{{-- File: resources/views/components/modals/tambah-pegawai.blade.php --}}
 
 <div class="fixed antialiased inset-0 bg-slate-900/60 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-[9999]"
      id="modalTambahPegawai" aria-hidden="true" role="dialog" aria-modal="true">
