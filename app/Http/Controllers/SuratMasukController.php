@@ -328,7 +328,7 @@ class SuratMasukController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nomor_surat' => 'required|string',
+            'nomor_surat' => 'required|string|unique:surat_masuk,nomor_surat',
             'pengirim' => 'required|string',
             'tanggal_surat' => 'required|date',
             'tanggal_terima' => 'required|date',
@@ -339,26 +339,39 @@ class SuratMasukController extends Controller
         ]);
 
         try {
-            // Handle file upload
             if ($request->hasFile('file_path')) {
+                // Simpan ke storage/app/public/surat
                 $path = $request->file('file_path')->store('surat', 'public');
                 $validated['file_path'] = $path;
-            }
 
-            // Ambil tahun sekarang
+                // Cek apakah public/storage adalah symlink
+                if (!is_link(public_path('storage'))) {
+                    // HANYA copy file kalau symlink tidak ada (di hosting)
+                    $source = storage_path('app/public/' . $path);
+                    $destination = public_path('storage/' . $path);
+
+                    \Illuminate\Support\Facades\File::ensureDirectoryExists(dirname($destination));
+                    \Illuminate\Support\Facades\File::copy($source, $destination);
+                }
+            }
             $tahun = now()->format('Y');
 
-            // Hitung jumlah surat masuk di tahun ini
-            $jumlahSuratTahunIni = SuratMasuk::whereYear('created_at', $tahun)->count();
+            // Ambil ID terakhir yang masih ada untuk tahun ini
+            $lastId = SuratMasuk::where('id', 'like', '%-TU-' . $tahun)
+                ->orderByDesc('id')
+                ->first();
 
-            // Nomor urut berikutnya (increment)
-            $nomorUrut = str_pad($jumlahSuratTahunIni + 1, 3, '0', STR_PAD_LEFT);
+            if ($lastId) {
+                // Ambil nomor urut dari bagian depan ID, misalnya: "005-TU-2025"
+                $lastUrut = (int) explode('-', $lastId->id)[0];
+                $nomorUrut = str_pad($lastUrut + 1, 3, '0', STR_PAD_LEFT);
+            } else {
+                // Kalau belum ada surat tahun ini
+                $nomorUrut = '001';
+            }
 
-            // Susun nomor surat
             $idSurat = "{$nomorUrut}-TU-{$tahun}";
             $validated['id'] = $idSurat;
-
-            // Simpan
             $surat = SuratMasuk::create($validated);
 
             if ($surat) {
@@ -368,7 +381,8 @@ class SuratMasukController extends Controller
             }
 
         } catch (\Illuminate\Database\QueryException $e) {
-            Log::error('Database error saat menambahkan surat: ' . $e->getMessage());
+            dd($e->getMessage()); // Tampilkan error MySQL langsung di browser
+
             return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat karena masalah database.');
         } catch (\Exception $e) {
             Log::error('Error umum saat menambahkan surat: ' . $e->getMessage());
