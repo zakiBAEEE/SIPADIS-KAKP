@@ -43,7 +43,7 @@ class SuratMasukController extends Controller
 
             $start = Carbon::parse($range[0])->startOfDay();
             $end = Carbon::parse($range[1])->endOfDay();
-            
+
             $query = SuratMasuk::whereBetween('tanggal_surat', [$start, $end]);
 
 
@@ -337,16 +337,47 @@ class SuratMasukController extends Controller
             'file_path' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
         ]);
 
-        if ($request->hasFile('file_path')) {
-            // Hapus file lama jika ada
-            if ($surat->file_path && Storage::disk('public')->exists($surat->file_path)) {
-                Storage::disk('public')->delete($surat->file_path);
-            }
+        // if ($request->hasFile('file_path')) {
+        //     // Hapus file lama jika ada
+        //     if ($surat->file_path && Storage::disk('public')->exists($surat->file_path)) {
+        //         Storage::disk('public')->delete($surat->file_path);
+        //     }
 
-            // Simpan file baru
+        //     // Simpan file baru
+        //     $path = $request->file('file_path')->store('surat', 'public');
+        //     $validated['file_path'] = $path;
+        // }
+
+
+
+        if ($request->hasFile('file_path')) {
+            // Hapus file lama dari storage dan public jika ada
+            if ($surat->file_path && Storage::disk('public')->exists($surat->file_path)) {
+                // Hapus dari storage asli
+                Storage::disk('public')->delete($surat->file_path);
+
+                // Jika tidak ada symlink, hapus juga dari public/storage
+                if (!is_link(public_path('storage'))) {
+                    $oldCopiedPath = public_path('storage/' . $surat->file_path);
+                    if (file_exists($oldCopiedPath)) {
+                        \Illuminate\Support\Facades\File::delete($oldCopiedPath);
+                    }
+                }
+            }
+            // Simpan file baru ke storage/app/public/surat
             $path = $request->file('file_path')->store('surat', 'public');
             $validated['file_path'] = $path;
+
+            // Jika tidak ada symlink, copy juga ke public/storage/surat
+            if (!is_link(public_path('storage'))) {
+                $source = storage_path('app/public/' . $path);
+                $destination = public_path('storage/' . $path);
+
+                \Illuminate\Support\Facades\File::ensureDirectoryExists(dirname($destination));
+                \Illuminate\Support\Facades\File::copy($source, $destination);
+            }
         }
+
 
         $surat->update($validated);
 
@@ -356,31 +387,48 @@ class SuratMasukController extends Controller
 
     public function destroy(SuratMasuk $surat)
     {
-        // Saya mengganti 'Admin' menjadi 'Super Admin Surat' sesuai seeder Anda, sesuaikan jika perlu
         if (auth()->user()->role->name !== 'Admin') {
-            // Ganti redirect()->route(...) dengan redirect()->back()
             return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk menghapus surat.');
         }
 
+        // try {
+        //     if ($surat->file_path && Storage::disk('public')->exists($surat->file_path)) {
+        //         Storage::disk('public')->delete($surat->file_path);
+        //     }
+
+        //     $surat->disposisis()->delete();
+
+        //     $surat->delete();
+
+        //     return redirect()->back()->with('success', 'Surat berhasil dihapus beserta seluruh disposisinya.');
+
+        // } catch (\Exception $e) {
+        //     Log::error('Error saat menghapus surat: ' . $e->getMessage());
+
+        //     return redirect()->back()->with('error', 'Gagal menghapus surat. Terjadi kesalahan pada server.');
+        // }
+
         try {
-            // Hapus file terkait dari storage jika ada
             if ($surat->file_path && Storage::disk('public')->exists($surat->file_path)) {
                 Storage::disk('public')->delete($surat->file_path);
+
+                if (!is_link(public_path('storage'))) {
+                    $copiedPath = public_path('storage/' . $surat->file_path);
+                    if (file_exists($copiedPath)) {
+                        \Illuminate\Support\Facades\File::delete($copiedPath);
+                    }
+                }
             }
 
-            // Hapus semua data disposisi yang terkait
             $surat->disposisis()->delete();
 
-            // Hapus data surat itu sendiri
             $surat->delete();
 
-            // Ganti redirect()->route(...) dengan redirect()->back()
             return redirect()->back()->with('success', 'Surat berhasil dihapus beserta seluruh disposisinya.');
 
         } catch (\Exception $e) {
             Log::error('Error saat menghapus surat: ' . $e->getMessage());
 
-            // Ganti redirect()->route(...) dengan redirect()->back()
             return redirect()->back()->with('error', 'Gagal menghapus surat. Terjadi kesalahan pada server.');
         }
     }
