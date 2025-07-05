@@ -76,9 +76,9 @@
 
 
                     {{-- Tipe Aksi --}}
-                    <td class="p-3 align-top text-center">
+                    <td class="p-3 text-center">
                         @php
-                            $tipeAksi = strtolower(trim($disposisi->tipe_aksi));
+                            $tipeAksi = $disposisi->tipe_aksi;
                             $badgeClass = 'bg-gray-100 text-gray-800'; // default
 
                             if ($tipeAksi === 'Kembalikan') {
