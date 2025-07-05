@@ -13,7 +13,6 @@
                         $headers[] = 'Tgl';
                         $headers[] = 'Tujuan Disposisi';
                         $headers[] = 'Instruksi';
-                        $headers[] = 'Paraf';
                     }
                 @endphp
                 @foreach ($headers as $header)
@@ -26,15 +25,11 @@
                 @endforeach
             </tr>
         </thead>
-        {{-- Akhir THEAD YANG DIMODIFIKASI --}}
-
-        {{-- Pastikan ini adalah bagian dari tabel yang sama dengan <thead> yang sudah dimodifikasi sebelumnya --}}
+ 
         <tbody>
             @foreach ($suratMasuk as $surat)
-                {{-- Modifikasi kelas pada <tr> --}}
-                <tr class="hover:bg-slate-50">
-
-                    {{-- Modifikasi kelas pada <td> dan pembungkusan konten dengan <p> --}}
+                 <tr class="hover:bg-slate-50 cursor-pointer" onclick="window.location='{{ route('surat.show', $surat->id) }}'">
+                   
                     <td class="p-3">
                         <p class="text-sm">{{ $surat->id ?? '-' }}</p>
                     </td>

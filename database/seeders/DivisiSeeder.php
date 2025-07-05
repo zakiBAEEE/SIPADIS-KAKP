@@ -9,7 +9,6 @@ class DivisiSeeder extends Seeder
 {
     public function run(): void
     {
-        // Role ID (sesuaikan dengan ID sebenarnya di tabel roles)
         $kepalaLldiktiId = DB::table('roles')->where('nama_role', 'Kepala LLDIKTI')->value('id');
         $kbuId = DB::table('roles')->where('nama_role', 'KBU')->value('id');
 
@@ -36,5 +35,4 @@ class DivisiSeeder extends Seeder
             );
         }
     }
-
 }

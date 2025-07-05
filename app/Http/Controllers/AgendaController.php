@@ -46,8 +46,8 @@ class AgendaController extends Controller
 
     public function printAgendaKbu(Request $request)
     {
-      
-         $suratMasuk = $this->getAgendaForRole('KBU', $request);
+
+        $suratMasuk = $this->getAgendaForRole('KBU', $request);
 
         return view('pages.super-admin.print-agenda-kbu', [
             'suratMasuk' => $suratMasuk,
@@ -83,7 +83,7 @@ class AgendaController extends Controller
         $query = SuratMasuk::query();
 
         // 3. Filter berdasarkan input teks (opsional)
-      
+
         if ($request->filled('nomor_surat')) {
             $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
         }
@@ -119,11 +119,19 @@ class AgendaController extends Controller
             }
         }
 
-        // 5. Filter hanya surat yang didisposisikan oleh role ini dan tidak ditolak
+        // 5. Filter hanya surat yang didisposisikan oleh role ini dan tidak ditolak dan tidak boleh diposisi yang  mengembalikan surat
+
+        // $query->whereHas('disposisis', function (Builder $q) use ($roleUserIds) {
+        //     $q->whereIn('dari_user_id', $roleUserIds)
+        //         ->where('status', '!=', 'Dikembalikan');
+        // });
+
         $query->whereHas('disposisis', function (Builder $q) use ($roleUserIds) {
             $q->whereIn('dari_user_id', $roleUserIds)
-                ->where('status', '!=', 'Dikembalikan');
+                ->where('status', '!=', 'Dikembalikan')
+                ->where('tipe_aksi', '!=', 'Kembalikan');
         });
+
 
         // 6. Paginasi + eager load relasi disposisi
         return $query->with([

@@ -27,7 +27,8 @@
         <tbody>
             @foreach ($suratMasuk as $surat)
                 @foreach ($surat->disposisis as $disposisi)
-                    <tr class="hover:bg-slate-50">
+                    <tr onclick="window.location='{{ route('surat.show', ['surat' => $surat->id]) }}'"
+                        class="cursor-pointer hover:bg-blue-100">
                         <td class="p-3">
                             {{ $surat->id }}
                         </td>
