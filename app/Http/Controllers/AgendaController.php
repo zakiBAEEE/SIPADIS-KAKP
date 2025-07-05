@@ -119,13 +119,6 @@ class AgendaController extends Controller
             }
         }
 
-        // 5. Filter hanya surat yang didisposisikan oleh role ini dan tidak ditolak dan tidak boleh diposisi yang  mengembalikan surat
-
-        // $query->whereHas('disposisis', function (Builder $q) use ($roleUserIds) {
-        //     $q->whereIn('dari_user_id', $roleUserIds)
-        //         ->where('status', '!=', 'Dikembalikan');
-        // });
-
         $query->whereHas('disposisis', function (Builder $q) use ($roleUserIds) {
             $q->whereIn('dari_user_id', $roleUserIds)
                 ->where('status', '!=', 'Dikembalikan')

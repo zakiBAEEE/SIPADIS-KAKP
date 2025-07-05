@@ -24,7 +24,6 @@ class Disposisi extends Model
         return $this->belongsTo(User::class, 'dari_user_id');
     }
 
-    // Relasi ke user penerima disposisi
     public function penerima()
     {
         return $this->belongsTo(User::class, 'ke_user_id');

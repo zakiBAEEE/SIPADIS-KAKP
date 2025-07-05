@@ -15,9 +15,6 @@
                 <th class="px-2.5 py-2 text-start font-bold">
                     Tujuan Disposisi
                 </th>
-                <th class="px-2.5 py-2 text-start font-bold">
-                    Aksi
-                </th>
             </tr>
         </thead>
 
@@ -30,8 +27,10 @@
                     <td class="p-3">
                         @if ($disposisi->pengirim && $disposisi->pengirim->divisi)
                             {{ $disposisi->pengirim->divisi->nama_divisi }}
+                            ({{ $disposisi->pengirim->role->name }})
+                            || {{ $disposisi->pengirim->name }}
                         @else
-                            {{ $disposisi->pengirim->role->name ?? '-' }}
+                            {{ $disposisi->pengirim->role->name ?? '-' }} || {{ $disposisi->pengirim->name }}
                         @endif
                     </td>
                     <td class="p-3">
@@ -39,24 +38,11 @@
                     </td>
                     <td class="p-3">
                         @if ($disposisi->penerima && $disposisi->penerima->divisi)
-                            {{ $disposisi->penerima->divisi->nama_divisi }}
+                            {{ $disposisi->penerima->divisi->nama_divisi }} ({{ $disposisi->penerima->role->name }}) ||
+                            {{ $disposisi->penerima->name }}
                         @else
-                            {{ $disposisi->penerima->role->name ?? '-' }}
+                            {{ $disposisi->penerima->role->name ?? '-' }} || {{ $disposisi->penerima->name }}
                         @endif
-                    </td>
-                    <td class="p-3">
-                        <div class="flex flex-row gap-x-3 items-center">
-                            @if (in_array(auth()->user()->role->name, ['Super Admin']))
-                                <form method="POST" action="{{ route('disposisi.destroy', $disposisi->id) }}"
-                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus disposisi ini?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900">
-                                        @include('components.base.ikon-hapus')
-                                    </button>
-                                </form>
-                            @endif
-                        </div>
                     </td>
                 </tr>
             @empty
