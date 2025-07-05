@@ -22,9 +22,6 @@
                 <th class="p-3 text-center">
                     <p class="text-sm leading-none font-normal">Tipe Aksi</p>
                 </th>
-                {{-- <th class="p-3 text-center">
-                    <p class="text-sm leading-none font-normal">Aksi</p>
-                </th> --}}
             </tr>
         </thead>
         <tbody>
@@ -78,13 +75,6 @@
                             {{ ucfirst($tipeAksi) }}
                         </span>
                     </td>
-                    {{-- 
-                    <td class="p-3 text-center">
-                        <a href="{{ route('surat.show', $disposisi->surat_id) }}"
-                            class="text-blue-600 hover:text-blue-900 text-sm underline">
-                            Lihat Detail
-                        </a>
-                    </td> --}}
                 </tr>
             @empty
                 <tr>

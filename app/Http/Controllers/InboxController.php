@@ -19,7 +19,7 @@ class InboxController extends Controller
 
             // Tambahan default filter agar tidak menampilkan disposisi reject
             ->whereIn('tipe_aksi', ['Teruskan', 'Revisi'])
-            ->whereIn('status', ['Menunggu', 'Dilihat']);
+            ->whereIn('status', ['Menunggu', 'Dilihat', 'Diteruskan']);
 
         // ✅ Filter: Status
         if ($request->filled('status')) {
