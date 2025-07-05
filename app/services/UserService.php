@@ -27,7 +27,6 @@ class UserService
 
         // Logika dinamis berdasarkan peran
         switch ($roleName) {
-            case 'Super Admin':
             case 'Admin':
                 // Admin selalu memulai alur dengan mengirim ke Kepala
                 $query->whereHas('role', fn($q) => $q->where('name', 'Kepala'));
