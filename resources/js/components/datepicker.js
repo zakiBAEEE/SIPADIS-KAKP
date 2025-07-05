@@ -8,11 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    flatpickr("#tanggal_disposisi", {
-        dateFormat: "Y-m-d", // format tanggal
-    });
-});
 
 document.addEventListener("DOMContentLoaded", function () {
     flatpickr("#rekap_dari_tanggal", {

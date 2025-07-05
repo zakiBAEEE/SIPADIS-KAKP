@@ -23,7 +23,7 @@
                     <td class="p-3 align-top">
                         <p class="text-sm font-medium">{{ $disposisi->pengirim->name ?? 'N/A' }}</p>
                         <p class="text-xs text-gray-500">
-                            {{ \Carbon\Carbon::parse($disposisi->tanggal_disposisi)->translatedFormat('d M Y') }}
+                            {{ \Carbon\Carbon::parse($disposisi->created_at)->translatedFormat('d M Y') }}
                         </p>
                     </td>
                     <td class="p-3 align-top">

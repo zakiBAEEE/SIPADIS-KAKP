@@ -23,7 +23,6 @@ return new class extends Migration
             $table->foreignId('ke_user_id')->constrained('users')->onDelete('cascade');
 
             $table->text('catatan')->nullable();
-            $table->timestamp('tanggal_disposisi');
             $table->timestamps();
         });
     }

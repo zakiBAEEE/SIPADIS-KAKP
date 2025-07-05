@@ -11,7 +11,6 @@ class Disposisi extends Model
         'dari_user_id',
         'ke_user_id',
         'catatan',
-        'tanggal_disposisi',
         'status',
         'tipe_aksi'
     ];

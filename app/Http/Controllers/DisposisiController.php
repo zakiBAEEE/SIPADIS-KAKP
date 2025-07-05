@@ -23,7 +23,6 @@ class DisposisiController extends Controller
         $validated = $request->validate([
             'ke_user_id' => 'required|exists:users,id',
             'catatan' => 'nullable|string',
-            'tanggal_disposisi' => 'required|date',
         ]);
 
         $pengirim = Auth::user();
@@ -47,7 +46,6 @@ class DisposisiController extends Controller
             'dari_user_id' => $pengirim->id,
             'ke_user_id' => $penerima->id,
             'catatan' => $validated['catatan'],
-            'tanggal_disposisi' => $validated['tanggal_disposisi'],
             'status' => 'Menunggu',
             'tipe_aksi' => 'Teruskan',
         ]);
@@ -71,7 +69,6 @@ class DisposisiController extends Controller
                 'dari_user_id' => Auth::id(),
                 'ke_user_id' => $disposisi->dari_user_id,
                 'catatan' => $validated['catatan_pengembalian'],
-                'tanggal_disposisi' => now(),
                 'status' => 'Menunggu',
                 'tipe_aksi' => 'Kembalikan',
             ]);
@@ -89,7 +86,7 @@ class DisposisiController extends Controller
             $kepala = User::whereHas('role', fn($q) => $q->where('name', 'Kepala LLDIKTI'))->firstOrFail();
 
             $activeDisposisiExists = $surat->disposisis()
-                ->whereIn('status', ['Terkirim', 'Dilihat', 'Diteruskan'])
+                ->whereIn('status', ['Dilihat', 'Diteruskan'])
                 ->exists();
 
             if ($activeDisposisiExists) {
@@ -142,7 +139,6 @@ class DisposisiController extends Controller
                 'dari_user_id' => $pengirim->id,
                 'ke_user_id' => $kepala->id,
                 'catatan' => 'Hasil Revisian',
-                'tanggal_disposisi' => now(),
                 'status' => 'Menunggu',
                 'tipe_aksi' => 'Revisi',
             ]);
@@ -152,7 +148,6 @@ class DisposisiController extends Controller
 
         return redirect()->back()->with('success', 'Surat berhasil dikirim ulang ke Kepala.');
     }
-
 
     public function cetak($id)
     {

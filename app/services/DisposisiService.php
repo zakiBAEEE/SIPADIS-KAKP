@@ -29,7 +29,6 @@ class DisposisiService
             'dari_user_id' => $pengirim->id,
             'ke_user_id' => $penerima->id,
             'catatan' => $catatan,
-            'tanggal_disposisi' => $tanggal ?? now(),
             'status' => 'Menunggu',
             'tipe_aksi' => $tipeAksi
         ]);
@@ -76,7 +75,6 @@ class DisposisiService
             'dari_user_id' => $pengirim->id,
             'ke_user_id' => $penerima->id,
             'catatan' => $data['catatan'],
-            'tanggal_disposisi' => $data['tanggal_disposisi'],
             'status' => 'Menunggu',
         ]);
 

@@ -85,7 +85,7 @@
                         {{-- Kolom Tanggal Disposisi --}}
                         <td class="p-3">
                             <p class="text-sm">
-                                {{ $disposisi && $disposisi->tanggal_disposisi ? \Carbon\Carbon::parse($disposisi->tanggal_disposisi)->translatedFormat('d M Y') : '-' }}
+                                {{ $disposisi && $disposisi->created_at ? \Carbon\Carbon::parse($disposisi->created_at)->translatedFormat('d M Y') : '-' }}
                             </p>
                         </td>
 

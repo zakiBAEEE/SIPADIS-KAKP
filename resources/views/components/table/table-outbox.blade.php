@@ -40,26 +40,39 @@
                         <p class="text-sm">{{ $disposisi->suratMasuk->perihal ?? '...' }}</p>
                     </td>
                     <td class="p-3 text-center">
-                        @if ($disposisi->status === 'Menunggu')
-                            <span class="bg-yellow-100 text-gray-800 px-2 py-1 text-xs rounded-full">Menunggu</span>
-                        @elseif($disposisi->status === 'Dilihat')
-                            <span class="bg-blue-200 text-gray-800 px-2 py-1 text-xs rounded-full">Dilihat</span>
-                        @elseif($disposisi->status === 'Dikembalikan')
-                            <span class="bg-red-200 text-gray-800 px-2 py-1 text-xs rounded-full">Dikembalikan</span>
-                        @else
-                            <span
-                                class="bg-green-100 text-green-800 px-2 py-1 text-xs rounded-full">{{ $disposisi->status }}</span>
-                        @endif
+                        @php
+                            $statusColors = [
+                                'Menunggu' => 'bg-yellow-100 text-yellow-800',
+                                'Dilihat' => 'bg-blue-100 text-blue-800',
+                                'Dikembalikan' => 'bg-red-100 text-red-800',
+                                'Diteruskan' => 'bg-green-100 text-green-800',
+                                'Selesai' => 'bg-emerald-100 text-emerald-800',
+                            ];
+                            $statusClass = $statusColors[$disposisi->status] ?? 'bg-gray-100 text-gray-800';
+                        @endphp
+                        <span class="{{ $statusClass }} px-2 py-1 text-xs rounded-full">
+                            {{ $disposisi->status }}
+                        </span>
                     </td>
-                    <td class="p-3 text-center">
-                        @if ($disposisi->tipe_aksi === 'Kembalikan')
-                            <span class="bg-red-100 text-gray-800 px-2 py-1 text-xs rounded-full">Reject</span>
-                        @elseif($disposisi->tipe_aksi === 'Teruskan')
-                            <span class="bg-blue-200 text-gray-800 px-2 py-1 text-xs rounded-full">Teruskan</span>
-                        @elseif($disposisi->tipe_aksi === 'Revisi')
-                            <span class="bg-blue-200 text-gray-800 px-2 py-1 text-xs rounded-full">Revisi</span>
-                        @endif
+                    <td class="p-3 align-top text-center">
+                        @php
+                            $tipeAksi = strtolower(trim($disposisi->tipe_aksi));
+                            $badgeClass = 'bg-gray-100 text-gray-800'; // default
+
+                            if ($tipeAksi === 'Kembalikan') {
+                                $badgeClass = 'bg-red-100 text-red-800';
+                            } elseif ($tipeAksi === 'Teruskan') {
+                                $badgeClass = 'bg-green-100 text-green-800';
+                            } elseif ($tipeAksi === 'Revisi') {
+                                $badgeClass = 'bg-yellow-100 text-yellow-800';
+                            }
+                        @endphp
+
+                        <span class="text-xs font-medium px-2 py-1 rounded-full {{ $badgeClass }}">
+                            {{ ucfirst($tipeAksi) }}
+                        </span>
                     </td>
+
                     <td class="p-3 text-center">
                         <a href="{{ route('surat.show', $disposisi->surat_id) }}"
                             class="text-blue-600 hover:text-blue-900 text-sm underline">
@@ -69,7 +82,8 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="p-3 text-center text-sm text-gray-500">Menampilkan riwayat disposisi hari ini, gunakan filter untuk melihat data lainnya</td>
+                    <td colspan="6" class="p-3 text-center text-sm text-gray-500">Menampilkan riwayat disposisi hari
+                        ini, gunakan filter untuk melihat data lainnya</td>
                 </tr>
             @endforelse
         </tbody>

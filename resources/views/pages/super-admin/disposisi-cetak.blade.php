@@ -107,7 +107,7 @@
                 @foreach ($actualDataRows as $disposisi)
                     <tr class="align-top">
                         <td class="border border-black px-2 {{ $cellVerticalPadding }}">
-                            {{ \Carbon\Carbon::parse($disposisi->tanggal_disposisi)->format('d M Y') }}
+                            {{ \Carbon\Carbon::parse($disposisi->created_at)->format('d M Y') }}
                         </td>
                         <td class="border border-black px-2 {{ $cellVerticalPadding }}">
                             @if ($disposisi->penerima && $disposisi->penerima->divisi)

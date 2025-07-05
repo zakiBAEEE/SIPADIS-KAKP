@@ -185,34 +185,5 @@
 
 
 @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const editButtons = document.querySelectorAll('.js-edit-disposisi-btn');
-            const modal = document.getElementById('modalEditDisposisi');
-            if (!modal) return;
-
-            const form = document.getElementById('formEditDisposisi');
-            const inputTanggal = document.getElementById('edit_tanggal_disposisi');
-            const selectTujuan = document.getElementById('edit_ke_user_id');
-            const textareaCatatan = document.getElementById('edit_catatan');
-
-            editButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const data = this.dataset;
-                    form.action = data.updateUrl;
-                    inputTanggal.value = data.tanggal;
-                    selectTujuan.value = data.ke_user_id;
-                    textareaCatatan.value = data.catatan;
-                    modal.classList.remove('opacity-0', 'pointer-events-none');
-                });
-            });
-
-            const dismissButtons = modal.querySelectorAll('[data-dismiss="modal"]');
-            dismissButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    modal.classList.add('opacity-0', 'pointer-events-none');
-                });
-            });
-        });
-    </script>
+   
 @endpush

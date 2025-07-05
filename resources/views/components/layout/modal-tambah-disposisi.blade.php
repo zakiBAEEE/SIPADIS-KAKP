@@ -23,15 +23,8 @@
                 @csrf
                 <div class="p-4 flex flex-col gap-2">
                     <div class="flex flex-row gap-2 justify-evenly">
-                        <div class=" w-1/2">
-                            @include('components.base.datepicker', [
-                                'id' => 'tanggal_disposisi',
-                                'label' => 'Tanggal Disposisi',
-                                'placeholder' => 'Masukkan Tanggal',
-                                'name' => 'tanggal_disposisi',
-                            ])
-                        </div>
-                        <div class=" w-1/2">
+                      
+                        <div class=" w-full">
                             @include('components.base.dropdown', [
                                 'label' => 'Tujuan Disposisi',
                                 'value' => $daftarUser->values()->toArray(),

@@ -10,7 +10,7 @@
                     <p class="text-sm leading-none font-normal">Perihal</p>
                 </th>
                 <th class="p-3">
-                    <p class="text-sm leading-none font-normal">Asal Surat</p>
+                    <p class="text-sm leading-none font-normal">Pengirim</p>
                 </th>
                 <th class="p-3">
                     <p class="text-sm leading-none font-normal">Diterima Dari (Disposisi)</p>
@@ -57,26 +57,42 @@
                     </td>
 
                     {{-- Status --}}
-                    <td class="p-3 align-top text-center">
-                        <span class="px-3 py-1 text-xs font-bold rounded-full
-                            @if ($disposisi->status === 'Menunggu') bg-yellow-100 text-gray-800
-                            @elseif($disposisi->status === 'Dilihat') bg-blue-200 text-gray-800
-                            @elseif($disposisi->status === 'Dikembalikan') bg-red-200 text-gray-800
-                            @else bg-green-100 text-green-800
-                            @endif">
-                            {{ $disposisi->status }}
+                    <td class="p-3 text-center">
+                        @php
+                            $status = ucwords(strtolower(trim($disposisi->status))); // Normalisasi dulu
+                            $statusClass = 'bg-gray-100 text-gray-800'; // Default warna
+                        @endphp
+
+                        @if ($status === 'Menunggu')
+                            @php $statusClass = 'bg-yellow-100 text-yellow-800'; @endphp
+                        @elseif ($status === 'Dilihat')
+                            @php $statusClass = 'bg-blue-100 text-blue-800'; @endphp
+                        @endif
+
+                        <span class="{{ $statusClass }} px-2 py-1 text-xs rounded-full">
+                            {{ $status }}
                         </span>
                     </td>
 
+
                     {{-- Tipe Aksi --}}
                     <td class="p-3 align-top text-center">
-                        @if ($disposisi->tipe_aksi === 'Kembalikan')
-                            <span class="text-xs font-medium px-2 py-1 rounded-full bg-red-100 text-gray-800">Reject</span>
-                        @elseif($disposisi->tipe_aksi === 'Teruskan')
-                            <span class="text-xs font-medium px-2 py-1 rounded-full bg-green-200 text-gray-800">Disposisi</span>
-                        @elseif($disposisi->tipe_aksi === 'Revisi')
-                            <span class="text-xs font-medium px-2 py-1 rounded-full bg-blue-200 text-gray-800">Revisi</span>
-                        @endif
+                        @php
+                            $tipeAksi = strtolower(trim($disposisi->tipe_aksi));
+                            $badgeClass = 'bg-gray-100 text-gray-800'; // default
+
+                            if ($tipeAksi === 'Kembalikan') {
+                                $badgeClass = 'bg-red-100 text-red-800';
+                            } elseif ($tipeAksi === 'Teruskan') {
+                                $badgeClass = 'bg-green-100 text-green-800';
+                            } elseif ($tipeAksi === 'Revisi') {
+                                $badgeClass = 'bg-yellow-100 text-yellow-800';
+                            }
+                        @endphp
+
+                        <span class="text-xs font-medium px-2 py-1 rounded-full {{ $badgeClass }}">
+                            {{ ucfirst($tipeAksi) }}
+                        </span>
                     </td>
 
                     {{-- Aksi --}}
