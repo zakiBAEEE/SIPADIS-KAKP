@@ -13,7 +13,6 @@
                         'Perihal',
                         'Tujuan Disposisi',
                         'Instruksi',
-                        'Paraf',
                     ];
                 @endphp
                 @foreach ($headers as $header)
@@ -62,9 +61,6 @@
 
                         <td class="p-3">
                             {{ $disposisi->catatan ?? '-' }}
-                        </td>
-
-                        <td class="p-3">
                         </td>
                     </tr>
                 @endforeach
