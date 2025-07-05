@@ -1,10 +1,6 @@
-{{-- Letakkan blok kode ini di tempat Anda ingin menampilkan tombol "Kembalikan" --}}
-{{-- Biasanya di dalam loop, di samping tombol aksi lain. --}}
-{{-- Pastikan variabel $disposisi tersedia dari loop Anda. --}}
 
 <div class="flex justify-center">
     
-    {{-- TOMBOL PEMICU MODAL --}}
     <button type="button" data-toggle="modal" 
             data-target="#modalKembalikanDisposisi-{{ $disposisi->id }}" {{-- <- ID TARGET SEKARANG DINAMIS & BENAR --}}
             class="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-red-600 border-red-700 text-slate-50 hover:bg-red-700 hover:border-red-800">

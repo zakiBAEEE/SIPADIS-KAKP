@@ -103,11 +103,6 @@
                         <td class="p-3">
                             <p class="text-sm">{{ $disposisi?->catatan ?? '-' }}</p>
                         </td>
-
-                        {{-- Kolom Paraf --}}
-                        <td class="p-3">
-                            <p class="text-sm">&nbsp;</p> {{-- Menggunakan &nbsp; agar sel tetap memiliki tinggi yang konsisten --}}
-                        </td>
                     @endfor
                 </tr>
             @endforeach
