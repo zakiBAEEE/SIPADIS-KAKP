@@ -21,15 +21,13 @@
                 <th class="p-3 text-center">
                     <p class="text-sm leading-none font-normal">Tipe Aksi</p>
                 </th>
-                <th class="p-3 text-center">
-                    <p class="text-sm leading-none font-normal">Aksi</p>
-                </th>
             </tr>
         </thead>
 
         <tbody>
             @forelse ($disposisis as $disposisi)
-                <tr class="hover:bg-slate-50 border-b border-slate-200">
+                <tr class="hover:bg-slate-50 cursor-pointer"
+                    onclick="window.location='{{ route('surat.show', $disposisi->surat_id) }}'">
                     {{-- Nomor & Tgl Surat --}}
                     <td class="p-3 align-top">
                         <p class="text-sm font-medium">{{ $disposisi->suratMasuk->nomor_surat ?? 'N/A' }}</p>
@@ -96,13 +94,13 @@
                     </td>
 
                     {{-- Aksi --}}
-                    <td class="p-3 align-top text-center">
+                    {{-- <td class="p-3 align-top text-center">
                         <div class="flex flex-row justify-center gap-x-1">
                             <a href="{{ route('surat.show', ['surat' => $disposisi->surat_id]) }}">
                                 @include('components.base.ikon-mata')
                             </a>
                         </div>
-                    </td>
+                    </td> --}}
                 </tr>
             @empty
                 <tr>
