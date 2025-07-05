@@ -140,12 +140,7 @@
                             @if (in_array(auth()->user()->role->name, ['Admin']))
                                 @include('components.base.tombol-print-disposisi', ['surat' => $surat])
                             @endif
-                            {{-- @if (in_array(auth()->user()->role->name, ['Super Admin', 'Kepala LLDIKTI', 'KBU', 'Katimja']))
-                                @include('components.layout.modal-tambah-disposisi')
-                            @endif --}}
-                            {{-- ====================================================== --}}
-                            {{-- AWAL DARI LOGIKA OTORISASI TOMBOL AKSI --}}
-                            {{-- ====================================================== --}}
+                         
                             @php
                                 // 1. Cari disposisi terakhir yang statusnya masih aktif ('Terkirim' atau 'Dilihat')
                                 $activeDisposisi = $surat->disposisis

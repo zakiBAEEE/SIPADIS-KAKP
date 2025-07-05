@@ -13,15 +13,18 @@
                 <th class="p-3">
                     <p class="text-sm leading-none font-normal">Perihal Surat</p>
                 </th>
+                <th class="p-3">
+                    <p class="text-sm leading-none font-normal">Catatan</p>
+                </th>
                 <th class="p-3 text-center">
                     <p class="text-sm leading-none font-normal">Status di Penerima</p>
                 </th>
                 <th class="p-3 text-center">
                     <p class="text-sm leading-none font-normal">Tipe Aksi</p>
                 </th>
-                <th class="p-3 text-center">
+                {{-- <th class="p-3 text-center">
                     <p class="text-sm leading-none font-normal">Aksi</p>
-                </th>
+                </th> --}}
             </tr>
         </thead>
         <tbody>
@@ -38,6 +41,9 @@
                     </td>
                     <td class="p-3">
                         <p class="text-sm">{{ $disposisi->suratMasuk->perihal ?? '...' }}</p>
+                    </td>
+                    <td class="p-3">
+                        <p class="text-sm">{{ $disposisi->catatan }}</p>
                     </td>
                     <td class="p-3 text-center">
                         @php
@@ -72,13 +78,13 @@
                             {{ ucfirst($tipeAksi) }}
                         </span>
                     </td>
-
+                    {{-- 
                     <td class="p-3 text-center">
                         <a href="{{ route('surat.show', $disposisi->surat_id) }}"
                             class="text-blue-600 hover:text-blue-900 text-sm underline">
                             Lihat Detail
                         </a>
-                    </td>
+                    </td> --}}
                 </tr>
             @empty
                 <tr>
