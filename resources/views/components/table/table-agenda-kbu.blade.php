@@ -62,10 +62,6 @@
                                 ->take(3);
                         @endphp
 
-
-
-                     
-
                         {{-- Kolom Disposisi (Pengirim) --}}
                         <td class="p-3">
                             <p class="text-sm">

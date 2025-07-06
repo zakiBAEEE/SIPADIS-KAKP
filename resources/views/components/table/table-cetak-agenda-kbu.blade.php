@@ -1,98 +1,100 @@
-@extends('layouts.super-admin-layout')
+<div class="relative flex flex-col w-full text-black">
+    <table class="w-full table-auto text-left text-slate-800 border border-collapse border-gray-800 text-sm">
+        {{-- THEAD YANG DIMODIFIKASI --}}
+        <thead>
+            <tr class="bg-gray-200 border-b border-gray-800">
+                @php
+                    $headers = ['No. Agenda', 'Tgl Terima', 'Pengirim', 'Tgl Srt', 'No Srt', 'Perihal'];
+                    $headers[] = 'Disposisi';
+                    $headers[] = 'Tgl';
+                    $headers[] = 'Tujuan Disposisi';
+                    $headers[] = 'Instruksi';
+                @endphp
+                @foreach ($headers as $header)
+                    <th class="p-2 border border-gray-800 font-semibold text-left">
+                        <p class="text-sm leading-none whitespace-normal break-words">
+                            {{ $header }}
+                        </p>
+                    </th>
+                @endforeach
+            </tr>
+        </thead>
 
-@section('content')
-    <div class="bg-white w-full h-full rounded-xl shadow-neutral-400 shadow-lg overflow-scroll p-4">
-        <div class="flex flex-row justify-between items-center w-full">
-            <div>
-                <h4 class="font-sans text-xl font-bold text-gray-600 md:text-2xl">Cetak Agenda Surat Masuk</h4>
-                <h6 class="font-sans text-base font-bold text-gray-600 md:text-lg">LLDIKTI Wilayah 2</h6>
-            </div>
-        </div>
+        <tbody>
+            @foreach ($suratMasuk as $surat)
+                @foreach ($surat->disposisis->where('status', '!=', 'Dikembalikan')->where('tipe_aksi', '!=', 'Kembalikan') as $disposisi)
+                    <tr class="border-b border-gray-300">
+                        <td class="p-2 border border-gray-800">
+                            <p class="text-sm">{{ $surat->id ?? '-' }}</p>
+                        </td>
+                        <td class="p-2 border border-gray-800">
+                            <p class="text-sm">
+                                {{ $surat->created_at ? \Carbon\Carbon::parse($surat->created_at)->translatedFormat('d M Y') : '-' }}
+                            </p>
+                        </td>
+                        <td class="p-2 border border-gray-800">
+                            <p class="text-sm">{{ $surat->pengirim ?? '-' }}</p>
+                        </td>
+                        <td class="p-2 border border-gray-800">
+                            <p class="text-sm">
+                                {{ $surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->translatedFormat('d M Y') : '-' }}
+                            </p>
+                        </td>
+                        <td class="p-2 border border-gray-800">
+                            <p class="text-sm">{{ $surat->nomor_surat ?? '-' }}</p>
+                        </td>
+                        <td class="p-2 border border-gray-800">
+                            <p class="text-sm">{{ $surat->perihal ?? '-' }}</p>
+                        </td>
 
-        <hr class="w-full border-t border-gray-300 my-4" />
+                        @php
+                            $disposisis = $surat->disposisis
+                                ->where('status', '!=', 'Dikembalikan')
+                                ->where('tipe_aksi', '!=', 'Kembalikan')
+                                ->values()
+                                ->take(3);
+                        @endphp
 
-        <form action="{{ route('print.agenda.terima') }}" method="GET" target="_blank">
-            <input type="hidden" name="mode" value="semua">
-            <div class="flex flex-col gap-2">
-                <div class="mb-4 space-y-1.5 w-full">
+                        <td class="p-2 border border-gray-800">
+                            <p class="text-sm">
+                                @if ($disposisi && $disposisi->pengirim)
+                                    @php
+                                        $pengirim = $disposisi->pengirim;
+                                        $pengirimRole = $pengirim->role->name ?? null;
+                                    @endphp
+                                    {{ $pengirimRole === 'katimja' ? $pengirim->divisi->nama_divisi ?? '-' : ucfirst($pengirimRole ?? '-') }}
+                                @else
+                                    -
+                                @endif
+                            </p>
+                        </td>
 
-                <div class="flex flex-row gap-3">
-                    <div class="mb-4 space-y-1.5 w-1/2">
-                        @include('components.base.input-surat', [
-                            'label' => 'Nomor Surat',
-                            'placeholder' => 'Masukkan Nomor Surat',
-                            'name' => 'nomor_surat',
-                            'value' => request('nomor_surat'),
-                        ])
-                    </div>
-                    <div class="mb-4 space-y-1.5 w-1/3">
-                        @include('components.base.datepicker', [
-                            'label' => 'Tanggal Surat',
-                            'placeholder' => 'Pilih Tanggal Surat',
-                            'id' => 'cetak-agenda-tanggal-surat',
-                            'name' => 'cetak-agenda-tanggal-surat',
-                            'value' => request('cetak-agenda-tanggal-surat'),
-                        ])
-                    </div>
-                    <div class="mb-4 space-y-1.5 w-1/3">
-                        @include('components.base.datepicker', [
-                            'label' => 'Tanggal Terima',
-                            'placeholder' => 'Pilih Tanggal Terima',
-                            'id' => 'cetak-agenda-tanggal-terima',
-                            'name' => 'cetak-agenda-tanggal-terima',
-                            'value' => request('cetak-agenda-tanggal-terima'),
-                        ])
-                    </div>
-                </div>
+                        <td class="p-2 border border-gray-800">
+                            <p class="text-sm">
+                                {{ $disposisi && $disposisi->created_at ? \Carbon\Carbon::parse($disposisi->created_at)->translatedFormat('d M Y') : '-' }}
+                            </p>
+                        </td>
 
-                <div class="flex flex-row gap-3 items-center">
-                    <div class="mb-4 space-y-1.5 w-1/2">
-                        @include('components.base.input-surat', [
-                            'label' => 'Pengirim',
-                            'placeholder' => 'Masukkan Pengirim Surat',
-                            'name' => 'pengirim',
-                            'value' => request('pengirim'),
-                        ])
-                    </div>
-                    <div class="mb-4 space-y-1.5 w-1/3">
-                        @include('components.base.dropdown', [
-                            'label' => 'Klasifikasi',
-                            'value' => ['Umum', 'Pengaduan', 'Permintaan Informasi'],
-                            'name' => 'klasifikasi_surat',
-                            'selected' => request('klasifikasi_surat'),
-                        ])
-                    </div>
-                    <div class="mb-4 space-y-1.5 w-1/3">
-                        @include('components.base.dropdown', [
-                            'label' => 'Sifat',
-                            'value' => ['Rahasia', 'Penting', 'Segera', 'Rutin'],
-                            'name' => 'sifat',
-                            'selected' => request('sifat'),
-                        ])
-                    </div>
-                </div>
+                        <td class="p-2 border border-gray-800">
+                            <p class="text-sm">
+                                @if ($disposisi && $disposisi->penerima)
+                                    @php
+                                        $penerima = $disposisi->penerima;
+                                        $penerimaRole = $penerima->role->name ?? null;
+                                    @endphp
+                                    {{ $penerimaRole === 'Katimja' ? $penerima->divisi->nama_divisi ?? '-' : ucfirst($penerimaRole ?? '-') }}
+                                @else
+                                    -
+                                @endif
+                            </p>
+                        </td>
 
-                <div class="space-y-1.5 mb-4">
-                    @include('components.base.input-surat', [
-                        'label' => 'Perihal',
-                        'placeholder' => 'Masukkan Perihal Surat',
-                        'name' => 'perihal',
-                        'value' => request('perihal'),
-                    ])
-                </div>
-
-                <div class="flex flex-row justify-end mb-5 gap-4">
-                    <a href="{{ route('surat.cetakAgenda') }}"
-                        class="inline-flex items-center border font-sans text-sm font-medium rounded-md py-1 px-2 shadow-sm bg-red-800 border-red-800 text-white hover:bg-slate-700 hover:border-slate-700">
-                        Reset
-                    </a>
-                    <button type="submit"
-                        class="inline-flex items-center border font-sans text-sm font-medium rounded-md py-1 px-2 shadow-sm border-slate-800 text-slate-800 hover:shadow-md">
-                        @include('components.base.ikon-print')
-                        Cetak Agenda Surat
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-@endsection
+                        <td class="p-2 border border-gray-800">
+                            <p class="text-sm">{{ $disposisi?->catatan ?? '-' }}</p>
+                        </td>
+                    </tr>
+                @endforeach
+            @endforeach
+        </tbody>
+    </table>
+</div>

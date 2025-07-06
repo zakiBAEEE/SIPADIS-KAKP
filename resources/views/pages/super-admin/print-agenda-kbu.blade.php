@@ -25,10 +25,10 @@
 </head>
 
 <body onload="window.print()" class="font-sans p-4 bg-white text-black">
-    <h2 class="text-center text-sm font-bold mb-4 uppercase">Cetak Agenda Surat Masuk</h2>
+    <h2 class="text-center text-sm font-bold mb-4 uppercase">Agenda Surat Kepala Bagian Umum</h2>
     <div class="overflow-x-auto">
         {{-- @include('components.table.table-cetak-agenda-kbu', ['suratMasuk' => $suratMasuk]) --}}
-        @include('components.table.table-agenda-kbu', ['suratMasuk' => $suratMasuk])
+        @include('components.table.table-cetak-agenda-kbu', ['suratMasuk' => $suratMasuk])
     </div>
 </body>
 </html>
