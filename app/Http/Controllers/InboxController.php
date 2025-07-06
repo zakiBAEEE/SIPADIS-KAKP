@@ -13,13 +13,23 @@ class InboxController extends Controller
 
     public function index(Request $request)
     {
+        $user = Auth::user();
         $query = Disposisi::query()
-            ->where('ke_user_id', Auth::id())
-            ->with(['suratMasuk', 'pengirim.role']) // Eager loading
+            ->where('ke_user_id', $user->id)
+            ->with(['suratMasuk', 'pengirim.role']); // Eager loading
 
-            // Tambahan default filter agar tidak menampilkan disposisi reject
-            ->whereIn('tipe_aksi', ['Teruskan'])
-            ->whereIn('status', ['Menunggu', 'Dilihat']);
+        // ✅ Tambahan kondisi status default berdasarkan role
+        if ($user->role->name === 'Katimja') {
+            $query->whereIn('status', ['Menunggu', 'Dilihat', 'Diteruskan']);
+        } else {
+            $query->whereIn('status', ['Menunggu', 'Dilihat']);
+        }
+
+        // ✅ Default: Hanya tipe "Teruskan"
+        $query->whereIn('tipe_aksi', ['Teruskan']);
+
+
+
 
         // ✅ Filter: Status
         if ($request->filled('status')) {
