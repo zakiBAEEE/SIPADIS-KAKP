@@ -55,6 +55,44 @@ class DisposisiController extends Controller
         return redirect()->route('inbox.index', $surat->id)->with('success', 'Disposisi berhasil diteruskan.');
     }
 
+    public function disposisiKeSemuaStaf(SuratMasuk $surat, Request $request)
+    {
+        $katimja = Auth::user();
+
+        // Validasi catatan (jika dikirim)
+        $validated = $request->validate([
+            'catatan' => 'nullable|string|max:255',
+        ]);
+
+        try {
+            DB::transaction(function () use ($katimja, $surat, $validated) {
+                // Ambil semua staf dalam divisi Katimja
+                $stafs = User::where('divisi_id', $katimja->divisi_id)
+                    ->whereHas('role', fn($q) => $q->where('name', 'Staf'))
+                    ->get();
+
+                foreach ($stafs as $staf) {
+                    Disposisi::create([
+                        'surat_id' => $surat->id,
+                        'dari_user_id' => $katimja->id,
+                        'ke_user_id' => $staf->id,
+                        'catatan' => $validated['catatan'] ?? 'Mohon ditindaklanjuti',
+                        'status' => 'Menunggu',
+                        'tipe_aksi' => 'Teruskan',
+                    ]);
+                }
+
+                // Update status surat jika perlu
+                $surat->update(['status' => 'Diproses']);
+            });
+
+            return redirect()->back()->with('success', 'Surat berhasil didisposisikan ke semua staf.');
+        } catch (\Exception $e) {
+            \Log::error('Gagal mendisposisikan ke semua staf: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
     public function kembalikan(Request $request, Disposisi $disposisi)
     {
         $validated = $request->validate([
