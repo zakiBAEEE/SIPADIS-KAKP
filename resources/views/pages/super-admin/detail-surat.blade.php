@@ -30,6 +30,25 @@
             </div>
             <div class="mt-4 tab-content-container">
                 <div id="tab1-group4" class="tab-content text-slate-800 block">
+                    @php
+                        $user = Auth::user();
+                        $isAdmin = $user->role->name === 'Admin';
+
+                        $disposisiTerakhir = $surat->disposisis()->latest()->first();
+                        $belumPernahDidisposisikan = $disposisiTerakhir === null;
+                        $terakhirKembalikan = $disposisiTerakhir && $disposisiTerakhir->tipe_aksi === 'Kembalikan';
+                    @endphp
+
+                    @if ($isAdmin && ($belumPernahDidisposisikan || $terakhirKembalikan))
+                        <div class="flex justify-end">
+                            <a href="{{ route('surat.edit', ['surat' => $surat->id]) }}"
+                                class="inline-flex items-center gap-1 rounded-md border border-orange-400 bg-orange-100 px-2 py-1 text-sm font-medium text-orange-800 hover:bg-orange-200 hover:shadow transition duration-150 ease-in-out">
+                                @include('components.base.ikon-edit')
+                                <span>Edit Surat</span>
+                            </a>
+                        </div>
+                    @endif
+
                     <div class="p-4">
                         <div class="flex flex-row gap-3">
                             <div class="mb-4 space-y-1.5 w-1/2">
