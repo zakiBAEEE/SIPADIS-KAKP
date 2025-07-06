@@ -11,9 +11,6 @@
                 <th class="p-3 w-5/12">
                     <p class="text-sm leading-none font-normal">Alasan Pengembalian / Catatan</p>
                 </th>
-                <th class="p-3 w-2/12 text-center">
-                    <p class="text-sm leading-none font-normal">Aksi</p>
-                </th>
             </tr>
         </thead>
         <tbody>
@@ -34,21 +31,6 @@
                     </td>
                     <td class="p-3 align-top">
                         <p class="text-sm text-red-600 italic">"{{ $disposisi->catatan }}"</p>
-                    </td>
-                    <td class="p-3 align-top text-center">
-                        <div class="flex flex-row justify-center gap-x-1" onclick="event.stopPropagation();">
-                            @if (in_array(auth()->user()->role->name, ['Admin']))
-                                <form method="POST"
-                                    action="{{ route('surat.kirimKeKepala', $disposisi->surat_id) }}"
-                                    onsubmit="return confirm('Anda yakin ingin mengirim ulang surat ini setelah direvisi?');">
-                                    @csrf
-                                    <button type="submit"
-                                        class="px-3 py-1 bg-green-600 text-white rounded-md text-xs font-semibold hover:bg-green-700">
-                                        Kirim Ulang
-                                    </button>
-                                </form>
-                            @endif
-                        </div>
                     </td>
                 </tr>
             @empty

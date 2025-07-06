@@ -112,7 +112,7 @@ class DisposisiController extends Controller
 
         return redirect()->route('inbox.index')->with('success', 'Disposisi berhasil dikembalikan.');
     }
-
+    
     public function kirimKeKepala(SuratMasuk $surat)
     {
         try {
@@ -153,7 +153,35 @@ class DisposisiController extends Controller
         }
     }
 
-  
+    public function kirimUlangKeKepala(SuratMasuk $surat)
+    {
+        $pengirim = Auth::user();
+        $kepala = User::whereHas('role', fn($q) => $q->where('name', 'Kepala LLDIKTI'))->firstOrFail();
+
+        DB::transaction(function () use ($surat, $pengirim, $kepala) {
+            $previousDisposisi = $surat->disposisis()
+                ->where('ke_user_id', $pengirim->id)
+                ->whereIn('status', ['Menunggu', 'Dilihat'])
+                ->first();
+
+            if ($previousDisposisi) {
+                $previousDisposisi->update(['status' => 'Diteruskan']);
+            }
+
+            Disposisi::create([
+                'surat_id' => $surat->id,
+                'dari_user_id' => $pengirim->id,
+                'ke_user_id' => $kepala->id,
+                'catatan' => 'Hasil Revisian',
+                'status' => 'Menunggu',
+                'tipe_aksi' => 'Teruskan',
+            ]);
+
+            $surat->update(['status' => 'Diproses']);
+        });
+
+        return redirect()->route('inbox.ditolak')->with('success', 'Disposisi berhasil dikembalikan.');
+    }
 
     public function cetak($id)
     {

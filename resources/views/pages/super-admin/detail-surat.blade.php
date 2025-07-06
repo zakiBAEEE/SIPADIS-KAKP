@@ -140,7 +140,7 @@
                             @if (in_array(auth()->user()->role->name, ['Admin']))
                                 @include('components.base.tombol-print-disposisi', ['surat' => $surat])
                             @endif
-                         
+
                             @php
                                 // 1. Cari disposisi terakhir yang statusnya masih aktif ('Terkirim' atau 'Dilihat')
                                 $activeDisposisi = $surat->disposisis
@@ -156,7 +156,17 @@
                                 @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin']))
                                     @include('components.layout.modal-tambah-disposisi')
                                 @endif
-                                
+
+                                @if (in_array(auth()->user()->role->name, ['Admin']))
+                                    <form method="POST" action="{{ route('surat.kirimUlangKeKepala', $surat->id) }}"
+                                        onsubmit="return confirm('Anda yakin ingin mengirim ulang surat ini setelah direvisi?');">
+                                        @csrf
+                                        <button type="submit"
+                                            class="px-3 py-1 bg-green-600 text-white rounded-md text-xs font-semibold hover:bg-green-700">
+                                            Kirim Ulang
+                                        </button>
+                                    </form>
+                                @endif
 
                                 {{-- Tombol untuk mengembalikan disposisi (jika sudah dibuat) --}}
                                 @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin']))
@@ -180,5 +190,4 @@
 
 
 @push('scripts')
-   
 @endpush
