@@ -20,7 +20,7 @@ class InboxController extends Controller
 
         // ✅ Tambahan kondisi status default berdasarkan role
         if ($user->role->name === 'Katimja') {
-            $query->whereIn('status', ['Menunggu', 'Dilihat', 'Diteruskan']);
+            $query->whereIn('status', ['Menunggu', 'Dilihat']);
         } else {
             $query->whereIn('status', ['Menunggu', 'Dilihat']);
         }

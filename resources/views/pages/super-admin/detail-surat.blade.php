@@ -204,11 +204,6 @@
                                     ])
                                 @endif
                             @endif
-                            @if (in_array(auth()->user()->role->name, ['Katimja']))
-                                @include('components.layout.modal-kembalikan-disposisi', [
-                                    'disposisi' => $activeDisposisi,
-                                ])
-                            @endif
                         </div>
                     </div>
                     <div class="p-4">
