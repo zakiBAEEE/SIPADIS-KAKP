@@ -189,9 +189,14 @@
                             @endphp
 
                             @if (($activeDisposisi && $activeDisposisi->ke_user_id === auth()->id()) || $belumPernahDidisposisikan)
-                                @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin']))
+                                @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin', 'Katimja']))
                                     @include('components.layout.modal-tambah-disposisi')
                                 @endif
+
+                                @if (in_array(auth()->user()->role->name, ['Katimja']))
+                                    @include('components.layout.modal-kirimKeStaf')
+                                @endif
+
 
                                 @if ($isAdmin && ($belumPernahDidisposisikan || $terakhirKembalikan))
                                     @include('components.layout.modal-kirimKeKepala')

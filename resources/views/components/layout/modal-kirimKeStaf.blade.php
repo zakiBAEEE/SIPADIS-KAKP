@@ -1,13 +1,13 @@
 <div class="flex justify-center">
     <button type="button" data-toggle="modal" data-target="#modalKirimKeStaf"
         class="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-green-500 border-slate-300 text-slate-50 hover:bg-green-700 hover:border-slate-700">
-        Kirim Ke Kepala</button>
+        Disposisikan Ke Staff</button>
     <div class="fixed antialiased inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-[9999]"
         id="modalKirimKeStaf" aria-hidden="true">
         <div
             class="bg-white rounded-lg w-10/12 md:w-8/12 lg:w-6/12 transition-transform duration-300 ease-out scale-100">
             <div class="p-4 pb-2 flex justify-between items-center">
-                <h1 class="text-lg text-slate-800 font-semibold">Kirimkan Ke Kepala</h1>
+                <h1 class="text-lg text-slate-800 font-semibold">Disposisikan ke Staf</h1>
                 <button type="button" data-dismiss="modal" aria-label="Close"
                     class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none data-[shape=circular]:rounded-full text-sm min-w-[34px] min-h-[34px] rounded-md bg-transparent border-transparent text-slate-200-foreground hover:bg-slate-200/10 hover:border-slate-200/10 shadow-none hover:shadow-none outline-none absolute right-2 top-2">
                     <svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
@@ -18,16 +18,25 @@
                     </svg>
                 </button>
             </div>
-            <form action="{{ route('surat.kirimKeKepala', $surat->id) }}" method="POST">
+            <form action="{{ route('disposisi.disposisiSemuaStaf', $surat->id) }}" method="POST">
                 @csrf
                 <div class="p-4 flex flex-col gap-2">
                     <div>
                         @include('components.base.input-surat', [
-                            'label' => 'Catatan untuk Kepala LLDIKTI',
+                            'label' => 'Catatan untuk Staf',
                             'placeholder' => 'Tambahkan Catatan',
                             'name' => 'catatan',
                         ])
                     </div>
+                    @php
+                        $user = Auth::user();
+
+                        // Ambil semua staf di divisi yang sama dengan user login (asumsi user = Katimja)
+                        $stafs = \App\Models\User::where('divisi_id', $user->divisi_id)
+                            ->whereHas('role', fn($q) => $q->where('name', 'Staf'))
+                            ->get();
+                    @endphp
+
                     @if ($stafs->count())
                         <div class="p-4 pt-0">
                             <p class="text-sm font-semibold text-slate-700 mb-2">Daftar Staf di Divisi Ini:</p>
@@ -38,9 +47,10 @@
                             </ul>
                         </div>
                     @else
-                        <div class="p-4 pt-0">
-                            <p class="text-sm text-red-600">Tidak ada staf terdaftar di divisi ini.</p>
-                        </div>
+                      
+                    <div class="p-4 pt-0">
+                        <p class="text-sm text-red-600">Tidak ada staf terdaftar di divisi ini.</p>
+                    </div>
                     @endif
 
                 </div>
