@@ -112,76 +112,118 @@ class DisposisiController extends Controller
 
         return redirect()->route('inbox.index')->with('success', 'Disposisi berhasil dikembalikan.');
     }
-    
+
+    // public function kirimKeKepala(SuratMasuk $surat)
+    // {
+    //     try {
+    //         $admin = Auth::user();
+    //         $kepala = User::whereHas('role', fn($q) => $q->where('name', 'Kepala LLDIKTI'))->firstOrFail();
+
+    //         $activeDisposisiExists = $surat->disposisis()
+    //             ->whereIn('status', ['Dilihat', 'Diteruskan'])
+    //             ->exists();
+
+    //         if ($activeDisposisiExists) {
+    //             return redirect()->back()->with('error', 'Surat ini sedang aktif dalam proses disposisi lain.');
+    //         }
+
+    //         $rejectionTask = $surat->disposisis()
+    //             ->where('ke_user_id', $admin->id)
+    //             ->where('tipe_aksi', 'Kembalikan')
+    //             ->whereIn('status', ['Terkirim', 'Dilihat'])
+    //             ->first();
+
+    //         if ($rejectionTask) {
+    //             $rejectionTask->update(['status' => 'Ditindaklanjuti']);
+    //         }
+
+    //         $this->disposisiService->create(
+    //             $surat,
+    //             $admin,
+    //             $kepala,
+    //             'Mohon Arahan Pimpinan.',
+    //             now(),
+    //             'Teruskan'
+    //         );
+
+    //         return redirect()->back()->with('success', 'Surat hasil revisi berhasil dikirim ke Kepala.');
+    //     } catch (\Exception $e) {
+    //         Log::error('Gagal mengirim surat ke kepala: ' . $e->getMessage());
+    //         return redirect()->back()->with('error', 'Terjadi kesalahan sistem saat mengirim surat.');
+    //     }
+    // }
+
+    // public function kirimKeKepala(SuratMasuk $surat)
+    // {
+    //     $pengirim = Auth::user();
+    //     $kepala = User::whereHas('role', fn($q) => $q->where('name', 'Kepala LLDIKTI'))->firstOrFail();
+
+    //     DB::transaction(function () use ($surat, $pengirim, $kepala) {
+    //         $previousDisposisi = $surat->disposisis()
+    //             ->where('ke_user_id', $pengirim->id)
+    //             ->whereIn('status', ['Menunggu', 'Dilihat'])
+    //             ->first();
+
+    //         if ($previousDisposisi) {
+    //             $previousDisposisi->update(['status' => 'Diteruskan']);
+    //         }
+
+    //         Disposisi::create([
+    //             'surat_id' => $surat->id,
+    //             'dari_user_id' => $pengirim->id,
+    //             'ke_user_id' => $kepala->id,
+    //             'catatan' => 'Hasil Revisian',
+    //             'status' => 'Menunggu',
+    //             'tipe_aksi' => 'Teruskan',
+    //         ]);
+
+    //         $surat->update(['status' => 'Diproses']);
+    //     });
+
+    //     return redirect()->route('inbox.ditolak')->with('success', 'Disposisi berhasil dikembalikan.');
+    // }
+
     public function kirimKeKepala(SuratMasuk $surat)
-    {
-        try {
-            $admin = Auth::user();
-            $kepala = User::whereHas('role', fn($q) => $q->where('name', 'Kepala LLDIKTI'))->firstOrFail();
-
-            $activeDisposisiExists = $surat->disposisis()
-                ->whereIn('status', ['Dilihat', 'Diteruskan'])
-                ->exists();
-
-            if ($activeDisposisiExists) {
-                return redirect()->back()->with('error', 'Surat ini sedang aktif dalam proses disposisi lain.');
-            }
-
-            $rejectionTask = $surat->disposisis()
-                ->where('ke_user_id', $admin->id)
-                ->where('tipe_aksi', 'Kembalikan')
-                ->whereIn('status', ['Terkirim', 'Dilihat'])
-                ->first();
-
-            if ($rejectionTask) {
-                $rejectionTask->update(['status' => 'Ditindaklanjuti']);
-            }
-
-            $this->disposisiService->create(
-                $surat,
-                $admin,
-                $kepala,
-                'Mohon Arahan Pimpinan.',
-                now(),
-                'Teruskan'
-            );
-
-            return redirect()->back()->with('success', 'Surat hasil revisi berhasil dikirim ke Kepala.');
-        } catch (\Exception $e) {
-            Log::error('Gagal mengirim surat ke kepala: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Terjadi kesalahan sistem saat mengirim surat.');
-        }
-    }
-
-    public function kirimUlangKeKepala(SuratMasuk $surat)
     {
         $pengirim = Auth::user();
         $kepala = User::whereHas('role', fn($q) => $q->where('name', 'Kepala LLDIKTI'))->firstOrFail();
 
-        DB::transaction(function () use ($surat, $pengirim, $kepala) {
-            $previousDisposisi = $surat->disposisis()
-                ->where('ke_user_id', $pengirim->id)
-                ->whereIn('status', ['Menunggu', 'Dilihat'])
-                ->first();
+        try {
+            DB::transaction(function () use ($surat, $pengirim, $kepala) {
+                // Cek apakah pengirim pernah menerima disposisi surat ini
+                $previousDisposisi = $surat->disposisis()
+                    ->where('ke_user_id', $pengirim->id)
+                    ->whereIn('status', ['Menunggu', 'Dilihat'])
+                    ->latest()
+                    ->first();
 
-            if ($previousDisposisi) {
-                $previousDisposisi->update(['status' => 'Diteruskan']);
-            }
+                // Jika ada disposisi sebelumnya yang aktif, update status-nya
+                if ($previousDisposisi) {
+                    $previousDisposisi->update(['status' => 'Diteruskan']);
+                }
 
-            Disposisi::create([
-                'surat_id' => $surat->id,
-                'dari_user_id' => $pengirim->id,
-                'ke_user_id' => $kepala->id,
-                'catatan' => 'Hasil Revisian',
-                'status' => 'Menunggu',
-                'tipe_aksi' => 'Teruskan',
-            ]);
+                // Buat disposisi baru ke Kepala
+                Disposisi::create([
+                    'surat_id' => $surat->id,
+                    'dari_user_id' => $pengirim->id,
+                    'ke_user_id' => $kepala->id,
+                    'catatan' => $previousDisposisi ? 'Hasil Revisian' : 'Mohon Arahan Pimpinan',
+                    'status' => 'Menunggu',
+                    'tipe_aksi' => 'Teruskan',
+                ]);
 
-            $surat->update(['status' => 'Diproses']);
-        });
+                // Update status surat
+                $surat->update(['status' => 'Diproses']);
+            });
 
-        return redirect()->route('inbox.ditolak')->with('success', 'Disposisi berhasil dikembalikan.');
+            return redirect()->back()->with('success', 'Surat berhasil dikirim ke Kepala.');
+        } catch (\Exception $e) {
+            \Log::error('Gagal mengirim surat ke Kepala: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
+
+
 
     public function cetak($id)
     {

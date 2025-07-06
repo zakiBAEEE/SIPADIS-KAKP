@@ -194,7 +194,7 @@
                                 @endif
 
                                 @if ($isAdmin && ($belumPernahDidisposisikan || $terakhirKembalikan))
-                                    <form method="POST" action="{{ route('surat.kirimUlangKeKepala', $surat->id) }}"
+                                    <form method="POST" action="{{ route('surat.kirimKeKepala', $surat->id) }}"
                                         onsubmit="return confirm('Anda yakin ingin mengirim ulang surat ini setelah direvisi?');">
                                         @csrf
                                         <button type="submit"

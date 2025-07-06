@@ -1,6 +1,25 @@
 @extends('layouts.super-admin-layout')
 
 @section('content')
+    @if (session('success'))
+        <div class="js-dismissable-alert fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md flex items-center justify-between rounded-lg bg-green-100 px-6 py-5 text-base text-green-700 shadow-lg transition-opacity duration-300"
+            role="alert">
+            <span>{{ session('success') }}</span>
+            <button type="button" class="js-close-alert text-green-700 hover:text-green-900">
+                &times;
+            </button>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="js-dismissable-alert fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md flex items-center justify-between rounded-lg bg-red-100 px-6 py-5 text-base text-red-700 shadow-lg transition-opacity duration-300"
+            role="alert">
+            <span>{{ session('error') }}</span>
+            <button type="button" class="js-close-alert text-red-700 hover:text-red-900">
+                &times;
+            </button>
+        </div>
+    @endif
     <div class="bg-white w-full h-full rounded-xl shadow-neutral-400 shadow-lg overflow-scroll p-4">
         <div class="flex flex-row justify-between items-center w-full">
             <div>

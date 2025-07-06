@@ -87,7 +87,8 @@
                                     onsubmit="return confirm('PENTING: Menghapus surat ini akan menghapus seluruh data disposisi terkait. Apakah Anda yakin ingin melanjutkan?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900" title="Hapus Surat">
+                                    <button type="submit" class="text-red-600 hover:text-red-900"
+                                        onclick="event.stopPropagation();" title="Hapus Surat">
                                         @include('components.base.ikon-hapus')
                                     </button>
                                 </form>
