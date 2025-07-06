@@ -80,8 +80,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/disposisi/{disposisi}/kembalikan', [DisposisiController::class, 'kembalikan'])->name('disposisi.kembalikan');
          Route::post('/disposisi/{disposisi}/kembalikanKeKatimja', [DisposisiController::class, 'kembalikanSuratStaf'])
             ->name('disposisi.kembalikanSuratStaf');
-        // Route pengiriman ulang revisi ke kepala
-        // Route::post('/inbox/ditolak/{surat}/kirim-ulang', [DisposisiController::class, 'kirimUlangKeKepala'])->name('surat.kirimUlangKeKepala');
     });
 
     /*
