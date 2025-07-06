@@ -25,86 +25,94 @@
                 @endforeach
             </tr>
         </thead>
- 
+
         <tbody>
             @foreach ($suratMasuk as $surat)
-                 <tr class="hover:bg-slate-50 cursor-pointer" onclick="window.location='{{ route('surat.show', $surat->id) }}'">
-                   
-                    <td class="p-3">
-                        <p class="text-sm">{{ $surat->id ?? '-' }}</p>
-                    </td>
-                    <td class="p-3">
-                        <p class="text-sm">
-                            {{ $surat->created_at ? \Carbon\Carbon::parse($surat->created_at)->translatedFormat('d M Y') : '-' }}
-                        </p>
-                    </td>
-                    <td class="p-3">
-                        <p class="text-sm">{{ $surat->pengirim ?? '-' }}</p>
-                    </td>
-                    <td class="p-3">
-                        <p class="text-sm">
-                            {{ $surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->translatedFormat('d M Y') : '-' }}
-                        </p>
-                    </td>
-                    <td class="p-3">
-                        <p class="text-sm">{{ $surat->nomor_surat ?? '-' }}</p>
-                    </td>
-                    <td class="p-3">
-                        <p class="text-sm">{{ $surat->perihal ?? '-' }}</p>
-                    </td>
+                @foreach ($surat->disposisis->where('status', '!=', 'Dikembalikan')->where('tipe_aksi', '!=', 'Kembalikan') as $disposisi)
+                    <tr class="hover:bg-slate-50 cursor-pointer"
+                        onclick="window.location='{{ route('surat.show', $surat->id) }}'">
 
-                    @php
-                        $disposisis = $surat->disposisis->take(3);
-                    @endphp
+                        <td class="p-3">
+                            <p class="text-sm">{{ $surat->id ?? '-' }}</p>
+                        </td>
+                        <td class="p-3">
+                            <p class="text-sm">
+                                {{ $surat->created_at ? \Carbon\Carbon::parse($surat->created_at)->translatedFormat('d M Y') : '-' }}
+                            </p>
+                        </td>
+                        <td class="p-3">
+                            <p class="text-sm">{{ $surat->pengirim ?? '-' }}</p>
+                        </td>
+                        <td class="p-3">
+                            <p class="text-sm">
+                                {{ $surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->translatedFormat('d M Y') : '-' }}
+                            </p>
+                        </td>
+                        <td class="p-3">
+                            <p class="text-sm">{{ $surat->nomor_surat ?? '-' }}</p>
+                        </td>
+                        <td class="p-3">
+                            <p class="text-sm">{{ $surat->perihal ?? '-' }}</p>
+                        </td>
 
-                    @for ($i = 0; $i < 3; $i++)
                         @php
-                            $disposisi = $disposisis[$i] ?? null;
+                            $disposisis = $surat->disposisis
+                                ->where('status', '!=', 'Dikembalikan')
+                                ->where('tipe_aksi', '!=', 'Kembalikan')
+                                ->values()
+                                ->take(3);
                         @endphp
 
-                        {{-- Kolom Disposisi (Pengirim) --}}
-                        <td class="p-3">
-                            <p class="text-sm">
-                                @if ($disposisi && $disposisi->pengirim)
-                                    @php
-                                        $pengirim = $disposisi->pengirim;
-                                        $pengirimRole = $pengirim->role->name ?? null;
-                                    @endphp
-                                    {{ $pengirimRole === 'katimja' ? $pengirim->divisi->nama_divisi ?? '-' : ucfirst($pengirimRole ?? '-') }}
-                                @else
-                                    -
-                                @endif
-                            </p>
-                        </td>
 
-                        {{-- Kolom Tanggal Disposisi --}}
-                        <td class="p-3">
-                            <p class="text-sm">
-                                {{ $disposisi && $disposisi->created_at ? \Carbon\Carbon::parse($disposisi->created_at)->translatedFormat('d M Y') : '-' }}
-                            </p>
-                        </td>
+                        @for ($i = 0; $i < 3; $i++)
+                            @php
+                                $disposisi = $disposisis[$i] ?? null;
+                            @endphp
 
-                        {{-- Kolom Tujuan Disposisi --}}
-                        <td class="p-3">
-                            <p class="text-sm">
-                                @if ($disposisi && $disposisi->penerima)
-                                    @php
-                                        $penerima = $disposisi->penerima;
-                                        $penerimaRole = $penerima->role->name ?? null;
-                                    @endphp
-                                    {{ $penerimaRole === 'Katimja' ? $penerima->divisi->nama_divisi ?? '-' : ucfirst($penerimaRole ?? '-') }}
-                                @else
-                                    -
-                                @endif
-                            </p>
-                        </td>
+                            {{-- Kolom Disposisi (Pengirim) --}}
+                            <td class="p-3">
+                                <p class="text-sm">
+                                    @if ($disposisi && $disposisi->pengirim)
+                                        @php
+                                            $pengirim = $disposisi->pengirim;
+                                            $pengirimRole = $pengirim->role->name ?? null;
+                                        @endphp
+                                        {{ $pengirimRole === 'katimja' ? $pengirim->divisi->nama_divisi ?? '-' : ucfirst($pengirimRole ?? '-') }}
+                                    @else
+                                        -
+                                    @endif
+                                </p>
+                            </td>
 
-                        {{-- Kolom Instruksi --}}
-                        <td class="p-3">
-                            <p class="text-sm">{{ $disposisi?->catatan ?? '-' }}</p>
-                        </td>
-                    @endfor
-                </tr>
+                            {{-- Kolom Tanggal Disposisi --}}
+                            <td class="p-3">
+                                <p class="text-sm">
+                                    {{ $disposisi && $disposisi->created_at ? \Carbon\Carbon::parse($disposisi->created_at)->translatedFormat('d M Y') : '-' }}
+                                </p>
+                            </td>
+
+                            {{-- Kolom Tujuan Disposisi --}}
+                            <td class="p-3">
+                                <p class="text-sm">
+                                    @if ($disposisi && $disposisi->penerima)
+                                        @php
+                                            $penerima = $disposisi->penerima;
+                                            $penerimaRole = $penerima->role->name ?? null;
+                                        @endphp
+                                        {{ $penerimaRole === 'Katimja' ? $penerima->divisi->nama_divisi ?? '-' : ucfirst($penerimaRole ?? '-') }}
+                                    @else
+                                        -
+                                    @endif
+                                </p>
+                            </td>
+
+                            {{-- Kolom Instruksi --}}
+                            <td class="p-3">
+                                <p class="text-sm">{{ $disposisi?->catatan ?? '-' }}</p>
+                            </td>
+                        @endfor
+                    </tr>
+                @endforeach
             @endforeach
         </tbody>
     </table>
