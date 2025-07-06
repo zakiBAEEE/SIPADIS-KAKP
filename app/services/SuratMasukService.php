@@ -3,15 +3,16 @@ namespace App\Services;
 
 use App\Models\SuratMasuk;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class SuratMasukService
 {
 
     public function getSuratMasukWithFilters($filters, $existingQuery = null)
     {
-       $query = $existingQuery ?? SuratMasuk::query();
+        $query = $existingQuery ?? SuratMasuk::query();
 
-      
+
 
         if (!empty($filters['nomor_surat'])) {
             $query->where('nomor_surat', 'like', '%' . $filters['nomor_surat'] . '%');
@@ -21,7 +22,23 @@ class SuratMasukService
             $query->where('pengirim', 'like', '%' . $filters['pengirim'] . '%');
         }
 
-        $this->applyDateFilters($query, $filters);
+        if (!empty($filters['filter_tanggal_surat']) && str_contains($filters['filter_tanggal_surat'], ' to ')) {
+            $range = explode(' to ', $filters['filter_tanggal_surat']);
+
+            $start = Carbon::parse($range[0])->startOfDay();
+            $end = Carbon::parse($range[1])->endOfDay();
+
+            $query->whereBetween('tanggal_surat', [$start, $end]);
+        }
+
+        if (!empty($filters['filter_created_at']) && str_contains($filters['filter_created_at'], ' to ')) {
+            $range = explode(' to ', $filters['filter_created_at']);
+
+            $start = Carbon::parse($range[0])->startOfDay();
+            $end = Carbon::parse($range[1])->endOfDay();
+
+            $query->whereBetween('created_at', [$start, $end]);
+        }
 
         if (!empty($filters['klasifikasi_surat'])) {
             $query->where('klasifikasi_surat', $filters['klasifikasi_surat']);
@@ -70,13 +87,21 @@ class SuratMasukService
     {
         // Apply filter for 'tanggal_surat'
         if (!empty($filters['filter_tanggal_surat']) && str_contains($filters['filter_tanggal_surat'], ' to ')) {
-            [$start, $end] = explode(' to ', $filters['filter_tanggal_surat']);
+            $range = explode(' to ', $filters['filter_tanggal_surat']);
+
+            $start = Carbon::parse($range[0])->startOfDay();
+            $end = Carbon::parse($range[1])->endOfDay();
+
             $query->whereBetween('tanggal_surat', [$start, $end]);
         }
 
         // Apply filter for 'created_at'
         if (!empty($filters['filter_created_at']) && str_contains($filters['filter_created_at'], ' to ')) {
-            [$start, $end] = explode(' to ', $filters['filter_created_at']);
+            $range = explode(' to ', $filters['filter_created_at']);
+
+            $start = Carbon::parse($range[0])->startOfDay();
+            $end = Carbon::parse($range[1])->endOfDay();
+
             $query->whereBetween('created_at', [$start, $end]);
         }
     }

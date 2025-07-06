@@ -10,6 +10,7 @@ use App\Models\SuratMasuk;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
 
 
 
@@ -57,16 +58,14 @@ class AgendaController extends Controller
 
     public function printAgendaKepala(Request $request)
     {
-        $query = $this->suratMasukWithDisposisi->suratMasukWithDisposisi($request);
 
-        $suratMasuk = $query->orderByDesc('created_at')->get();
-
-        $suratMasuk = $this->disposisisFilterService->filterByKepalaDisposisi($suratMasuk);
+        $suratMasuk = $this->getAgendaForRole('Kepala LLDIKTI', $request);
 
         return view('pages.super-admin.print-agenda-kepala', [
             'suratMasuk' => $suratMasuk,
             'tanggalRange' => null,
         ]);
+
     }
 
 
@@ -106,17 +105,23 @@ class AgendaController extends Controller
 
         // 4. Filter berdasarkan rentang tanggal
         if ($request->filled('filter_created_at')) {
+
             $range = explode(' to ', $request->input('filter_created_at'));
-            if (count($range) === 2) {
-                $query->whereBetween('created_at', [$range[0], $range[1]]);
-            }
+
+            $start = Carbon::parse($range[0])->startOfDay();
+            $end = Carbon::parse($range[1])->endOfDay();
+
+            $query->whereBetween('created_at', [$start, $end]);
         }
 
         if ($request->filled('filter_tanggal_surat')) {
+
             $range = explode(' to ', $request->input('filter_tanggal_surat'));
-            if (count($range) === 2) {
-                $query->whereBetween('tanggal_surat', [$range[0], $range[1]]);
-            }
+
+            $start = Carbon::parse($range[0])->startOfDay();
+            $end = Carbon::parse($range[1])->endOfDay();
+
+            $query->whereBetween('created_at', [$start, $end]);
         }
 
         $query->whereHas('disposisis', function (Builder $q) use ($roleUserIds) {
