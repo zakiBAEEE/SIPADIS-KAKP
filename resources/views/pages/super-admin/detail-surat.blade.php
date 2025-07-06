@@ -203,6 +203,23 @@
                                         'disposisi' => $activeDisposisi,
                                     ])
                                 @endif
+
+                                @if (auth()->user()->role->name === 'Staf' && $activeDisposisi)
+                                    <form action="{{ route('disposisi.kembalikanSuratStaf', $activeDisposisi->id) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Yakin ingin mengembalikan surat ini ke atasan Anda?');">
+                                        @csrf
+                                        <button type="submit"
+                                            class="inline-flex items-center gap-1 rounded-md border border-red-400 bg-red-100 px-2 py-1 text-sm font-medium text-red-800 hover:bg-red-200 hover:shadow transition duration-150 ease-in-out">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M3 10h11M3 6h16M3 14h8m-8 4h13" />
+                                            </svg>
+                                            <span>Kembalikan Surat ke Katimja</span>
+                                        </button>
+                                    </form>
+                                @endif
                             @endif
                         </div>
                     </div>

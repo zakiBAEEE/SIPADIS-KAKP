@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/surat-masuk/{surat}/kirim-ulang-ke-kepala', [DisposisiController::class, 'kirimUlangKeKepala'])->name('surat.kirimUlangKeKepala');
         Route::get('/surat/klasifikasi', [SuratMasukController::class, 'detailByKlasifikasi'])->name('surat.klasifikasi');
         Route::get('/arsip-surat', [SuratMasukController::class, 'arsipSurat'])->name('surat.arsip');
+       
 
         // ---- Manajemen Pegawai ----
         Route::get('/pegawai', [UserController::class, 'index'])->name('pegawai.index');
@@ -77,6 +78,8 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {
         Route::get('/inbox', [InboxController::class, 'index'])->name('inbox.index');
         Route::post('/disposisi/{disposisi}/kembalikan', [DisposisiController::class, 'kembalikan'])->name('disposisi.kembalikan');
+         Route::post('/disposisi/{disposisi}/kembalikanKeKatimja', [DisposisiController::class, 'kembalikanSuratStaf'])
+            ->name('disposisi.kembalikanSuratStaf');
         // Route pengiriman ulang revisi ke kepala
         // Route::post('/inbox/ditolak/{surat}/kirim-ulang', [DisposisiController::class, 'kirimUlangKeKepala'])->name('surat.kirimUlangKeKepala');
     });
