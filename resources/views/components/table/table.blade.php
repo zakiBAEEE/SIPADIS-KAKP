@@ -71,9 +71,6 @@
                             </a>
                             {{-- Tampilkan tombol "Kirim ke Kepala" HANYA JIKA surat belum punya disposisi --}}
                             @if (!$surat->disposisis()->exists())
-                                <a href="{{ route('surat.edit', ['surat' => $surat->id]) }}">
-                                    @include('components.base.ikon-edit')
-                                </a>
                                 <form method="POST" action="{{ route('surat.kirimKeKepala', $surat->id) }}"
                                     onsubmit="return confirm('Anda yakin ingin mengirim surat ini ke Kepala?');">
                                     @csrf
