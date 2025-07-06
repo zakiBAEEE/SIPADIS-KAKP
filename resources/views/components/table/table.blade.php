@@ -43,7 +43,8 @@
         </thead>
         <tbody>
             @foreach ($surats as $surat)
-                <tr class="hover:bg-slate-50">
+                <tr class="hover:bg-slate-50 border-b border-slate-200 cursor-pointer"
+                    onclick="window.location.href='{{ route('surat.show', ['surat' => $surat->id]) }}'">
                     <td class="p-3">
                         <p class="text-sm">{{ $surat->id }}</p>
                     </td>
