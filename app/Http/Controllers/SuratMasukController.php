@@ -64,7 +64,7 @@ class SuratMasukController extends Controller
 
     public function arsipSurat(Request $request)
     {
-        $query = SuratMasuk::query();
+        $query = SuratMasuk::whereHas('disposisis');
 
         // Filter berdasarkan berbagai parameter
 

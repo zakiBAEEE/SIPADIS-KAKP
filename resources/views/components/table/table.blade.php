@@ -67,9 +67,6 @@
                     </td>
                     <td class="p-3">
                         <div class="flex flex-row gap-x-1">
-                            <a href="{{ route('surat.show', ['surat' => $surat->id]) }}">
-                                @include('components.base.ikon-mata')
-                            </a>
                             {{-- Tampilkan tombol "Kirim ke Kepala" HANYA JIKA surat belum punya disposisi --}}
                             @if (!$surat->disposisis()->exists())
                                 <form method="POST" action="{{ route('surat.kirimKeKepala', $surat->id) }}"
