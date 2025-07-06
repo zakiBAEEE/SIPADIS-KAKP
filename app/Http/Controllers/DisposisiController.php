@@ -22,7 +22,7 @@ class DisposisiController extends Controller
     {
         $validated = $request->validate([
             'ke_user_id' => 'required|exists:users,id',
-            'catatan' => 'nullable|string',
+            'catatan' => 'required|string|max:1000',
         ]);
 
         $pengirim = Auth::user();
@@ -183,13 +183,62 @@ class DisposisiController extends Controller
     //     return redirect()->route('inbox.ditolak')->with('success', 'Disposisi berhasil dikembalikan.');
     // }
 
-    public function kirimKeKepala(SuratMasuk $surat)
+    // public function kirimKeKepala(Request $request, SuratMasuk $surat )
+    // {
+
+
+    //     $pengirim = Auth::user();
+    //     $kepala = User::whereHas('role', fn($q) => $q->where('name', 'Kepala LLDIKTI'))->firstOrFail();
+
+    //     try {
+
+
+    //         DB::transaction(function () use ($surat, $pengirim, $kepala) {
+    //             // Cek apakah pengirim pernah menerima disposisi surat ini
+    //             $previousDisposisi = $surat->disposisis()
+    //                 ->where('ke_user_id', $pengirim->id)
+    //                 ->whereIn('status', ['Menunggu', 'Dilihat'])
+    //                 ->latest()
+    //                 ->first();
+
+    //             // Jika ada disposisi sebelumnya yang aktif, update status-nya
+    //             if ($previousDisposisi) {
+    //                 $previousDisposisi->update(['status' => 'Diteruskan']);
+    //             }
+
+    //             // Buat disposisi baru ke Kepala
+    //             Disposisi::create([
+    //                 'surat_id' => $surat->id,
+    //                 'dari_user_id' => $pengirim->id,
+    //                 'ke_user_id' => $kepala->id,
+    //                 'catatan' => $validated['catatan'],
+    //                 'status' => 'Menunggu',
+    //                 'tipe_aksi' => 'Teruskan',
+    //             ]);
+
+    //             // Update status surat
+    //             $surat->update(['status' => 'Diproses']);
+    //         });
+
+    //         return redirect()->back()->with('success', 'Surat berhasil dikirim ke Kepala.');
+    //     } catch (\Exception $e) {
+    //         \Log::error('Gagal mengirim surat ke Kepala: ' . $e->getMessage());
+    //         return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+    //     }
+    // }
+
+
+    public function kirimKeKepala(Request $request, SuratMasuk $surat)
     {
+        $validated = $request->validate([
+            'catatan' => 'required|string|max:1000',
+        ]);
+
         $pengirim = Auth::user();
         $kepala = User::whereHas('role', fn($q) => $q->where('name', 'Kepala LLDIKTI'))->firstOrFail();
 
         try {
-            DB::transaction(function () use ($surat, $pengirim, $kepala) {
+            DB::transaction(function () use ($surat, $pengirim, $kepala, $validated) {
                 // Cek apakah pengirim pernah menerima disposisi surat ini
                 $previousDisposisi = $surat->disposisis()
                     ->where('ke_user_id', $pengirim->id)
@@ -207,7 +256,7 @@ class DisposisiController extends Controller
                     'surat_id' => $surat->id,
                     'dari_user_id' => $pengirim->id,
                     'ke_user_id' => $kepala->id,
-                    'catatan' => $previousDisposisi ? 'Hasil Revisian' : 'Mohon Arahan Pimpinan',
+                    'catatan' => $validated['catatan'],
                     'status' => 'Menunggu',
                     'tipe_aksi' => 'Teruskan',
                 ]);
@@ -222,8 +271,6 @@ class DisposisiController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
-
-
 
     public function cetak($id)
     {
