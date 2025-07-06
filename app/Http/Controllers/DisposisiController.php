@@ -52,7 +52,7 @@ class DisposisiController extends Controller
 
         $surat->update(['status' => 'Diproses']);
 
-        return redirect()->route('surat.show', $surat->id)->with('success', 'Disposisi berhasil diteruskan.');
+        return redirect()->route('inbox.index', $surat->id)->with('success', 'Disposisi berhasil diteruskan.');
     }
 
     public function kembalikan(Request $request, Disposisi $disposisi)

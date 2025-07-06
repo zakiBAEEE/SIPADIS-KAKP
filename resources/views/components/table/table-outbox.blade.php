@@ -33,8 +33,17 @@
                         </p>
                     </td>
                     <td class="p-3">
-                        <p class="text-sm font-medium">{{ $disposisi->penerima->name ?? 'N/A' }}</p>
-                        <p class="text-xs text-gray-500">{{ $disposisi->penerima->role->name ?? '' }}</p>
+                        @if ($disposisi->penerima && $disposisi->penerima->divisi)
+                            <p class="text-sm font-medium">{{ $disposisi->penerima->name ?? 'N/A' }}
+                            </p>
+                            <p class="text-xs text-gray-500"> {{ $disposisi->penerima->divisi->nama_divisi }}
+                                ({{ $disposisi->penerima->role->name }})
+                            </p>
+                        @else
+                            <p class="text-sm font-medium">{{ $disposisi->penerima->name ?? 'N/A' }}
+                            </p>
+                            <p class="text-xs text-gray-500">{{ $disposisi->penerima->role->name ?? '' }}</p>
+                        @endif
                     </td>
                     <td class="p-3">
                         <p class="text-sm">{{ $disposisi->suratMasuk->perihal ?? '...' }}</p>
