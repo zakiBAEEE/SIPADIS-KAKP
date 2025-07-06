@@ -55,7 +55,7 @@
                         $isAdmin = $user->role->name === 'Admin';
 
                         $disposisiTerakhir = $surat->disposisis()->latest()->first();
-                        $belumPernahDidisposisikan = $disposisiTerakhir === null;
+                        $belumPernahDidisposisikan = !$surat->disposisis()->exists();
                         $terakhirKembalikan = $disposisiTerakhir && $disposisiTerakhir->tipe_aksi === 'Kembalikan';
                     @endphp
 
@@ -188,7 +188,7 @@
                                     ->first();
                             @endphp
 
-                            @if ($activeDisposisi && $activeDisposisi->ke_user_id === auth()->id())
+                            @if (($activeDisposisi && $activeDisposisi->ke_user_id === auth()->id()) || $belumPernahDidisposisikan)
                                 @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin']))
                                     @include('components.layout.modal-tambah-disposisi')
                                 @endif
