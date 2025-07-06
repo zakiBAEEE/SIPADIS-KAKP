@@ -18,8 +18,8 @@ class InboxController extends Controller
             ->with(['suratMasuk', 'pengirim.role']) // Eager loading
 
             // Tambahan default filter agar tidak menampilkan disposisi reject
-            ->whereIn('tipe_aksi', ['Teruskan', 'Revisi'])
-            ->whereIn('status', ['Menunggu', 'Dilihat', 'Diteruskan']);
+            ->whereIn('tipe_aksi', ['Teruskan'])
+            ->whereIn('status', ['Menunggu', 'Dilihat']);
 
         // ✅ Filter: Status
         if ($request->filled('status')) {
@@ -98,7 +98,7 @@ class InboxController extends Controller
             'pageTitle' => 'Outbox: Riwayat Disposisi Terkirim'
         ]);
     }
-   
+
 
     public function ditolak(Request $request)
     {

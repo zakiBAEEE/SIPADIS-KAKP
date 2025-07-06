@@ -108,27 +108,4 @@ class DisposisiService
         });
     }
 
-
-    public function kirimUlangKeKepala(SuratMasuk $surat, User $pengirim, User $penerima, string $catatan)
-    {
-        DB::transaction(function () use ($surat, $pengirim, $penerima, $catatan) {
-            // 1. Cari dan tutup tugas revisi yang aktif untuk pengirim (Admin)
-            $rejectionTask = $surat->disposisis()
-                ->where('ke_user_id', $pengirim->id)
-                ->where('tipe_aksi', 'kembalikan')
-                ->whereIn('status', ['Menunggu', 'Dilihat'])
-                ->first();
-
-            if ($rejectionTask) {
-                $rejectionTask->update(['status' => 'Ditindaklanjuti']);
-            }
-
-            // 2. Buat disposisi baru ke penerima (Kepala)
-            $this->create($surat, $pengirim, $penerima, $catatan, now(), 'teruskan');
-
-            // 3. Update status surat utama kembali menjadi 'Diproses'
-            $surat->update(['status' => 'Diproses']);
-        });
-    }
-
 }

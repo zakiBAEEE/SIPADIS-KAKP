@@ -39,7 +39,7 @@
                         <div class="flex flex-row justify-center gap-x-1" onclick="event.stopPropagation();">
                             @if (in_array(auth()->user()->role->name, ['Admin']))
                                 <form method="POST"
-                                    action="{{ route('surat.kirimUlangKeKepala', $disposisi->surat_id) }}"
+                                    action="{{ route('surat.kirimKeKepala', $disposisi->surat_id) }}"
                                     onsubmit="return confirm('Anda yakin ingin mengirim ulang surat ini setelah direvisi?');">
                                     @csrf
                                     <button type="submit"

@@ -47,7 +47,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/surat-masuk/{surat}', [SuratMasukController::class, 'update'])->name('surat.update');
         Route::delete('/surat-masuk/{surat}', [SuratMasukController::class, 'destroy'])->name('surat.destroy');
         Route::post('/surat-masuk/{surat}/kirim-ke-kepala', [DisposisiController::class, 'kirimKeKepala'])->name('surat.kirimKeKepala');
-        Route::post('/surat-masuk/{surat}/kirim-ulang-ke-kepala', [DisposisiController::class, 'kirimUlangKeKepala'])->name('surat.kirimUlangKeKepala');
         Route::get('/surat/klasifikasi', [SuratMasukController::class, 'detailByKlasifikasi'])->name('surat.klasifikasi');
         Route::get('/arsip-surat', [SuratMasukController::class, 'arsipSurat'])->name('surat.arsip');
 
@@ -78,7 +77,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/inbox', [InboxController::class, 'index'])->name('inbox.index');
         Route::post('/disposisi/{disposisi}/kembalikan', [DisposisiController::class, 'kembalikan'])->name('disposisi.kembalikan');
         // Route pengiriman ulang revisi ke kepala
-        // Route::post('/inbox/ditolak/{surat}/kirim-ulang', [DisposisiController::class, 'kirimUlangKeKepala'])->name('surat.kirimUlangKeKepala');
     });
 
     /*
