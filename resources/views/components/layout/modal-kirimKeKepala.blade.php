@@ -19,19 +19,9 @@
                     </svg>
                 </button>
             </div>
-            <form action="{{ route('disposisi.store', $surat->id) }}" method="POST">
+            <form action="{{ route('surat.kirimKeKepala', $surat->id) }}" method="POST">
                 @csrf
                 <div class="p-4 flex flex-col gap-2">
-                    <div class="flex flex-row gap-2 justify-evenly">
-                      
-                        <div class=" w-full">
-                            @include('components.base.dropdown', [
-                                'label' => 'Tujuan Disposisi',
-                                'value' => $daftarUser->values()->toArray(),
-                                'name' => 'ke_user_id',
-                            ])
-                        </div>
-                    </div>
                     <div>
                         @include('components.base.input-surat', [
                             'label' => 'Instruksi',
