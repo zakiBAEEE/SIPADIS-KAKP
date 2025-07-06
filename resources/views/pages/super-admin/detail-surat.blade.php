@@ -168,10 +168,7 @@
                                     ->first();
                             @endphp
 
-                            {{-- 2. Tampilkan tombol aksi HANYA JIKA ada disposisi aktif DAN 
-                   pengguna yang login adalah penerima disposisi aktif tersebut --}}
                             @if ($activeDisposisi && $activeDisposisi->ke_user_id === auth()->id())
-                                {{-- Tombol untuk memicu modal "Tambah/Teruskan Disposisi" --}}
                                 @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin']))
                                     @include('components.layout.modal-tambah-disposisi')
                                 @endif
@@ -181,8 +178,13 @@
                                         onsubmit="return confirm('Anda yakin ingin mengirim ulang surat ini setelah direvisi?');">
                                         @csrf
                                         <button type="submit"
-                                            class="px-3 py-1 bg-green-600 text-white rounded-md text-xs font-semibold hover:bg-green-700">
-                                            Kirim Ulang
+                                            class="px-3 py-1 bg-green-600 text-white rounded-md text-xs font-semibold hover:bg-green-700 flex flex-row items-center gap-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                                            </svg>
+                                           <p>Kirim ke Kepala</p> 
                                         </button>
                                     </form>
                                 @endif
