@@ -31,7 +31,7 @@
 
         {{-- Isi slot "tableContent" --}}
         <x-slot:tableContent>
-            @include('components.table.table', ['surats' => $surats]) {{-- Asumsi tabel surat --}}
+            @include('components.table.tabel-arsip-surat', ['surats' => $surats]) {{-- Asumsi tabel surat --}}
         </x-slot:tableContent>
     </x-layout.page-list-layout>
 

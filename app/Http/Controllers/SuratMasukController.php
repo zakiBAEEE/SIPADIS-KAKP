@@ -66,9 +66,6 @@ class SuratMasukController extends Controller
     {
         $query = SuratMasuk::whereHas('disposisis');
 
-        // Filter berdasarkan berbagai parameter
-
-
         if ($request->filled('nomor_surat')) {
             $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
         }
