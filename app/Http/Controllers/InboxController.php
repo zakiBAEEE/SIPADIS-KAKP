@@ -109,7 +109,6 @@ class InboxController extends Controller
         ]);
     }
 
-
     public function ditolak(Request $request)
     {
         $query = Disposisi::query()
