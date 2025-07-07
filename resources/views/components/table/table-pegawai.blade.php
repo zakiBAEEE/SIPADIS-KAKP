@@ -16,10 +16,10 @@
                     Divisi
                 </th>
                 <th class="px-2.5 py-2 text-start font-bold">
-                    Aksi
+                    Status
                 </th>
                 <th class="px-2.5 py-2 text-start font-bold">
-                    Status
+                    Aksi
                 </th>
             </tr>
         </thead>
@@ -43,9 +43,6 @@
                         @endif
                     </td>
                     <td class="p-3">
-
-                    </td>
-                    <td class="p-3">
                         @if ($user->is_active)
                             <span class="bg-green-100 text-green-800 px-2 py-1 text-xs rounded-full">
                                 Aktif
@@ -55,6 +52,23 @@
                                 Nonaktif
                             </span>
                         @endif
+                    </td>
+                    <td class="p-3">
+                        <div class="flex flex-row gap-x-1">
+                            {{-- @include('components.layout.modal-edit-tim-kerja', [
+                                'id' => $divisi->id,
+                                'namaDivisi' => $divisi->nama_divisi,
+                                'isActive' => $divisi->is_active,
+                            ]) --}}
+                            <form action="{{ route('pegawai.destroy', $user->id) }}" method="POST"
+                                onsubmit="return confirm('Yakin ingin menghapus tim kerja ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">
+                                    @include('components.base.ikon-hapus')
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             @empty

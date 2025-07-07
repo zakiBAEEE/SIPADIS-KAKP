@@ -55,9 +55,8 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'role_id' => 'required|exists:roles,id',
-            'divisi_id' => 'nullable|exists:divisis,id',
             'password' => ['nullable', 'confirmed', Password::min(8)],
+            'is_active' => 'required|boolean',
         ]);
 
         // Hanya update password jika diisi
@@ -84,13 +83,13 @@ class UserController extends Controller
         }
 
         // Otorisasi: Pastikan hanya Super Admin yang bisa menghapus
-        if (auth()->user()->role->name !== 'Super Admin Surat') {
+        if (auth()->user()->role->name !== 'Admin') {
             return redirect()->route('pegawai.index')->with('error', 'Anda tidak memiliki izin untuk menghapus pegawai.');
         }
 
         // Pencegahan: Cek apakah user memiliki relasi penting (contoh: disposisi)
         if ($user->disposisiDikirim()->exists() || $user->disposisiDiterima()->exists()) {
-            return redirect()->route('pegawai.index')->with('error', 'Tidak dapat menghapus pegawai ini karena memiliki riwayat disposisi. Harap alihkan tugasnya terlebih dahulu.');
+            return redirect()->route('pegawai.index')->with('error', 'Tidak dapat menghapus pegawai ini karena memiliki riwayat disposisi.');
         }
 
         $user->delete();
