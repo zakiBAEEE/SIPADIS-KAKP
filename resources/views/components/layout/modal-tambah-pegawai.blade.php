@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
+                        {{-- <div>
                             <label for="tambah_role_id" class="block text-sm font-medium text-gray-700 mb-1">Peran
                                 (Role)</label>
                             <select name="role_id" id="tambah_role_id"
@@ -77,7 +77,47 @@
                                         {{ $divisi->nama_divisi }}</option>
                                 @endforeach
                             </select>
+                        </div> --}}
+
+                        <div>
+                            <label for="tambah_role_id" class="block text-sm font-medium text-gray-700 mb-1">
+                                Peran (Role)
+                            </label>
+                            <select name="role_id" id="tambah_role_id"
+                                class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                                required>
+                                <option value="">-- Pilih Peran --</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->id }}" data-role-name="{{ $role->name }}"
+                                        {{ old('role_id') == $role->id ? 'selected' : '' }}>
+                                        {{ $role->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('role_id')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
+
+                        <div>
+                            <label for="tambah_divisi_id" class="block text-sm font-medium text-gray-700 mb-1">
+                                Divisi (Opsional)
+                            </label>
+                            <select name="divisi_id" id="tambah_divisi_id"
+                                class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm 
+           disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
+                                disabled>
+                                <option value="">-- Pilih Divisi --</option>
+                                @foreach ($divisis as $divisi)
+                                    <option value="{{ $divisi->id }}"
+                                        {{ old('divisi_id') == $divisi->id ? 'selected' : '' }}>
+                                        {{ $divisi->nama_divisi }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

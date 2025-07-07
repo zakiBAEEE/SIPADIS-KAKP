@@ -3,6 +3,7 @@ import './components/datepicker';
 import './components/filepond';
 import { initMaterialTailwind } from '@material-tailwind/html';
 import Alpine from 'alpinejs';
+import initDivisiToggle from './components/initDivisiToggle';
 import { initializeCharts } from './components/initChart';
 import { initializeAlerts } from './components/alert-handler';
 import { handleFormReset } from './components/resetForm';
@@ -13,13 +14,11 @@ Alpine.start();
 
 
 
-
-
-
     handleFormReset('#filterSuratKlasifikasi form', '#filterSuratKlasifikasi button[type="reset"]');
     handleFormReset('#filterSuratArsip form', '#resetDisposisiForm');
     handleFormReset('#filterSuratDraft form', '#resetDisposisiForm');
     handleFormReset('#filterSuratDitolak form', '#resetDisposisiForm');
+    initDivisiToggle();
     initializeAlerts();
     initializeCharts();
     initMaterialTailwind();
