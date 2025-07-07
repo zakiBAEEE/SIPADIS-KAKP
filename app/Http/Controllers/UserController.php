@@ -17,12 +17,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        // Mengambil semua user, beserta relasi role dan divisi untuk efisiensi query
+        // Ambil semua user dengan relasi role & divisi
         $users = User::with(['role', 'divisi'])->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('pages.super-admin.pegawai', compact('users'));
-    }
+        // Ambil semua role dan divisi
+        $roles = Role::all();
+        $divisis = Divisi::all();
 
+        return view('pages.super-admin.pegawai', compact('users', 'roles', 'divisis'));
+    }
     public function store(Request $request)
     {
         $validated = $request->validate([

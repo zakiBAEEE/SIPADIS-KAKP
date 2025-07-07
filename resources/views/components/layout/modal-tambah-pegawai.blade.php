@@ -52,9 +52,9 @@
                                 class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                                 required>
                                 <option value="">-- Pilih Peran --</option>
-                                {{-- @foreach ($roles as $role)
+                                @foreach ($roles as $role)
                                     <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
-                                @endforeach --}}
+                                @endforeach
                             </select>
                             @error('role_id')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -66,9 +66,9 @@
                             <select name="divisi_id" id="tambah_divisi_id"
                                 class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
                                 <option value="">-- Pilih Divisi --</option>
-                                {{-- @foreach ($divisis as $divisi)
+                                @foreach ($divisis as $divisi)
                                     <option value="{{ $divisi->id }}" {{ old('divisi_id') == $divisi->id ? 'selected' : '' }}>{{ $divisi->nama_divisi }}</option>
-                                @endforeach --}}
+                                @endforeach
                             </select>
                         </div>
                     </div>
