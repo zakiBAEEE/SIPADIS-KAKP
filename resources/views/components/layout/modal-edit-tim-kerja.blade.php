@@ -4,25 +4,30 @@
         @include('components.base.ikon-edit')
 
     </button>
-    <div class="fixed antialiased inset-0 bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-[9999]"
-        id="modalEditTimKerja-{{ $id }}" aria-hidden="true">
+    <div id="modalEditTimKerja-{{ $id }}"
+        class="fixed inset-0 z-[9999] bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out antialiased"
+        aria-hidden="true">
         <div
-            class="bg-white rounded-lg w-10/12 md:w-8/12 lg:w-6/12 transition-transform duration-300 ease-out scale-100">
-            <div class="p-4 pb-2 flex justify-between items-center">
-                <h1 class="text-lg text-slate-800 font-semibold">Edit Tim Kerja</h1>
+            class="bg-white rounded-xl w-11/12 md:w-8/12 lg:w-5/12 shadow-lg transition-transform duration-300 ease-out scale-100 relative">
+
+            {{-- Header --}}
+            <div class="flex justify-between items-center px-6 pt-6 pb-4 border-b border-slate-200">
+                <h1 class="text-xl font-semibold text-slate-800">Edit Tim Kerja</h1>
                 <button type="button" data-dismiss="modal" aria-label="Close"
-                    class="inline-grid place-items-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none data-[shape=circular]:rounded-full text-sm min-w-[34px] min-h-[34px] rounded-md bg-transparent border-transparent text-slate-200-foreground hover:bg-slate-200/10 hover:border-slate-200/10 shadow-none hover:shadow-none outline-none absolute right-2 top-2">
-                    <svg width="1.5em" height="1.5em" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg" color="currentColor" class="h-5 w-5">
-                        <path
-                            d="M6.75827 17.2426L12.0009 12M17.2435 6.75736L12.0009 12M12.0009 12L6.75827 6.75736M12.0009 12L17.2435 17.2426"
-                            stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                    class="p-2 rounded-full hover:bg-slate-100 text-slate-600 hover:text-slate-800 transition absolute right-4 top-4">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6.75 6.75l10.5 10.5m0-10.5L6.75 17.25" />
                     </svg>
                 </button>
             </div>
+
+            {{-- Form --}}
             <form action="{{ route('timKerja.update', $id) }}" method="POST">
                 @csrf
-                <div class="p-4 flex flex-col gap-2">
+
+                <div class="px-6 py-4 space-y-6">
+                    {{-- Nama Tim Kerja --}}
                     <div>
                         @include('components.base.input-surat', [
                             'label' => 'Tim Kerja',
@@ -31,27 +36,40 @@
                             'value' => $namaDivisi,
                         ])
                     </div>
-                    <div class="p-4 pt-0">
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Status Tim Kerja</label>
-                        <div class="flex items-center gap-4">
-                            <label class="flex items-center gap-1 text-sm text-slate-600">
-                                <input type="radio" name="is_active" value="1" {{ $isActive ? 'checked' : '' }}>
-                                Aktif
+
+                    {{-- Status Radio --}}
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Status Tim Kerja</label>
+                        <div class="flex gap-6">
+                            <label class="inline-flex items-center gap-2 text-sm text-slate-700">
+                                <input type="radio" name="is_active" value="1"
+                                    class="text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                                    {{ $isActive ? 'checked' : '' }}>
+                                <span>Aktif</span>
                             </label>
-                            <label class="flex items-center gap-1 text-sm text-slate-600">
-                                <input type="radio" name="is_active" value="0" {{ !$isActive ? 'checked' : '' }}>
-                                Nonaktif
+                            <label class="inline-flex items-center gap-2 text-sm text-slate-700">
+                                <input type="radio" name="is_active" value="0"
+                                    class="text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                                    {{ !$isActive ? 'checked' : '' }}>
+                                <span>Nonaktif</span>
                             </label>
                         </div>
                     </div>
                 </div>
-                <div class="p-4 flex justify-end gap-2">
+
+                {{-- Footer --}}
+                <div class="px-6 py-4 flex justify-end gap-3 border-t border-slate-200">
                     <button type="button" data-dismiss="modal"
-                        class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 bg-transparent border-transparent text-red-500 hover:bg-red-500/10 hover:border-red-500/10 shadow-none hover:shadow-none outline-none">Batal</button>
+                        class="px-4 py-2 rounded-md text-sm font-medium text-red-600 hover:bg-red-50 transition">
+                        Batal
+                    </button>
                     <button type="submit"
-                        class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-slate-800 border-slate-800 text-slate-50 hover:bg-slate-700 hover:border-slate-700">Edit</button>
+                        class="px-4 py-2 rounded-md text-sm font-medium text-white bg-slate-800 hover:bg-slate-700 transition shadow">
+                        Edit
+                    </button>
                 </div>
             </form>
         </div>
     </div>
+
 </div>
