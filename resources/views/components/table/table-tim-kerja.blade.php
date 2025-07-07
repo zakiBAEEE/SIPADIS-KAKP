@@ -27,7 +27,15 @@
                         {{ $divisi->nama_divisi }}
                     </td>
                     <td class="p-3">
-                        {{ $divisi->is_active }}
+                        @if ($divisi->is_active)
+                            <span class="bg-green-100 text-green-800 px-2 py-1 text-xs rounded-full">
+                                Aktif
+                            </span>
+                        @else
+                            <span class="bg-red-100 text-red-800 px-2 py-1 text-xs rounded-full">
+                                Nonaktif
+                            </span>
+                        @endif
                     </td>
                     <td class="p-3">
                         <div class="flex flex-row gap-x-1">
