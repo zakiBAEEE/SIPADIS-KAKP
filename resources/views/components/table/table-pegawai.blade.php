@@ -18,6 +18,9 @@
                 <th class="px-2.5 py-2 text-start font-bold">
                     Aksi
                 </th>
+                 <th class="px-2.5 py-2 text-start font-bold">
+                    Status
+                </th>
             </tr>
         </thead>
         <tbody class="group text-sm text-slate-800">
@@ -30,7 +33,7 @@
                         {{ $user->username }}
                     </td>
                     <td class="p-3">
-
+                        {{ $user->role->name }}
                     </td>
                     <td class="p-3">
                         @if ($user->divisi && $user->divisi->nama_divisi)
@@ -40,6 +43,9 @@
                         @endif
                     </td>
                     <td class="p-3">
+
+                    </td>
+                      <td class="p-3">
 
                     </td>
                 </tr>
