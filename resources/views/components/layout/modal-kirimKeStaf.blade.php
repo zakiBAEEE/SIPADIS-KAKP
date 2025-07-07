@@ -31,7 +31,6 @@
                     @php
                         $user = Auth::user();
 
-                        // Ambil semua staf di divisi yang sama dengan user login (asumsi user = Katimja)
                         $stafs = \App\Models\User::where('divisi_id', $user->divisi_id)
                             ->whereHas('role', fn($q) => $q->where('name', 'Staf'))
                             ->get();

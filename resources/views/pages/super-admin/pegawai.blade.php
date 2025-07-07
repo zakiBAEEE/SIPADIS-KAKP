@@ -10,7 +10,7 @@
                 </h6>
             </div>
             <div class="flex flex-row gap-2">
-                @include('components.layout.modal-tambah-surat')
+                @include('components.layout.modal-tambah-pegawai')
             </div>
         </div>
         <hr class="w-full border-t border-gray-300 my-4" />
