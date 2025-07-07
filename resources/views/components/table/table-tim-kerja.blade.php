@@ -9,6 +9,9 @@
                 <th class="px-2.5 py-2 text-start font-bold">
                     Nama Tim Kerja
                 </th>
+                <th class="px-2.5 py-2 text-start font-bold">
+                    Status
+                </th>
                 <th>
                     Aksi
                 </th>
@@ -22,6 +25,9 @@
                     </td>
                     <td class="p-3">
                         {{ $divisi->nama_divisi }}
+                    </td>
+                    <td class="p-3">
+                        {{ $divisi->is_active }}
                     </td>
                     <td class="p-3">
                         <div class="flex flex-row gap-x-1">
