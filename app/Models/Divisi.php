@@ -9,6 +9,7 @@ class Divisi extends Model
     protected $fillable = [
         'nama_divisi',
         'is_active',
+        'parent_role_id',
     ];
 
     protected function casts(): array

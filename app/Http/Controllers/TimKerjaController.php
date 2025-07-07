@@ -8,14 +8,13 @@ use Illuminate\Http\Request;
 
 class TimKerjaController extends Controller
 {
-    
+
 
     public function index()
     {
         // Query ini dipertahankan karena dibutuhkan di view
         $indukRoles = Role::whereIn('name', ['Kepala LLDIKTI', 'KBU'])->get();
 
-       
 
         // Query untuk data utama
         $divisis = Divisi::orderBy('created_at', 'desc')->paginate(8);
@@ -25,17 +24,41 @@ class TimKerjaController extends Controller
     }
 
     // STORE: Simpan data baru
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'nama_divisi' => 'required|string|max:255|unique:divisis,nama_divisi',
+    //         // 'parent_role_id' => 'required|exists:roles,id',
+    //     ]);
+
+
+    //     try {
+    //         Divisi::create([
+    //             'nama_divisi' => $request->nama_divisi,
+    //             // 'parent_role_id' => $request->parent_role_id,
+    //         ]);
+
+    //         return redirect()->route('timKerja.index')
+    //             ->with('success', 'Tim kerja berhasil ditambahkan.');
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()
+    //             ->withInput()
+    //             ->with('error', 'Gagal menambahkan tim kerja. Silakan coba lagi atau hubungi administrator.');
+    //     }
+    // }
+
     public function store(Request $request)
     {
         $request->validate([
             'nama_divisi' => 'required|string|max:255|unique:divisis,nama_divisi',
-            // 'parent_role_id' => 'required|exists:roles,id',
+            'parent_role_id' => 'required|exists:roles,id',
         ]);
 
         try {
             Divisi::create([
                 'nama_divisi' => $request->nama_divisi,
-                // 'parent_role_id' => $request->parent_role_id,
+                'is_active' => true, 
+                'parent_role_id' => $request->parent_role_id,
             ]);
 
             return redirect()->route('timKerja.index')
@@ -47,7 +70,7 @@ class TimKerjaController extends Controller
         }
     }
 
-    // EDIT: Tampilkan form edit
+
     public function edit($id)
     {
         $divisi = Divisi::findOrFail($id);
