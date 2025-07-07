@@ -18,7 +18,7 @@
                 <th class="px-2.5 py-2 text-start font-bold">
                     Aksi
                 </th>
-                 <th class="px-2.5 py-2 text-start font-bold">
+                <th class="px-2.5 py-2 text-start font-bold">
                     Status
                 </th>
             </tr>
@@ -45,8 +45,16 @@
                     <td class="p-3">
 
                     </td>
-                      <td class="p-3">
-
+                    <td class="p-3">
+                        @if ($user->is_active)
+                            <span class="bg-green-100 text-green-800 px-2 py-1 text-xs rounded-full">
+                                Aktif
+                            </span>
+                        @else
+                            <span class="bg-red-100 text-red-800 px-2 py-1 text-xs rounded-full">
+                                Nonaktif
+                            </span>
+                        @endif
                     </td>
                 </tr>
             @empty
