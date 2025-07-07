@@ -31,6 +31,19 @@
                             'value' => $namaDivisi,
                         ])
                     </div>
+                    <div class="p-4 pt-0">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Status Tim Kerja</label>
+                        <div class="flex items-center gap-4">
+                            <label class="flex items-center gap-1 text-sm text-slate-600">
+                                <input type="radio" name="is_active" value="1" {{ $isActive ? 'checked' : '' }}>
+                                Aktif
+                            </label>
+                            <label class="flex items-center gap-1 text-sm text-slate-600">
+                                <input type="radio" name="is_active" value="0" {{ !$isActive ? 'checked' : '' }}>
+                                Nonaktif
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="p-4 flex justify-end gap-2">
                     <button type="button" data-dismiss="modal"

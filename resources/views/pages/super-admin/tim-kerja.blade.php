@@ -1,36 +1,22 @@
 @extends('layouts.super-admin-layout')
 
 @section('content')
-  
     @if (session('success'))
-       
-        <div role="alert"
-            class="js-dismissable-alert fixed top-5 right-5 z-50 flex max-w-[35rem] items-center rounded-lg border border-green-500 bg-green-500 p-3 text-white shadow-lg transition-all duration-300 ease-in-out"
-            style="opacity: 1; transform: translateY(0);">
-
-            <div class="m-1.5 w-full font-sans text-base font-medium leading-none">{{ session('success') }}</div>
-
-            <button type="button" class="js-close-alert p-1 absolute top-1 right-1" aria-label="Close">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                    stroke="currentColor" class="h-5 w-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+        <div class="js-dismissable-alert fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md flex items-center justify-between rounded-lg bg-green-100 px-6 py-5 text-base text-green-700 shadow-lg transition-opacity duration-300"
+            role="alert">
+            <span>{{ session('success') }}</span>
+            <button type="button" class="js-close-alert text-green-700 hover:text-green-900">
+                &times;
             </button>
         </div>
     @endif
 
     @if (session('error'))
-        <div role="alert"
-            class="js-dismissable-alert fixed top-5 right-5 z-50 flex max-w-[35rem] items-center rounded-lg border border-red-500 bg-red-500 p-3 text-white shadow-lg transition-all duration-300 ease-in-out"
-            style="opacity: 1; transform: translateY(0);">
-
-            <div class="m-1.5 w-full font-sans text-base font-medium leading-none">{{ session('error') }}</div>
-
-            <button type="button" class="js-close-alert p-1 absolute top-1 right-1" aria-label="Close">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                    stroke="currentColor" class="h-5 w-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+        <div class="js-dismissable-alert fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md flex items-center justify-between rounded-lg bg-red-100 px-6 py-5 text-base text-red-700 shadow-lg transition-opacity duration-300"
+            role="alert">
+            <span>{{ session('error') }}</span>
+            <button type="button" class="js-close-alert text-red-700 hover:text-red-900">
+                &times;
             </button>
         </div>
     @endif

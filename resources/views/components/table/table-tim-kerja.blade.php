@@ -42,6 +42,7 @@
                             @include('components.layout.modal-edit-tim-kerja', [
                                 'id' => $divisi->id,
                                 'namaDivisi' => $divisi->nama_divisi,
+                                'isActive' => $divisi->is_active,
                             ])
                             <form action="{{ route('tim-kerja.destroy', $divisi->id) }}" method="POST"
                                 onsubmit="return confirm('Yakin ingin menghapus tim kerja ini?')">

@@ -23,30 +23,6 @@ class TimKerjaController extends Controller
         return view('pages.super-admin.tim-kerja', compact('divisis', 'indukRoles'));
     }
 
-    // STORE: Simpan data baru
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'nama_divisi' => 'required|string|max:255|unique:divisis,nama_divisi',
-    //         // 'parent_role_id' => 'required|exists:roles,id',
-    //     ]);
-
-
-    //     try {
-    //         Divisi::create([
-    //             'nama_divisi' => $request->nama_divisi,
-    //             // 'parent_role_id' => $request->parent_role_id,
-    //         ]);
-
-    //         return redirect()->route('timKerja.index')
-    //             ->with('success', 'Tim kerja berhasil ditambahkan.');
-    //     } catch (\Exception $e) {
-    //         return redirect()->back()
-    //             ->withInput()
-    //             ->with('error', 'Gagal menambahkan tim kerja. Silakan coba lagi atau hubungi administrator.');
-    //     }
-    // }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -57,7 +33,7 @@ class TimKerjaController extends Controller
         try {
             Divisi::create([
                 'nama_divisi' => $request->nama_divisi,
-                'is_active' => true, 
+                'is_active' => true,
                 'parent_role_id' => $request->parent_role_id,
             ]);
 
@@ -77,20 +53,38 @@ class TimKerjaController extends Controller
     }
 
     // UPDATE: Simpan perubahan
+    // public function update(Request $request, $id)
+    // {
+    //     $divisi = Divisi::findOrFail($id);
+
+    //     $request->validate([
+    //         'nama_divisi' => 'required|string|max:255|unique:divisis,nama_divisi,' . $divisi->id,
+    //     ]);
+
+    //     $divisi->update([
+    //         'nama_divisi' => $request->nama_divisi,
+    //     ]);
+
+    //     return redirect()->route('timKerja.index')->with('success', 'Tim kerja berhasil diperbarui.');
+    // }
+
     public function update(Request $request, $id)
     {
         $divisi = Divisi::findOrFail($id);
 
         $request->validate([
             'nama_divisi' => 'required|string|max:255|unique:divisis,nama_divisi,' . $divisi->id,
+            'is_active' => 'required|boolean',
         ]);
 
         $divisi->update([
             'nama_divisi' => $request->nama_divisi,
+            'is_active' => $request->is_active,
         ]);
 
         return redirect()->route('timKerja.index')->with('success', 'Tim kerja berhasil diperbarui.');
     }
+
 
     // DELETE: Hapus data
     public function destroy($id)
