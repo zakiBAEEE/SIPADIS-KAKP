@@ -26,7 +26,8 @@
                 <div class="p-6 space-y-4">
 
                     <div>
-                        <label for="tambah_name" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                        <label for="tambah_name" class="block text-sm font-medium text-gray-700 mb-1">Nama
+                            Lengkap</label>
                         <input type="text" name="name" id="tambah_name"
                             class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                             value="{{ old('name') }}" required>
@@ -36,7 +37,8 @@
                     </div>
 
                     <div>
-                        <label for="tambah_username" class="block text-sm font-medium text-gray-700 mb-1">Username (NIP/ID)</label>
+                        <label for="tambah_username" class="block text-sm font-medium text-gray-700 mb-1">Username
+                            (NIP/ID)</label>
                         <input type="text" name="username" id="tambah_username"
                             class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                             value="{{ old('username') }}" required>
@@ -47,13 +49,15 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label for="tambah_role_id" class="block text-sm font-medium text-gray-700 mb-1">Peran (Role)</label>
+                            <label for="tambah_role_id" class="block text-sm font-medium text-gray-700 mb-1">Peran
+                                (Role)</label>
                             <select name="role_id" id="tambah_role_id"
                                 class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                                 required>
                                 <option value="">-- Pilih Peran --</option>
                                 @foreach ($roles as $role)
-                                    <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
+                                    <option value="{{ $role->id }}"
+                                        {{ old('role_id') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
                                 @endforeach
                             </select>
                             @error('role_id')
@@ -62,12 +66,15 @@
                         </div>
 
                         <div>
-                            <label for="tambah_divisi_id" class="block text-sm font-medium text-gray-700 mb-1">Divisi (Opsional)</label>
+                            <label for="tambah_divisi_id" class="block text-sm font-medium text-gray-700 mb-1">Divisi
+                                (Opsional)</label>
                             <select name="divisi_id" id="tambah_divisi_id"
                                 class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
                                 <option value="">-- Pilih Divisi --</option>
                                 @foreach ($divisis as $divisi)
-                                    <option value="{{ $divisi->id }}" {{ old('divisi_id') == $divisi->id ? 'selected' : '' }}>{{ $divisi->nama_divisi }}</option>
+                                    <option value="{{ $divisi->id }}"
+                                        {{ old('divisi_id') == $divisi->id ? 'selected' : '' }}>
+                                        {{ $divisi->nama_divisi }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -75,7 +82,8 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label for="tambah_password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                            <label for="tambah_password"
+                                class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                             <input type="password" name="password" id="tambah_password"
                                 class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                                 required>

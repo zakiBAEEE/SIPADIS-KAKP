@@ -10,10 +10,13 @@
                     Username
                 </th>
                 <th class="px-2.5 py-2 text-start font-bold">
-                    Password
+                    Role
                 </th>
                 <th class="px-2.5 py-2 text-start font-bold">
-                    Role
+                    Divisi
+                </th>
+                <th class="px-2.5 py-2 text-start font-bold">
+                    Aksi
                 </th>
             </tr>
         </thead>
@@ -27,14 +30,17 @@
                         {{ $user->username }}
                     </td>
                     <td class="p-3">
-                        {{ $user->password }}
+
                     </td>
                     <td class="p-3">
                         @if ($user->divisi && $user->divisi->nama_divisi)
                             {{ $user->divisi->nama_divisi }}
                         @else
-                            {{ $user->role->name ?? '-' }}
+                            --
                         @endif
+                    </td>
+                    <td class="p-3">
+
                     </td>
                 </tr>
             @empty
