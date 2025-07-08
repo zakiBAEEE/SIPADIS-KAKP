@@ -61,7 +61,7 @@
                                 'isActive' => $divisi->is_active,
                             ]) --}}
                             <form action="{{ route('pegawai.destroy', $user->id) }}" method="POST"
-                                onsubmit="return confirm('Yakin ingin menghapus tim kerja ini?')">
+                                onsubmit="return confirm('Yakin ingin menghapus pegawai ini?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit">

@@ -23,21 +23,53 @@
             </div>
 
             {{-- Form --}}
-            <form action="{{ route('timKerja.update', $id) }}" method="POST">
+            <form action="{{ route('pegawai.update', $id) }}" method="POST">
                 @csrf
+                <div class="p-6 space-y-4">
 
-                <div class="px-6 py-4 space-y-6">
-                    {{-- Nama Tim Kerja --}}
                     <div>
-                        @include('components.base.input-surat', [
-                            'label' => 'Tim Kerja',
-                            'placeholder' => 'Masukkan Tim Kerja',
-                            'name' => 'nama_divisi',
-                            'value' => $namaDivisi,
-                        ])
+                        <label for="tambah_name" class="block text-sm font-medium text-gray-700 mb-1">Nama
+                            Lengkap</label>
+                        <input type="text" name="name" id="tambah_name"
+                            class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                            value="{{ old('name') }}" required>
+                        @error('name')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                    {{-- Status Radio --}}
+                    <div>
+                        <label for="tambah_username" class="block text-sm font-medium text-gray-700 mb-1">Username
+                            </label>
+                        <input type="text" name="username" id="tambah_username"
+                            class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                            value="{{ old('username') }}" required>
+                        @error('username')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="tambah_password"
+                                class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                            <input type="password" name="password" id="tambah_password"
+                                class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                                required>
+                            @error('password')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="tambah_password_confirmation"
+                                class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password</label>
+                            <input type="password" name="password_confirmation" id="tambah_password_confirmation"
+                                class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                                required>
+                        </div>
+                    </div>
+
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-2">Status Tim Kerja</label>
                         <div class="flex gap-6">
@@ -57,7 +89,6 @@
                     </div>
                 </div>
 
-                {{-- Footer --}}
                 <div class="px-6 py-4 flex justify-end gap-3 border-t border-slate-200">
                     <button type="button" data-dismiss="modal"
                         class="px-4 py-2 rounded-md text-sm font-medium text-red-600 hover:bg-red-50 transition">

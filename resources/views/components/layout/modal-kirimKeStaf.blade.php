@@ -41,7 +41,7 @@
                             <p class="text-sm font-semibold text-slate-700 mb-2">Daftar Staf di Divisi Ini:</p>
                             <ul class="list-disc pl-6 text-sm text-slate-600 space-y-1">
                                 @foreach ($stafs as $staf)
-                                    <li>{{ $staf->name }} ({{ $staf->email }})</li>
+                                    <li>{{ $staf->name }}</li>
                                 @endforeach
                             </ul>
                         </div>

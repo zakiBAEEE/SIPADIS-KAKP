@@ -155,7 +155,7 @@ class DisposisiController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->id !== $disposisi->ke_user_id || $user->role->name !== 'Staf') {
+        if ($user->role->name !== 'Staf') {
             return redirect()->back()->with('error', 'Anda tidak berhak mengembalikan disposisi ini.');
         }
 
@@ -183,10 +183,10 @@ class DisposisiController extends Controller
                 $surat->update(['status' => 'Dikembalikan']);
             });
 
-            return redirect()->back()->with('success', 'Surat berhasil dikembalikan ke atasan.');
+            return redirect()->route('inbox.index')->with('success', 'Disposisi berhasil dikembalikan.');
         } catch (\Exception $e) {
             \Log::error('Gagal mengembalikan surat: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Gagal mengembalikan surat: ' . $e->getMessage());
+            return redirect()->route('inbox.index')->with('error', 'Gagal mengembalikan surat: ' . $e->getMessage());
         }
     }
 
