@@ -17,10 +17,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        // Ambil semua user dengan relasi role & divisi
         $users = User::with(['role', 'divisi'])->orderBy('created_at', 'desc')->paginate(10);
 
-        // Ambil semua role dan divisi
         $roles = Role::all();
         $divisis = Divisi::all();
 
@@ -44,12 +42,7 @@ class UserController extends Controller
         return redirect()->route('pegawai.index')->with('success', 'Pegawai baru berhasil ditambahkan.');
     }
 
-    /**
-     * Menampilkan form untuk mengedit data pengguna.
-     */
-    /**
-     * Memperbarui data pengguna di database.
-     */
+
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
@@ -72,9 +65,6 @@ class UserController extends Controller
         return redirect()->route('pegawai.index')->with('success', 'Data pegawai berhasil diperbarui.');
     }
 
-    /**
-     * Menghapus data pengguna dari database.
-     */
     public function destroy(User $user)
     {
         // Otorisasi: Jangan biarkan pengguna menghapus dirinya sendiri

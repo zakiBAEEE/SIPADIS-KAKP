@@ -22,14 +22,39 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
+    // public function store(LoginRequest $request): RedirectResponse
+    // {
+    //     $request->authenticate();
+    //     $request->session()->regenerate();
+
+    //     $user = Auth::user();
+
+    //     // Asumsikan user->role adalah relasi belongsTo
+    //     $role = $user->role->name ?? null;
+
+    //     if ($role === 'Admin') {
+    //         return redirect()->route('surat.home');
+    //     }
+
+    //     return redirect()->route('inbox.index');
+    // }
     public function store(LoginRequest $request): RedirectResponse
     {
+        // Autentikasi dahulu
         $request->authenticate();
         $request->session()->regenerate();
 
         $user = Auth::user();
 
-        // Asumsikan user->role adalah relasi belongsTo
+        // ✅ Cegah login jika user nonaktif atau divisinya nonaktif
+        if (!$user->is_active || ($user->divisi && !$user->divisi->is_active)) {
+            Auth::logout(); // penting! agar tidak lanjut login
+            return redirect()->route('login')->withErrors([
+                'username' => 'Akun Anda atau tim kerja Anda telah dinonaktifkan.',
+            ]);
+        }
+
+        // Redirect sesuai role
         $role = $user->role->name ?? null;
 
         if ($role === 'Admin') {
