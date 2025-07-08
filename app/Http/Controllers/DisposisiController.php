@@ -63,6 +63,15 @@ class DisposisiController extends Controller
         $validated = $request->validate([
             'catatan' => 'nullable|string|max:255',
         ]);
+        $pengirim = Auth::user();
+        $previousDisposisi = $surat->disposisis()
+            ->where('ke_user_id', $pengirim->id)
+            ->whereIn('status', ['Menunggu', 'Dilihat'])
+            ->first();
+
+        if ($previousDisposisi) {
+            $previousDisposisi->update(['status' => 'Diteruskan']);
+        }
 
         try {
             DB::transaction(function () use ($katimja, $surat, $validated) {
@@ -86,10 +95,10 @@ class DisposisiController extends Controller
                 $surat->update(['status' => 'Diproses']);
             });
 
-            return redirect()->back()->with('success', 'Surat berhasil didisposisikan ke semua staf.');
+            return redirect()->route('outbox.index', $surat->id)->with('success', 'Surat berhasil didisposisikan ke semua staf.');
         } catch (\Exception $e) {
             \Log::error('Gagal mendisposisikan ke semua staf: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->route('outbox.index', $surat->id)->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
