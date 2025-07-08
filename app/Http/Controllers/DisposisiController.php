@@ -151,7 +151,7 @@ class DisposisiController extends Controller
         return redirect()->route('inbox.index')->with('success', 'Disposisi berhasil dikembalikan.');
     }
 
-    public function kembalikanSuratStaf(Disposisi $disposisi)
+    public function kembalikanSuratStaf(Request $request, Disposisi $disposisi)
     {
         $user = Auth::user();
 
@@ -159,8 +159,13 @@ class DisposisiController extends Controller
             return redirect()->back()->with('error', 'Anda tidak berhak mengembalikan disposisi ini.');
         }
 
+        $validated = $request->validate([
+            'catatan_pengembalian' => 'required|string|max:1000'
+        ]);
+
         try {
-            DB::transaction(function () use ($disposisi, $user) {
+
+            DB::transaction(function () use ($disposisi, $user, $validated) {
                 $surat = $disposisi->suratMasuk;
 
                 // Update semua disposisi aktif dari staf untuk surat ini jadi "Dikembalikan"
@@ -174,7 +179,7 @@ class DisposisiController extends Controller
                     'surat_id' => $surat->id,
                     'dari_user_id' => $user->id,
                     'ke_user_id' => $disposisi->dari_user_id,
-                    'catatan' => 'Staf mengembalikan surat karena tidak dapat menangani.',
+                    'catatan' => $validated['catatan_pengembalian'],
                     'status' => 'Menunggu',
                     'tipe_aksi' => 'Kembalikan',
                 ]);
