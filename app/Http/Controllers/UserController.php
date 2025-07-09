@@ -42,7 +42,6 @@ class UserController extends Controller
         return redirect()->route('pegawai.index')->with('success', 'Pegawai baru berhasil ditambahkan.');
     }
 
-
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([

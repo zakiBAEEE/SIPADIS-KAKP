@@ -41,15 +41,16 @@
                             <p class="text-sm font-semibold text-slate-700 mb-2">Daftar Staf di Divisi Ini:</p>
                             <ul class="list-disc pl-6 text-sm text-slate-600 space-y-1">
                                 @foreach ($stafs as $staf)
-                                    <li>{{ $staf->name }}</li>
+                                    @if ($staf->is_active)
+                                        <li>{{ $staf->name }}</li>
+                                    @endif
                                 @endforeach
                             </ul>
                         </div>
                     @else
-                      
-                    <div class="p-4 pt-0">
-                        <p class="text-sm text-red-600">Tidak ada staf terdaftar di divisi ini.</p>
-                    </div>
+                        <div class="p-4 pt-0">
+                            <p class="text-sm text-red-600">Tidak ada staf terdaftar di divisi ini.</p>
+                        </div>
                     @endif
 
                 </div>
