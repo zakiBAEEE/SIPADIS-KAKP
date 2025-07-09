@@ -46,7 +46,6 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        // ✅ Cegah login jika user nonaktif atau divisinya nonaktif
         if (!$user->is_active || ($user->divisi && !$user->divisi->is_active)) {
             Auth::logout(); // penting! agar tidak lanjut login
             return redirect()->route('login')->withErrors([
@@ -54,7 +53,6 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
-        // Redirect sesuai role
         $role = $user->role->name ?? null;
 
         if ($role === 'Admin') {
@@ -64,9 +62,7 @@ class AuthenticatedSessionController extends Controller
         return redirect()->route('inbox.index');
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
+
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();

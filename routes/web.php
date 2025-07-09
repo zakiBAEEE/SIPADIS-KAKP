@@ -22,7 +22,7 @@ require __DIR__ . '/auth.php';
 | Rute Aplikasi Inti (Wajib Login)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'cekAktif'])->group(function () {
 
     // ----------------- DASHBOARD UTAMA -----------------
 
