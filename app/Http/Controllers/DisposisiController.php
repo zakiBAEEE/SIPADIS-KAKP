@@ -18,6 +18,44 @@ class DisposisiController extends Controller
         $this->disposisiService = $disposisiService;
     }
 
+    // public function store(Request $request, SuratMasuk $surat)
+    // {
+    //     $validated = $request->validate([
+    //         'ke_user_id' => 'required|exists:users,id',
+    //         'catatan' => 'required|string|max:1000',
+    //     ]);
+
+    //     $pengirim = Auth::user();
+    //     $penerima = User::findOrFail($validated['ke_user_id']);
+
+    //     if ($pengirim->id === $penerima->id) {
+    //         return redirect()->back()->with('error', 'Tidak bisa mendisposisikan surat ke diri sendiri.');
+    //     }
+
+    //     $previousDisposisi = $surat->disposisis()
+    //         ->where('ke_user_id', $pengirim->id)
+    //         ->whereIn('status', ['Menunggu', 'Dilihat'])
+    //         ->first();
+
+    //     if ($previousDisposisi) {
+    //         $previousDisposisi->update(['status' => 'Diteruskan']);
+    //     }
+
+    //     Disposisi::create([
+    //         'surat_id' => $surat->id,
+    //         'dari_user_id' => $pengirim->id,
+    //         'ke_user_id' => $penerima->id,
+    //         'catatan' => $validated['catatan'],
+    //         'status' => 'Menunggu',
+    //         'tipe_aksi' => 'Teruskan',
+    //     ]);
+
+    //     $surat->update(['status' => 'Diproses']);
+
+    //     return redirect()->route('inbox.index', $surat->id)->with('success', 'Disposisi berhasil diteruskan.');
+    // }
+
+
     public function store(Request $request, SuratMasuk $surat)
     {
         $validated = $request->validate([
@@ -26,12 +64,22 @@ class DisposisiController extends Controller
         ]);
 
         $pengirim = Auth::user();
-        $penerima = User::findOrFail($validated['ke_user_id']);
+
+        $penerima = User::with('divisi')->findOrFail($validated['ke_user_id']);
 
         if ($pengirim->id === $penerima->id) {
             return redirect()->back()->with('error', 'Tidak bisa mendisposisikan surat ke diri sendiri.');
         }
 
+        if (!$penerima->is_active) {
+            return redirect()->back()->with('error', 'User penerima sudah tidak aktif.');
+        }
+
+        if ($penerima->divisi && !$penerima->divisi->is_active) {
+            return redirect()->back()->with('error', 'Divisi penerima sudah tidak aktif.');
+        }
+
+        // Update status disposisi sebelumnya (jika ada)
         $previousDisposisi = $surat->disposisis()
             ->where('ke_user_id', $pengirim->id)
             ->whereIn('status', ['Menunggu', 'Dilihat'])
@@ -41,6 +89,7 @@ class DisposisiController extends Controller
             $previousDisposisi->update(['status' => 'Diteruskan']);
         }
 
+        // Buat disposisi baru
         Disposisi::create([
             'surat_id' => $surat->id,
             'dari_user_id' => $pengirim->id,
@@ -50,10 +99,12 @@ class DisposisiController extends Controller
             'tipe_aksi' => 'Teruskan',
         ]);
 
+        // Update status surat
         $surat->update(['status' => 'Diproses']);
 
         return redirect()->route('inbox.index', $surat->id)->with('success', 'Disposisi berhasil diteruskan.');
     }
+
 
     public function disposisiKeSemuaStaf(SuratMasuk $surat, Request $request)
     {
