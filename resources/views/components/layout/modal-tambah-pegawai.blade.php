@@ -68,7 +68,6 @@
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-
                         <div>
                             <label for="tambah_divisi_id" class="block text-sm font-medium text-gray-700 mb-1">
                                 Divisi (Opsional)
@@ -79,15 +78,15 @@
                                 disabled>
                                 <option value="">-- Pilih Divisi --</option>
                                 @foreach ($divisis as $divisi)
-                                    <option value="{{ $divisi->id }}"
-                                        {{ old('divisi_id') == $divisi->id ? 'selected' : '' }}>
-                                        {{ $divisi->nama_divisi }}
-                                    </option>
+                                    @if ($divisi->is_active)
+                                        <option value="{{ $divisi->id }}"
+                                            {{ old('divisi_id') == $divisi->id ? 'selected' : '' }}>
+                                            {{ $divisi->nama_divisi }}
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
-
-
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

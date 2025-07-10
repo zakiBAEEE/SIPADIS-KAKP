@@ -1,10 +1,10 @@
 <div class="flex justify-center">
-    <button type="button" data-toggle="modal" data-target="#modalEditPegawai-{{ $id }}">
+    <button type="button" data-toggle="modal" data-target="#modalEditPegawai">
 
         @include('components.base.ikon-edit')
 
     </button>
-    <div id="modalEditPegawai-{{ $id }}"
+    <div id="modalEditPegawai"
         class="fixed inset-0 z-[9999] bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out antialiased"
         aria-hidden="true">
         <div
@@ -12,7 +12,7 @@
 
             {{-- Header --}}
             <div class="flex justify-between items-center px-6 pt-6 pb-4 border-b border-slate-200">
-                <h1 class="text-xl font-semibold text-slate-800">Edit Tim Kerja</h1>
+                <h1 class="text-xl font-semibold text-slate-800">Edit Pegawai</h1>
                 <button type="button" data-dismiss="modal" aria-label="Close"
                     class="p-2 rounded-full hover:bg-slate-100 text-slate-600 hover:text-slate-800 transition absolute right-4 top-4">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -23,7 +23,7 @@
             </div>
 
             {{-- Form --}}
-            <form action="{{ route('pegawai.update', $id) }}" method="POST">
+            <form action="{{ route('pegawai.update', $user->id) }}" method="POST">
                 @csrf
                 <div class="p-6 space-y-4">
 
@@ -40,7 +40,7 @@
 
                     <div>
                         <label for="tambah_username" class="block text-sm font-medium text-gray-700 mb-1">Username
-                            </label>
+                        </label>
                         <input type="text" name="username" id="tambah_username"
                             class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                             value="{{ old('username') }}" required>

@@ -250,7 +250,7 @@ class SuratMasukController extends Controller
             'perihal' => 'required|string',
             'klasifikasi_surat' => 'nullable|string',
             'sifat' => 'nullable|string',
-            'file_path' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
+            'file_path' => 'nullable|file|mimes:pdf,doc,docx,jpg,png',
         ]);
 
         try {

@@ -55,11 +55,10 @@
                     </td>
                     <td class="p-3">
                         <div class="flex flex-row gap-x-1">
-                            {{-- @include('components.layout.modal-edit-tim-kerja', [
-                                'id' => $divisi->id,
-                                'namaDivisi' => $divisi->nama_divisi,
-                                'isActive' => $divisi->is_active,
-                            ]) --}}
+                            @include('components.layout.modal-edit-pegawai', [
+                                'id' => $user->id,
+                                'isActive' => $user->is_active,
+                            ])
                             <form action="{{ route('pegawai.destroy', $user->id) }}" method="POST"
                                 onsubmit="return confirm('Yakin ingin menghapus pegawai ini?')">
                                 @csrf

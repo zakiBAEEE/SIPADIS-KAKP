@@ -332,14 +332,57 @@ class DisposisiController extends Controller
             });
 
             return redirect()->route('inbox.index')->with('success', 'Disposisi berhasil dikembalikan.');
-        } 
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             \Log::error('Gagal mengembalikan disposisi: ' . $e->getMessage());
             return redirect()->back()->with('error', $e->getMessage());
         }
 
 
     }
+
+    // public function kembalikanSuratStaf(Request $request, Disposisi $disposisi)
+    // {
+    //     $user = Auth::user();
+
+    //     if ($user->role->name !== 'Staf') {
+    //         return redirect()->back()->with('error', 'Anda tidak berhak mengembalikan disposisi ini.');
+    //     }
+
+    //     $validated = $request->validate([
+    //         'catatan_pengembalian' => 'required|string|max:1000'
+    //     ]);
+
+    //     try {
+
+    //         DB::transaction(function () use ($disposisi, $user, $validated) {
+    //             $surat = $disposisi->suratMasuk;
+
+    //             // Update semua disposisi aktif dari staf untuk surat ini jadi "Dikembalikan"
+    //             $surat->disposisis()
+    //                 ->whereHas('penerima.role', fn($q) => $q->where('name', 'Staf'))
+    //                 ->whereIn('status', ['Menunggu', 'Dilihat'])
+    //                 ->update(['status' => 'Dikembalikan']);
+
+    //             // Kirim balik ke pengirim disposisi sebelumnya (misal ke Katimja)
+    //             Disposisi::create([
+    //                 'surat_id' => $surat->id,
+    //                 'dari_user_id' => $user->id,
+    //                 'ke_user_id' => $disposisi->dari_user_id,
+    //                 'catatan' => $validated['catatan_pengembalian'],
+    //                 'status' => 'Menunggu',
+    //                 'tipe_aksi' => 'Kembalikan',
+    //             ]);
+
+    //             // Opsional: update status surat jika perlu
+    //             $surat->update(['status' => 'Dikembalikan']);
+    //         });
+
+    //         return redirect()->route('inbox.index')->with('success', 'Disposisi berhasil dikembalikan.');
+    //     } catch (\Exception $e) {
+    //         \Log::error('Gagal mengembalikan surat: ' . $e->getMessage());
+    //         return redirect()->route('inbox.index')->with('error', 'Gagal mengembalikan surat: ' . $e->getMessage());
+    //     }
+    // }
 
 
     public function kembalikanSuratStaf(Request $request, Disposisi $disposisi)
@@ -355,9 +398,21 @@ class DisposisiController extends Controller
         ]);
 
         try {
-
             DB::transaction(function () use ($disposisi, $user, $validated) {
                 $surat = $disposisi->suratMasuk;
+
+                // Ambil user tujuan pengembalian (biasanya Katimja)
+                $targetUser = User::with('divisi')->findOrFail($disposisi->dari_user_id);
+
+                // Validasi user tujuan aktif
+                if (!$targetUser->is_active) {
+                    throw new \Exception('User tujuan pengembalian sudah tidak aktif.');
+                }
+
+                // Validasi divisi aktif (jika ada)
+                if ($targetUser->divisi && !$targetUser->divisi->is_active) {
+                    throw new \Exception('Divisi dari user tujuan pengembalian sudah tidak aktif.');
+                }
 
                 // Update semua disposisi aktif dari staf untuk surat ini jadi "Dikembalikan"
                 $surat->disposisis()
@@ -369,20 +424,20 @@ class DisposisiController extends Controller
                 Disposisi::create([
                     'surat_id' => $surat->id,
                     'dari_user_id' => $user->id,
-                    'ke_user_id' => $disposisi->dari_user_id,
+                    'ke_user_id' => $targetUser->id,
                     'catatan' => $validated['catatan_pengembalian'],
                     'status' => 'Menunggu',
                     'tipe_aksi' => 'Kembalikan',
                 ]);
 
-                // Opsional: update status surat jika perlu
+                // Update status surat
                 $surat->update(['status' => 'Dikembalikan']);
             });
 
             return redirect()->route('inbox.index')->with('success', 'Disposisi berhasil dikembalikan.');
         } catch (\Exception $e) {
             \Log::error('Gagal mengembalikan surat: ' . $e->getMessage());
-            return redirect()->route('inbox.index')->with('error', 'Gagal mengembalikan surat: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal mengembalikan surat: ' . $e->getMessage());
         }
     }
 

@@ -10,31 +10,17 @@ use App\Http\Controllers\LembagaController;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\AgendaController;
 
-/*
-|--------------------------------------------------------------------------
-| Rute Publik & Autentikasi
-|--------------------------------------------------------------------------
-*/
+
 require __DIR__ . '/auth.php';
 
-/*
-|--------------------------------------------------------------------------
-| Rute Aplikasi Inti (Wajib Login)
-|--------------------------------------------------------------------------
-*/
+
 Route::middleware(['auth', 'cekAktif'])->group(function () {
 
-    // ----------------- DASHBOARD UTAMA -----------------
 
 
-    // ----------------- RUTE UMUM (semua peran login) -----------------
     Route::get('/surat-masuk/{surat}', [SuratMasukController::class, 'show'])->name('surat.show');
 
-    /*
-    |--------------------------------------------------------------------------
-    | RUTE UNTUK ADMIN & SUPER ADMIN
-    |--------------------------------------------------------------------------
-    */
+
     Route::middleware(['role:Admin'])->group(function () {
 
         Route::get('/', [SuratMasukController::class, 'dashboard'])->name('surat.home');
@@ -70,11 +56,7 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
         Route::post('/lembaga/update', [LembagaController::class, 'update'])->name('lembaga.update');
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | RUTE UNTUK PIMPINAN & PELAKSANA (Kepala, KBU, Katimja, Staf)
-    |--------------------------------------------------------------------------
-    */
+
     Route::middleware(['role:Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {
         Route::get('/inbox', [InboxController::class, 'index'])->name('inbox.index');
         Route::post('/disposisi/{disposisi}/kembalikan', [DisposisiController::class, 'kembalikan'])->name('disposisi.kembalikan');
@@ -90,31 +72,18 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
 
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | RUTE UNTUK SEMUA YANG TERLIBAT SURAT (Admin + Pimpinan + Staf)
-    |--------------------------------------------------------------------------
-    */
+
     Route::middleware(['role:Admin,Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {
         Route::get('/outbox', [InboxController::class, 'outbox'])->name('outbox.index');
         Route::get('/inbox/ditolak', [InboxController::class, 'ditolak'])->name('inbox.ditolak');
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | RUTE DISPOSISI (yang bisa mendisposisikan: Admin, Kepala, KBU, Katimja)
-    |--------------------------------------------------------------------------
-    */
+
     Route::middleware(['role:Super Admin,Admin,Kepala LLDIKTI,KBU,Katimja'])->group(function () {
         Route::post('/surat-masuk/{surat}/disposisi', [DisposisiController::class, 'store'])->name('disposisi.store');
         Route::get('/disposisi/{id}/cetak', [DisposisiController::class, 'cetak'])->name('disposisi.cetak');
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | AGENDA & CETAK (Admin + Pimpinan)
-    |--------------------------------------------------------------------------
-    */
     Route::middleware(['role:Kepala,KBU,Super Admin,Admin'])->group(function () {
         Route::get('/agenda-kbu', [AgendaController::class, 'agendaKbu'])->name('surat.agendaKbu');
         Route::get('/agenda-kepala', [AgendaController::class, 'agendaKepala'])->name('surat.agendaKepala');

@@ -24,6 +24,25 @@ class UserController extends Controller
 
         return view('pages.super-admin.pegawai', compact('users', 'roles', 'divisis'));
     }
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'username' => 'required|string|max:255|unique:users,username',
+    //         'role_id' => 'required|exists:roles,id',
+    //         'divisi_id' => 'nullable|exists:divisis,id',
+    //         'password' => ['required', 'confirmed', Password::min(8)],
+    //     ]);
+
+    //     $validated['password'] = Hash::make($validated['password']);
+    //     $validated['is_active'] = true;
+
+    //     User::create($validated);
+
+    //     return redirect()->route('pegawai.index')->with('success', 'Pegawai baru berhasil ditambahkan.');
+    // }
+
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -34,6 +53,44 @@ class UserController extends Controller
             'password' => ['required', 'confirmed', Password::min(8)],
         ]);
 
+        // Ambil nama role dari ID
+        $role = Role::findOrFail($validated['role_id']);
+        $roleName = $role->name;
+
+        // Validasi tunggal untuk role sentral
+        if (in_array($roleName, ['Admin', 'Kepala LLDIKTI', 'KBU'])) {
+            $sudahAda = User::where('role_id', $validated['role_id'])
+                ->where('is_active', true)
+                ->exists();
+
+            if ($sudahAda) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', "User dengan peran $roleName sudah ada dan aktif.");
+            }
+        }
+
+        // Validasi satu Katimja per divisi
+        if ($roleName === 'Katimja') {
+            if (!$validated['divisi_id']) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Katimja wajib memiliki divisi.');
+            }
+
+            $sudahAdaKatimja = User::where('role_id', $validated['role_id'])
+                ->where('divisi_id', $validated['divisi_id'])
+                ->where('is_active', true)
+                ->exists();
+
+            if ($sudahAdaKatimja) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Divisi ini sudah memiliki Katimja aktif.');
+            }
+        }
+
+        // Simpan data
         $validated['password'] = Hash::make($validated['password']);
         $validated['is_active'] = true;
 
