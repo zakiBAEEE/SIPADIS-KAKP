@@ -42,7 +42,7 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
         Route::get('/pegawai', [UserController::class, 'index'])->name('pegawai.index');
         Route::post('/pegawai', [UserController::class, 'store'])->name('pegawai.store');
         Route::get('/pegawai/{user}/edit', [UserController::class, 'edit'])->name('pegawai.edit');
-        Route::put('/pegawai/{user}', [UserController::class, 'update'])->name('pegawai.update');
+        Route::post('/pegawai/{user}', [UserController::class, 'update'])->name('pegawai.update');
         Route::delete('/pegawai/{user}', [UserController::class, 'destroy'])->name('pegawai.destroy');
 
         // ---- Tim Kerja & Lembaga ----

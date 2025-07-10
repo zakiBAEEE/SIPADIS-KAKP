@@ -58,6 +58,9 @@
                             @include('components.layout.modal-edit-pegawai', [
                                 'id' => $user->id,
                                 'isActive' => $user->is_active,
+                                'nama_lengkap' => $user->name,
+                                'username' => $user->username,
+                                'is_active' => $user->is_active,
                             ])
                             <form action="{{ route('pegawai.destroy', $user->id) }}" method="POST"
                                 onsubmit="return confirm('Yakin ingin menghapus pegawai ini?')">

@@ -1,10 +1,10 @@
 <div class="flex justify-center">
-    <button type="button" data-toggle="modal" data-target="#modalEditPegawai">
+    <button type="button" data-toggle="modal" data-target="#modalEditPegawai--{{ $id }}">
 
         @include('components.base.ikon-edit')
 
     </button>
-    <div id="modalEditPegawai"
+    <div id="modalEditPegawai--{{ $id }}"
         class="fixed inset-0 z-[9999] bg-slate-950/50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out antialiased"
         aria-hidden="true">
         <div
@@ -28,11 +28,12 @@
                 <div class="p-6 space-y-4">
 
                     <div>
+
                         <label for="tambah_name" class="block text-sm font-medium text-gray-700 mb-1">Nama
                             Lengkap</label>
                         <input type="text" name="name" id="tambah_name"
                             class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
-                            value="{{ old('name') }}" required>
+                            value={{ $nama_lengkap }} required>
                         @error('name')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
@@ -43,7 +44,7 @@
                         </label>
                         <input type="text" name="username" id="tambah_username"
                             class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
-                            value="{{ old('username') }}" required>
+                            value="{{ $username }}" required>
                         @error('username')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
