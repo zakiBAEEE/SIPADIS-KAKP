@@ -28,35 +28,30 @@
                 <div class="p-6 space-y-4">
 
                     <div>
-
-                        <label for="tambah_name" class="block text-sm font-medium text-gray-700 mb-1">Nama
-                            Lengkap</label>
-                        <input type="text" name="name" id="tambah_name"
-                            class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
-                            value={{ $nama_lengkap }} required>
-                        @error('name')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        @include('components.base.input-surat', [
+                            'label' => 'Nama',
+                            'placeholder' => 'Masukkan Nama',
+                            'name' => 'name',
+                            'value' => $nama_lengkap,
+                        ])
                     </div>
 
                     <div>
-                        <label for="tambah_username" class="block text-sm font-medium text-gray-700 mb-1">Username
-                        </label>
-                        <input type="text" name="username" id="tambah_username"
-                            class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
-                            value="{{ $username }}" required>
-                        @error('username')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        @include('components.base.input-surat', [
+                            'label' => 'Username',
+                            'placeholder' => 'Masukkan Username',
+                            'name' => 'username',
+                            'value' => $username,
+                        ])
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label for="tambah_password"
-                                class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                            <label for="tambah_password" class="block text-sm font-medium text-gray-700 mb-1">Password
+                                (kosongkan jika tidak ingin mengubah)</label>
                             <input type="password" name="password" id="tambah_password"
                                 class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
-                                required>
+                                placeholder="Isi jika ingin ganti password">
                             @error('password')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
@@ -67,7 +62,7 @@
                                 class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password</label>
                             <input type="password" name="password_confirmation" id="tambah_password_confirmation"
                                 class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
-                                required>
+                                placeholder="Ulangi password baru">
                         </div>
                     </div>
 
