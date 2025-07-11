@@ -316,7 +316,18 @@ class DisposisiController extends Controller
                 }
 
                 // Update disposisi lama jadi 'Dikembalikan'
-                $disposisi->update(['status' => 'Dikembalikan']);
+                //KODE INI DI COMMENT DEMI MENYELESAIKAN KEAMBIGUAN PADA AGENDA DAN TERKIRIM
+                // $disposisi->update(['status' => 'Dikembalikan']);
+
+                // Jadi ini:
+                $disposisiYangDikembalikan = Disposisi::where('surat_id', $disposisi->surat_id)
+                    ->where('dari_user_id', $keUserId) // user yang sekarang ingin mengembalikan
+                    ->latest() // ambil yang paling baru
+                    ->first();
+
+                if ($disposisiYangDikembalikan) {
+                    $disposisiYangDikembalikan->update(['status' => 'Dikembalikan']);
+                }
 
                 // Buat disposisi pengembalian baru
                 Disposisi::create([
@@ -507,6 +518,7 @@ class DisposisiController extends Controller
         try {
             DB::transaction(function () use ($surat, $pengirim, $kepala, $validated) {
                 // Cek apakah pengirim pernah menerima disposisi surat ini
+
                 $previousDisposisi = $surat->disposisis()
                     ->where('ke_user_id', $pengirim->id)
                     ->whereIn('status', ['Menunggu', 'Dilihat'])

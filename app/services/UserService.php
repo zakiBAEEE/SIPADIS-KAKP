@@ -113,19 +113,40 @@ class UserService
                 $katimjaRoleId = Role::where('name', 'Katimja')->value('id');
                 $kepalaRoleId = $currentUser->role_id;
 
+                // $query->where(function ($q) use ($kbuRoleId, $katimjaRoleId, $kepalaRoleId) {
+                //     $q->whereHas('role', fn($rq) => $rq->where('id', $kbuRoleId))
+                //         ->whereHas('divisi', fn($d) => $d->where('is_active', true)) // Tambahkan pengecekan divisi aktif
+                //         ->orWhere(function ($nested) use ($katimjaRoleId, $kepalaRoleId) {
+                //             $nested->whereHas('role', fn($r) => $r->where('id', $katimjaRoleId))
+                //                 ->whereHas(
+                //                     'divisi',
+                //                     fn($d) =>
+                //                     $d->where('parent_role_id', $kepalaRoleId)
+                //                         ->where('is_active', true) // Tambahkan pengecekan divisi aktif
+                //                 );
+                //         });
+                // });
+
                 $query->where(function ($q) use ($kbuRoleId, $katimjaRoleId, $kepalaRoleId) {
-                    $q->whereHas('role', fn($rq) => $rq->where('id', $kbuRoleId))
-                        ->whereHas('divisi', fn($d) => $d->where('is_active', true)) // Tambahkan pengecekan divisi aktif
+                    // KBU yang aktif
+                    $q->where(function ($sub) use ($kbuRoleId) {
+                        $sub->whereHas('role', fn($r) => $r->where('id', $kbuRoleId))
+                            ->where('is_active', true);
+                    })
+
+                        // ATAU Katimja yang divisinya aktif dan divisinya berada di bawah Kepala ini
                         ->orWhere(function ($nested) use ($katimjaRoleId, $kepalaRoleId) {
                             $nested->whereHas('role', fn($r) => $r->where('id', $katimjaRoleId))
                                 ->whereHas(
                                     'divisi',
                                     fn($d) =>
                                     $d->where('parent_role_id', $kepalaRoleId)
-                                        ->where('is_active', true) // Tambahkan pengecekan divisi aktif
-                                );
+                                        ->where('is_active', true)
+                                )
+                                ->where('is_active', true); // Tambahkan ini untuk pastikan Katimja juga aktif
                         });
                 });
+
                 break;
 
             // case 'KBU':
