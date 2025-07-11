@@ -24,24 +24,6 @@ class UserController extends Controller
 
         return view('pages.super-admin.pegawai', compact('users', 'roles', 'divisis'));
     }
-    // public function store(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'username' => 'required|string|max:255|unique:users,username',
-    //         'role_id' => 'required|exists:roles,id',
-    //         'divisi_id' => 'nullable|exists:divisis,id',
-    //         'password' => ['required', 'confirmed', Password::min(8)],
-    //     ]);
-
-    //     $validated['password'] = Hash::make($validated['password']);
-    //     $validated['is_active'] = true;
-
-    //     User::create($validated);
-
-    //     return redirect()->route('pegawai.index')->with('success', 'Pegawai baru berhasil ditambahkan.');
-    // }
-
 
     public function store(Request $request)
     {
@@ -53,11 +35,9 @@ class UserController extends Controller
             'password' => ['required', 'confirmed', Password::min(8)],
         ]);
 
-        // Ambil nama role dari ID
         $role = Role::findOrFail($validated['role_id']);
         $roleName = $role->name;
 
-        // Validasi tunggal untuk role sentral
         if (in_array($roleName, ['Admin', 'Kepala LLDIKTI', 'KBU'])) {
             $sudahAda = User::where('role_id', $validated['role_id'])
                 ->where('is_active', true)
@@ -65,16 +45,13 @@ class UserController extends Controller
 
             if ($sudahAda) {
                 return redirect()->back()
-                    ->withInput()
                     ->with('error', "User dengan peran $roleName sudah ada dan aktif.");
             }
         }
 
-        // Validasi satu Katimja per divisi
         if ($roleName === 'Katimja') {
             if (!$validated['divisi_id']) {
                 return redirect()->back()
-                    ->withInput()
                     ->with('error', 'Katimja wajib memiliki divisi.');
             }
 
@@ -85,7 +62,6 @@ class UserController extends Controller
 
             if ($sudahAdaKatimja) {
                 return redirect()->back()
-                    ->withInput()
                     ->with('error', 'Divisi ini sudah memiliki Katimja aktif.');
             }
         }
@@ -96,11 +72,12 @@ class UserController extends Controller
 
         User::create($validated);
 
-        return redirect()->route('pegawai.index')->with('success', 'Pegawai baru berhasil ditambahkan.');
+        return redirect()->back()->with('success', 'Pegawai baru berhasil ditambahkan.');
     }
 
     public function update(Request $request, User $user)
     {
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
@@ -108,17 +85,42 @@ class UserController extends Controller
             'is_active' => 'required|boolean',
         ]);
 
-        // Hanya update password jika diisi
+        // CEK KONDISI UNIK ROLE SECARA MANUAL DI SINI SAJA
+        $roleName = Role::find($user->role_id)?->name;
+
+        if (in_array($roleName, ['Admin', 'Kepala LLDIKTI', 'KBU']) && $validated['is_active']) {
+            $sudahAda = User::where('role_id', $user->role_id)
+                ->where('id', '!=', $user->id)
+                ->where('is_active', true)
+                ->exists();
+
+            if ($sudahAda) {
+                return redirect()->back()->with('error', "User aktif dengan peran $roleName sudah ada.");
+            }
+        }
+
+        if ($roleName === 'Katimja' && $user->divisi_id && $validated['is_active']) {
+            $sudahAda = User::where('role_id', $user->role_id)
+                ->where('divisi_id', $user->divisi_id)
+                ->where('id', '!=', $user->id)
+                ->where('is_active', true)
+                ->exists();
+
+            if ($sudahAda) {
+                return redirect()->back()->with('error', "Divisi ini sudah memiliki Katimja aktif.");
+            }
+        }
+
+        // PROSES LANJUT
         if (!empty($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
         } else {
-            // Hapus password dari array agar tidak menimpa password lama dengan nilai kosong
             unset($validated['password']);
         }
 
         $user->update($validated);
 
-        return redirect()->route('pegawai.index')->with('success', 'Data pegawai berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Data pegawai berhasil diperbarui.');
     }
 
     public function destroy(User $user)
