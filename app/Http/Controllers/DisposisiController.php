@@ -82,8 +82,7 @@ class DisposisiController extends Controller
         // Update status disposisi sebelumnya (jika ada)
         $previousDisposisi = $surat->disposisis()
             ->where('ke_user_id', $pengirim->id)
-            ->whereIn('status', ['Menunggu', 'Dilihat'])
-            ->first();
+            ->whereIn('status', ['Menunggu', 'Dilihat']);
 
         if ($previousDisposisi) {
             $previousDisposisi->update(['status' => 'Diteruskan']);
@@ -351,49 +350,6 @@ class DisposisiController extends Controller
 
     }
 
-    // public function kembalikanSuratStaf(Request $request, Disposisi $disposisi)
-    // {
-    //     $user = Auth::user();
-
-    //     if ($user->role->name !== 'Staf') {
-    //         return redirect()->back()->with('error', 'Anda tidak berhak mengembalikan disposisi ini.');
-    //     }
-
-    //     $validated = $request->validate([
-    //         'catatan_pengembalian' => 'required|string|max:1000'
-    //     ]);
-
-    //     try {
-
-    //         DB::transaction(function () use ($disposisi, $user, $validated) {
-    //             $surat = $disposisi->suratMasuk;
-
-    //             // Update semua disposisi aktif dari staf untuk surat ini jadi "Dikembalikan"
-    //             $surat->disposisis()
-    //                 ->whereHas('penerima.role', fn($q) => $q->where('name', 'Staf'))
-    //                 ->whereIn('status', ['Menunggu', 'Dilihat'])
-    //                 ->update(['status' => 'Dikembalikan']);
-
-    //             // Kirim balik ke pengirim disposisi sebelumnya (misal ke Katimja)
-    //             Disposisi::create([
-    //                 'surat_id' => $surat->id,
-    //                 'dari_user_id' => $user->id,
-    //                 'ke_user_id' => $disposisi->dari_user_id,
-    //                 'catatan' => $validated['catatan_pengembalian'],
-    //                 'status' => 'Menunggu',
-    //                 'tipe_aksi' => 'Kembalikan',
-    //             ]);
-
-    //             // Opsional: update status surat jika perlu
-    //             $surat->update(['status' => 'Dikembalikan']);
-    //         });
-
-    //         return redirect()->route('inbox.index')->with('success', 'Disposisi berhasil dikembalikan.');
-    //     } catch (\Exception $e) {
-    //         \Log::error('Gagal mengembalikan surat: ' . $e->getMessage());
-    //         return redirect()->route('inbox.index')->with('error', 'Gagal mengembalikan surat: ' . $e->getMessage());
-    //     }
-    // }
 
 
     public function kembalikanSuratStaf(Request $request, Disposisi $disposisi)

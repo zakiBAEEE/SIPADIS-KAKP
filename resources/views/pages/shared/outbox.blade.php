@@ -38,14 +38,26 @@
                         </div>
                     </div>
 
-                    <div class="space-y-1.5 mb-4">
-                        @include('components.base.input-surat', [
-                            'label' => 'Perihal',
-                            'placeholder' => 'Masukkan Perihal Surat',
-                            'name' => 'perihal',
-                            'value' => request('perihal'),
-                        ])
+                    <div class="flex flex-row gap-3">
+                        <div class="space-y-1.5 mb-4 w-1/2">
+                            @include('components.base.input-surat', [
+                                'label' => 'Perihal',
+                                'placeholder' => 'Masukkan Perihal Surat',
+                                'name' => 'perihal',
+                                'value' => request('perihal'),
+                            ])
+                        </div>
+                        <div class="space-y-1.5 mb-4 w-1/2">
+                            @include('components.base.input-surat', [
+                                'label' => 'Nomor Surat',
+                                'placeholder' => 'Masukkan Nomor Surat',
+                                'name' => 'nomor_surat',
+                                'value' => request('nomor_surat'),
+                            ])
+                        </div>
                     </div>
+
+
 
                     <div class="flex flex-row justify-end mb-5 gap-4">
                         <a href="{{ route('outbox.index') }}"

@@ -30,7 +30,6 @@ class InboxController extends Controller
 
 
 
-
         // ✅ Filter: Status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -72,6 +71,12 @@ class InboxController extends Controller
     {
         $query = Disposisi::where('dari_user_id', Auth::id())
             ->with(['suratMasuk', 'penerima.role']);
+
+        if ($request->filled('nomor_surat')) {
+            $query->whereHas('suratMasuk', function ($q) use ($request) {
+                $q->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
+            });
+        }
 
         // ✅ Filter: Status penerima
         if ($request->filled('status')) {

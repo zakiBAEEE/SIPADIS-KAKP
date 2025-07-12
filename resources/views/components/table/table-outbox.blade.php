@@ -46,6 +46,8 @@
                         @endif
                     </td>
                     <td class="p-3">
+                        <p class="text-sm font-medium">{{ $disposisi->suratMasuk->nomor_surat }}
+                        </p>
                         <p class="text-sm">{{ $disposisi->suratMasuk->perihal ?? '...' }}</p>
                     </td>
                     <td class="p-3">
