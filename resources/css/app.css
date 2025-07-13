@@ -12,6 +12,7 @@
 
 /* resources/css/app.css atau file CSS utama Anda */
 
+
 @media print {
     @page {
         margin-top: 1cm;    /* Atur margin atas halaman */

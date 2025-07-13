@@ -9,14 +9,20 @@
     @vite('resources/js/app.js')
 </head>
 
-<body class="h-full bg-[#D9EAFD] flex ">
-    <div class="w-[280px] ">
-        @include('components.layout.nav')
-    </div>
-    <div class=" p-4 min-w-4/5">
-        @yield('content')
-    </div>
-    @stack('scripts')
+<body class="min-h-screen h-full bg-[#D9EAFD] flex">
+
+    <!-- Sidebar -->
+    @include('components.layout.nav')
+
+    <!-- Konten utama -->
+    <main class="flex-1 overflow-auto p-4">
+        <div class="max-w-7xl mx-auto h-full">
+            @yield('content')
+        </div>
+    </main>
+
 </body>
+
+
 
 </html>
