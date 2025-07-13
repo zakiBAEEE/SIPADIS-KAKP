@@ -8,6 +8,7 @@ import { initializeCharts } from './components/initChart';
 import { initializeAlerts } from './components/alert-handler';
 import { handleFormReset } from './components/resetForm';
 import { togglePassword } from './components/password-toggle';
+import { setupSidebarToggle } from './components/sidebarToggle';
 
 window.Alpine = Alpine;
 
@@ -19,6 +20,7 @@ handleFormReset('#filterSuratKlasifikasi form', '#filterSuratKlasifikasi button[
 handleFormReset('#filterSuratArsip form', '#resetDisposisiForm');
 handleFormReset('#filterSuratDraft form', '#resetDisposisiForm');
 handleFormReset('#filterSuratDitolak form', '#resetDisposisiForm');
+setupSidebarToggle();
 togglePassword();
 initDivisiToggle();
 initializeAlerts();
