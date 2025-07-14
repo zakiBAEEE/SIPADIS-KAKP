@@ -1,13 +1,13 @@
 <div>
     <!-- ✅ TOPBAR untuk Mobile -->
-    <header class="md:hidden fixed top-0 left-0 right-0 bg-white shadow p-4 z-50 flex justify-between items-center">
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-white shadow p-4 z-50 flex justify-between items-center">
         <img src="{{ asset('images/logo-lldikti.jpg') }}" alt="" class="h-10 w-auto">
         <button id="toggleSidebar" class="text-2xl">☰</button>
     </header>
 
     <aside id="sidebar"
         class="fixed top-0 left-0 h-screen z-40 transform -translate-x-full transition-transform duration-300
-         md:translate-x-0 md:static">
+         lg:translate-x-0 lg:static">
         <div
             class="h-full w-64 md:w-64 rounded-lg border shadow-sm bg-white
            border-slate-200 shadow-slate-950/5 transition-all duration-300">

@@ -15,7 +15,7 @@
     @include('components.layout.nav')
 
     <!-- Konten utama -->
-    <main class="flex-1 overflow-auto p-4 h-full pt-20 md:pt-0">
+    <main class="flex-1 overflow-auto p-4 h-full pt-20 lg:pt-0">
         <div class="max-w-7xl mx-auto h-full">
             @yield('content')
         </div>

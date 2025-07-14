@@ -1,8 +1,7 @@
 @extends('layouts.super-admin-layout')
 
 @section('content')
-    <div
-        class="bg-white h-full rounded-xl shadow-neutral-400 shadow-lg p-4 flex flex-col gap-y-6 overflow-auto">
+    <div class="bg-white h-full rounded-xl shadow-neutral-400 shadow-lg p-4 flex flex-col gap-y-6 overflow-auto">
         <div class="flex flex-col">
             <div>
                 <h4 class="font-sans text-xl font-bold antialiased md:text-2xl lg:text-2xl text-gray-600">Dashboard
@@ -19,7 +18,7 @@
             </div>
             <form action="{{ route('surat.home') }}" method="GET" class="flex flex-row px-2 gap-x-4 my-1 items-end">
                 <div>
-                    <label for="startDate" class="block text-gray-700 text-sm font-semibold mb-2">Pilih Rentang
+                    <label for="startDate" class="block text-gray-700 font-semibold mb-2 md:text-sm sm:text-xs">Pilih Rentang
                         Tanggal</label>
                     <input type="text" name="tanggal_range" id="startDate"
                         class="flatpickr w-full px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -64,13 +63,15 @@
                     @endif
                 </p>
             </div>
-            <div class="flex flex-row gap-4 items-center justify-evenly">
-                @include('components.layout.card-dashboard', [
-                    'jenis' => 'total',
-                    'count' => $rekapRange['total'] ?? 0,
-                ])
-                @include('components.base.ikon-panah-kanan')
-                <div class="flex flex-row gap-2">
+            <div class="flex flex-row md:gap-4 items-center justify-evenly flex-1 md:flex-wrap">
+                <div class="shrink flex flex-row items-center md:gap-4">
+                    @include('components.layout.card-dashboard', [
+                        'jenis' => 'total',
+                        'count' => $rekapRange['total'] ?? 0,
+                    ])
+                    @include('components.base.ikon-panah-kanan')
+                </div>
+                <div class="flex flex-row gap-2 flex-1 justify-center">
                     <a href="{{ route('surat.klasifikasi', ['klasifikasi' => 'Umum', 'tanggal_range' => $tanggalRange]) }}">
                         @include('components.layout.card-dashboard', [
                             'jenis' => 'umum',
@@ -95,11 +96,16 @@
             </div>
 
 
-            @include('components.layout.chart', [
-                'id' => 'suratChartBulanan',
-                'series' => $series,
-                'categories' => $categories,
-            ])
+            <div class="w-full overflow-auto">
+                <div class="min-w-[600px] max-w-full">
+                    @include('components.layout.chart', [
+                        'id' => 'suratChartBulanan',
+                        'series' => $series,
+                        'categories' => $categories,
+                    ])
+                </div>
+            </div>
+
         </div>
     </div>
 @endsection
