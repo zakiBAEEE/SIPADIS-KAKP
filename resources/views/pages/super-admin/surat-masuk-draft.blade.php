@@ -54,7 +54,7 @@
             </div>
         </div>
         @include('components.table.table', ['surats' => $surats])
-        <div class="mt-4 flex flex-row justify-end overflow-x-auto">
+        <div class="mt-4 flex flex-row justify-center sm:justify-end overflow-x-auto">
             @include('components.base.pagination', ['surats' => $surats])
         </div>
     </div>

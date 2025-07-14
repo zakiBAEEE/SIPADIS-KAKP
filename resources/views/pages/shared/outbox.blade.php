@@ -76,7 +76,7 @@
         </x-slot:tableContent>
     </x-layout.page-list-layout>
 
-    <div class="mt-4 flex flex-row justify-end overflow-auto">
+    <div class="mt-4 flex flex-row justify-center sm:justify-end overflow-auto">
         <div class="flex items-center gap-1 overflow-x-auto">
             {{-- Tombol "Sebelumnya" --}}
             <a href="{{ $disposisis->previousPageUrl() }}"
