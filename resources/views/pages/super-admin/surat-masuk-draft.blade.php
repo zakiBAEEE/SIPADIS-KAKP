@@ -37,7 +37,7 @@
         </div>
         <hr class="w-full border-t border-gray-300 my-4" />
         <div>
-            <div class="flex-col transition-[max-height] duration-300 ease-in-out max-h-0 mt-1" id='filterSuratDraft'>
+            <div class="flex-col transition-[max-height] duration-300 ease-in-out max-h-0" id='filterSuratDraft'>
                 <form action="{{ route('surat.draft') }}" method="GET">
                     @include('components.layout.input-filter-surat')
                     <div class="flex flex-row justify-end mb-5 gap-4">
@@ -54,7 +54,7 @@
             </div>
         </div>
         @include('components.table.table', ['surats' => $surats])
-        <div class="mt-4 flex flex-row justify-end">
+        <div class="mt-4 flex flex-row justify-end overflow-x-auto">
             @include('components.base.pagination', ['surats' => $surats])
         </div>
     </div>

@@ -1,4 +1,4 @@
-<div class="flex items-center gap-1">
+<div class="flex items-center gap-1 overflow-x-auto">
     {{-- Tombol "Sebelumnya" --}}
     <a href="{{ $surats->previousPageUrl() }}"
         class="inline-flex select-none items-center justify-center rounded-md border border-transparent bg-transparent px-3.5 py-2.5 text-center align-middle text-sm font-medium leading-none text-slate-800 transition-all duration-300 ease-in hover:border-slate-800/5 hover:bg-slate-800/5 {{ $surats->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
