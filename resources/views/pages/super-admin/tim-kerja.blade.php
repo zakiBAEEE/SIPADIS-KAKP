@@ -36,7 +36,7 @@
         <hr class="w-full border-t border-gray-300 my-4" />
         @include('components.table.table-tim-kerja', ['divisis' => $divisis])
         <div class="mt-4 flex flex-row justify-end">
-            <div class="flex items-center gap-1">
+            <div class="flex items-center gap-1 overflow-x-auto">
                 {{-- Tombol "Sebelumnya" --}}
                 <a href="{{ $divisis->previousPageUrl() }}"
                     class="inline-flex select-none items-center justify-center rounded-md border border-transparent bg-transparent px-3.5 py-2.5 text-center align-middle text-sm font-medium leading-none text-slate-800 transition-all duration-300 ease-in hover:border-slate-800/5 hover:bg-slate-800/5 {{ $divisis->onFirstPage() ? 'pointer-events-none opacity-50' : '' }}">
