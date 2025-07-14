@@ -6,16 +6,16 @@
     $selected = $selected ?? old($name);
 @endphp
 
-<div>
+<div class="w-full flex-1">
     @if ($label)
         <label for="{{ $id }}" class="font-sans text-sm text-slate-800 font-bold mb-2 block">
             {{ $label }}
         </label>
     @endif
 
-    <div class="w-full max-w-sm min-w-[200px] relative">
+    <div class="flex-1 max-w-sm min-w-[200px] relative ">
         <select id="{{ $id }}" name="{{ $name }}"
-            class="w-full bg-transparent text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 ring ring-transparent hover:ring-slate-800/10 focus:ring-slate-800/10 hover:border-slate-800 shadow-sm focus:shadow cursor-pointer appearance-none">
+            class="w-full bg-transparent text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 ring ring-transparent hover:ring-slate-800/10 focus:ring-slate-800/10 hover:border-slate-800 shadow-sm focus:shadow cursor-pointer appearance-none flex-1">
 
             <option disabled {{ $selected ? '' : 'selected' }}>{{ $placeholder }}</option>
 

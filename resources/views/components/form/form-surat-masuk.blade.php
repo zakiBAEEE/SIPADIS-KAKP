@@ -1,16 +1,16 @@
  <div class="px-4 py-2">
-    <div class="mb-4 space-y-1.5 w-full">
-       
-    </div>
-     <div class="flex flex-row gap-3">
-         <div class="mb-4 space-y-1.5 w-1/2">
+     <div class="mb-4 space-y-1.5 w-full">
+
+     </div>
+     <div class="flex md:flex-row gap-3 flex-col">
+         <div class="mb-4 space-y-1.5 md:w-1/2 w-full">
              @include('components.base.input-surat', [
                  'label' => 'Nomor Surat',
                  'placeholder' => 'Masukkan Nomor Surat',
-                 'name'=>"nomor_surat"
+                 'name' => 'nomor_surat',
              ])
          </div>
-         <div class="mb-4 space-y-1.5 w-1/2">
+         <div class="mb-4 space-y-1.5  md:w-1/2 w-full">
              @include('components.base.datepicker', [
                  'label' => 'Tanggal Surat',
                  'placeholder' => 'Pilih Tanggal Surat',
@@ -19,27 +19,29 @@
              ])
          </div>
      </div>
-     <div class="flex flex-row gap-3 items-center">
-         <div class="mb-4 space-y-1.5 w-1/2">
+     <div class="flex flex-col gap-3 items-center md:flex-row">
+         <div class="mb-4 space-y-1.5 md:w-1/2 w-full">
              @include('components.base.input-surat', [
                  'label' => 'Pengirim',
                  'placeholder' => 'Masukkan Pengirim Surat',
                  'name' => 'pengirim',
              ])
          </div>
-         <div class="mb-4 space-y-1.5 w-1/3">
-             @include('components.base.dropdown', [
-                 'label' => 'Klasifikasi',
-                 'value' => ['Umum', 'Pengaduan', 'Permintaan Informasi'],
-                 'name' => 'klasifikasi_surat',
-             ])
-         </div>
-         <div class="mb-4 space-y-1.5 w-1/3">
-             @include('components.base.dropdown', [
-                 'label' => 'Sifat',
-                 'value' => ['Rahasia', 'Penting', 'Segera', 'Rutin'],
-                 'name' => 'sifat',
-             ])
+         <div class="flex sm:flex-row flex-col justify-evenly items-center w-full flex-1">
+             <div class="mb-4 space-y-1.5 md:w-1/2 w-full flex-1">
+                 @include('components.base.dropdown', [
+                     'label' => 'Klasifikasi',
+                     'value' => ['Umum', 'Pengaduan', 'Permintaan Informasi'],
+                     'name' => 'klasifikasi_surat',
+                 ])
+             </div>
+             <div class="mb-4 space-y-1.5 md:w-1/2 w-full flex-1">
+                 @include('components.base.dropdown', [
+                     'label' => 'Sifat',
+                     'value' => ['Rahasia', 'Penting', 'Segera', 'Rutin'],
+                     'name' => 'sifat',
+                 ])
+             </div>
          </div>
      </div>
      <div class="space-y-1.5 mb-4">

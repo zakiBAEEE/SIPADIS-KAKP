@@ -20,7 +20,13 @@
             </button>
         </div>
     @endif
-    <div class="bg-white h-full rounded-xl shadow-neutral-400 shadow-lg p-4 flex flex-col gap-y-6">
+
+
+
+
+
+
+    <div class="bg-white h-full rounded-xl shadow-neutral-400 shadow-lg p-4 flex flex-col gap-y-6 overflow-auto">
         <div class="">
             <div class="pt-4 px-4 flex justify-between items-start">
                 <div class="flex flex-col gap-2 w-full">
@@ -29,7 +35,7 @@
                     </div>
                     <hr class="w-full border-t border-gray-300" />
                 </div>
-               
+
             </div>
             <form action="{{ route('surat.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
