@@ -9,9 +9,8 @@
         <x-slot:filterForm>
             <form action="{{ route('outbox.index') }}" method="GET">
                 <div class="px-4 py-2">
-
-                    <div class="flex flex-row gap-3">
-                        <div class="mb-4 space-y-1.5 w-1/3">
+                    <div class="flex sm:flex-row flex-col gap-3">
+                        <div class="mb-4 space-y-1.5 sm:w-1/3 w-full">
                             @include('components.base.dropdown', [
                                 'label' => 'Status Penerima',
                                 'value' => ['Menunggu', 'Dilihat', 'Diteruskan', 'Dikembalikan'],
@@ -19,7 +18,7 @@
                                 'selected' => request('status'),
                             ])
                         </div>
-                        <div class="mb-4 space-y-1.5 w-1/3">
+                        <div class="mb-4 space-y-1.5 sm:w-1/3 w-full">
                             @include('components.base.dropdown', [
                                 'label' => 'Tipe Aksi',
                                 'value' => ['Teruskan', 'Revisi', 'Kembalikan'],
@@ -27,7 +26,7 @@
                                 'selected' => request('tipe_aksi'),
                             ])
                         </div>
-                        <div class="mb-4 space-y-1.5 w-1/3">
+                        <div class="mb-4 space-y-1.5 sm:w-1/3 w-full">
                             @include('components.base.datepicker', [
                                 'label' => 'Tanggal Kirim',
                                 'placeholder' => 'Pilih Tanggal Terikirim',
@@ -38,8 +37,8 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row gap-3">
-                        <div class="space-y-1.5 mb-4 w-1/2">
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="space-y-1.5 mb-4 sm:w-1/2 w-full">
                             @include('components.base.input-surat', [
                                 'label' => 'Perihal',
                                 'placeholder' => 'Masukkan Perihal Surat',
@@ -47,7 +46,7 @@
                                 'value' => request('perihal'),
                             ])
                         </div>
-                        <div class="space-y-1.5 mb-4 w-1/2">
+                        <div class="space-y-1.5 mb-4 sm:w-1/2 w-full">
                             @include('components.base.input-surat', [
                                 'label' => 'Nomor Surat',
                                 'placeholder' => 'Masukkan Nomor Surat',
@@ -77,7 +76,7 @@
         </x-slot:tableContent>
     </x-layout.page-list-layout>
 
-    <div class="mt-4 flex flex-row justify-end">
+    <div class="mt-4 flex flex-row justify-end overflow-auto">
         <div class="flex items-center gap-1">
             {{-- Tombol "Sebelumnya" --}}
             <a href="{{ $disposisis->previousPageUrl() }}"

@@ -1,7 +1,7 @@
 <div
-    class="relative flex flex-col w-full max-h-[400px] overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border h-[400px]">
+    class="relative flex flex-col w-full sm:max-h-[450px] overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border sm:h-[450px] h-screen">
 
-    <table class="w-full text-left table-auto text-slate-800 min-w-0">
+    <table class="w-full text-left table-auto text-slate-800 min-w-0 overflow-auto">
         <thead>
             <tr class="text-slate-500 border-b border-slate-300 bg-slate-50">
                 <th class="p-3">

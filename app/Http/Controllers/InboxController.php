@@ -110,7 +110,7 @@ class InboxController extends Controller
 
         return view('pages.shared.outbox', [
             'disposisis' => $disposisis,
-            'pageTitle' => 'Outbox: Riwayat Disposisi Terkirim'
+            'pageTitle' => 'Riwayat Disposisi Terkirim'
         ]);
     }
 
