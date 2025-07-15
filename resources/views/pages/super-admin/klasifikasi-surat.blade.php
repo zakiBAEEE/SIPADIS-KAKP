@@ -42,8 +42,8 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row gap-3 items-center">
-                        <div class="mb-4 space-y-1.5 w-1/2">
+                    <div class="flex flex-col sm:flex-row gap-3 items-center">
+                        <div class="mb-4 space-y-1.5 w-full sm:w-1/2">
                             @include('components.base.input-surat', [
                                 'label' => 'Pengirim',
                                 'placeholder' => 'Masukkan Pengirim Surat',
@@ -51,7 +51,7 @@
                                 'value' => request('pengirim'),
                             ])
                         </div>
-                        <div class="mb-4 space-y-1.5 w-1/2">
+                        <div class="mb-4 space-y-1.5 w-full sm:w-1/2">
                             @include('components.base.dropdown', [
                                 'label' => 'Sifat',
                                 'value' => ['Rahasia', 'Penting', 'Segera', 'Rutin'],
@@ -87,7 +87,7 @@
 
         {{-- Tabel dan Pagination --}}
         @include('components.table.table', ['surats' => $surats])
-        <div class="mt-4 flex flex-row justify-end">
+        <div class="mt-4 flex flex-row justify-center sm:justify-end overflow-auto">
             @include('components.base.pagination', ['surats' => $surats])
         </div>
     </div>
