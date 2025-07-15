@@ -29,7 +29,7 @@
                 <div class="p-6 space-y-4">
                     <div>
                         <label for="catatan_pengembalian-{{$disposisi->id}}" class="block text-sm font-medium text-gray-700 mb-1">
-                            Alasan Pengembalian / Catatan (Wajib Diisi)
+                            Alasan Pengembalian (Wajib Diisi)
                         </label>
                         <textarea name="catatan_pengembalian" id="catatan_pengembalian-{{$disposisi->id}}" rows="4"
                                   class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required

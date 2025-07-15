@@ -99,7 +99,7 @@ class DisposisiController extends Controller
         ]);
 
         // Update status surat
-        $surat->update(['status' => 'Diproses']);
+        $surat->update(['status' => 'diproses']);
 
         return redirect()->route('inbox.index', $surat->id)->with('success', 'Disposisi berhasil diteruskan.');
     }
@@ -192,7 +192,7 @@ class DisposisiController extends Controller
                 }
 
                 // Update status surat
-                $surat->update(['status' => 'Diproses']);
+                $surat->update(['status' => 'diproses']);
             });
 
             return redirect()->route('outbox.index', $surat->id)->with('success', 'Surat berhasil didisposisikan ke semua staf.');
@@ -338,7 +338,7 @@ class DisposisiController extends Controller
                     'tipe_aksi' => 'Kembalikan',
                 ]);
 
-                $disposisi->suratMasuk->update(['status' => 'Dikembalikan']);
+                $disposisi->suratMasuk->update(['status' => 'dikembalikan']);
             });
 
             return redirect()->route('inbox.index')->with('success', 'Disposisi berhasil dikembalikan.');
