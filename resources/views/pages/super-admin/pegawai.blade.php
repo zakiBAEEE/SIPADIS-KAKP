@@ -102,7 +102,7 @@
 
 
         @include('components.table.table-pegawai', ['users' => $users])
-        <div class="flex flex-row justify-end overflow-auto">
+        <div class="mt-4 flex flex-row justify-center sm:justify-end overflow-auto">
             <div class="flex items-center gap-1 overflow-x-auto">
                 {{-- Tombol "Sebelumnya" --}}
                 <a href="{{ $users->previousPageUrl() }}"
