@@ -85,7 +85,6 @@ class UserController extends Controller
             'is_active' => 'required|boolean',
         ]);
 
-        // CEK KONDISI UNIK ROLE SECARA MANUAL DI SINI SAJA
         $roleName = Role::find($user->role_id)?->name;
 
         if (in_array($roleName, ['Admin', 'Kepala LLDIKTI', 'KBU']) && $validated['is_active']) {
@@ -109,6 +108,10 @@ class UserController extends Controller
             if ($sudahAda) {
                 return redirect()->back()->with('error', "Divisi ini sudah memiliki Katimja aktif.");
             }
+        }
+
+        if (auth()->id() === $user->id && $roleName === 'Admin' && !$validated['is_active']) {
+            return redirect()->back()->with('error', 'Anda tidak dapat menonaktifkan akun Anda sendiri.');
         }
 
         // PROSES LANJUT
