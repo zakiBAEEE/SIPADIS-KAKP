@@ -22,10 +22,6 @@
     @endif
 
 
-
-
-
-
     <div class="bg-white h-full rounded-xl shadow-neutral-400 shadow-lg p-4 flex flex-col gap-y-6 overflow-auto">
         <div class="">
             <div class="pt-4 px-4 flex justify-between items-start">

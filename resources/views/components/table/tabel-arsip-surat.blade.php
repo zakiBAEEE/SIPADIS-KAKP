@@ -34,6 +34,11 @@
                         Perihal
                     </p>
                 </th>
+                <th class="p-3">
+                    <p class="text-sm leading-none font-normal">
+                        Status
+                    </p>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -60,6 +65,25 @@
                     <td class="p-3">
                         <p class="text-sm">{{ $surat->perihal }}</p>
                     </td>
+                    <td class="p-3">
+                        @php
+                            $status = $surat->status;
+                            $badgeClass = match ($status) {
+                                'diproses' => 'bg-yellow-100 text-yellow-800',
+                                'selesai' => 'bg-green-100 text-green-800',
+                                default => 'bg-gray-100 text-gray-800',
+                            };
+                        @endphp
+
+                        <span class="px-3 py-1 text-sm font-medium rounded-full {{ $badgeClass }}">
+                            @if ($surat->status == 'diproses')
+                                Diproses
+                            @else
+                                Selesai
+                            @endif
+                        </span>
+                    </td>
+
                 </tr>
             @endforeach
         </tbody>

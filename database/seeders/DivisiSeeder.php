@@ -9,8 +9,8 @@ class DivisiSeeder extends Seeder
 {
     public function run(): void
     {
-        $kepalaLldiktiId = DB::table('roles')->where('nama_role', 'Kepala LLDIKTI')->value('id');
-        $kbuId = DB::table('roles')->where('nama_role', 'KBU')->value('id');
+        $kepalaLldiktiId = DB::table('roles')->where('name', 'Kepala LLDIKTI')->value('id');
+        $kbuId = DB::table('roles')->where('name', 'KBU')->value('id');
 
         $divisis = [
             ['nama' => 'Kelembagaan', 'parent_role_id' => $kepalaLldiktiId],

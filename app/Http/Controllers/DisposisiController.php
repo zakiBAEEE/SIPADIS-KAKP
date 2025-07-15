@@ -350,8 +350,6 @@ class DisposisiController extends Controller
 
     }
 
-
-
     public function kembalikanSuratStaf(Request $request, Disposisi $disposisi)
     {
         $user = Auth::user();
@@ -505,7 +503,6 @@ class DisposisiController extends Controller
         }
     }
 
-
     public function cetak($id)
     {
         $surat = SuratMasuk::with(['disposisis.pengirim', 'disposisis.penerima'])->findOrFail($id);
@@ -517,4 +514,18 @@ class DisposisiController extends Controller
             'lembaga' => $lembaga,
         ]);
     }
+
+    public function toggleStatus(SuratMasuk $surat)
+    {
+        // Hanya izinkan staff (opsional, jika pakai middleware bisa dilepas)
+        if (auth()->user()->role->name !== 'Staf') {
+            abort(403, 'Akses ditolak.');
+        }
+
+        $surat->status = $surat->status === 'selesai' ? 'diproses' : 'selesai';
+        $surat->save();
+
+        return redirect()->back()->with('success', 'Status surat berhasil diperbarui.');
+    }
+
 }

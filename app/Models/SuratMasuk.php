@@ -20,7 +20,8 @@ class SuratMasuk extends Model
         'klasifikasi_surat',
         'sifat',
         'file_path',
-        'created_at'
+        'created_at',
+        'status',
     ];
 
     public function disposisis()

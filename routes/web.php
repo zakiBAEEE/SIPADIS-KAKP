@@ -65,6 +65,9 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
     Route::middleware(['role:Staf'])->group(function () {
         Route::post('/disposisi/{disposisi}/kembalikanKeKatimja', [DisposisiController::class, 'kembalikanSuratStaf'])
             ->name('disposisi.kembalikanSuratStaf');
+
+        Route::post('/surat/{surat}/toggle-status', [DisposisiController::class, 'toggleStatus'])->name('surat.toggleStatus');
+
     });
 
     Route::middleware(['role:Katimja'])->group(function () {

@@ -58,7 +58,7 @@ class UserSeeder extends Seeder
                 [
                     'name' => fake()->name(), // Nama sungguhan random
                     'password' => Hash::make('password'),
-                    'role_id' => $roleMap['Staff'],
+                    'role_id' => $roleMap['Staf'],
                     'divisi_id' => $divisiId,
                 ]
             );

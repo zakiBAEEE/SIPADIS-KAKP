@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->string('klasifikasi_surat', 100)->nullable();
             $table->string('sifat', 100)->nullable();
             $table->string('file_path')->nullable();
-            $table->enum('status', ['draft', 'diverifikasi', 'diproses', 'diarsipkan'])->default('draft');
+            $table->enum('status', ['draft', 'diproses', 'selesai'])->default('draft');
             $table->timestamps();
         });
     }

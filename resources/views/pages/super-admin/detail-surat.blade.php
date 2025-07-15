@@ -209,11 +209,53 @@
                                     ])
                                 @endif
                             @endif
-                            @if (auth()->user()->role->name === 'Staf')
+                            {{-- @if (auth()->user()->role->name === 'Staf')
+                                <div class="flex flex-row gap-1.5">
+                                    @php
+                                        $isSelesai = $surat->status === 'selesai';
+                                    @endphp
+
+                                    <form action="{{ route('surat.toggleStatus', $surat->id) }}" method="POST"
+                                        onsubmit="return confirm('Yakin ubah status surat ini?')">
+                                        @csrf
+                                        <button type="submit"
+                                            class="px-3 py-1 rounded-md text-sm font-semibold
+            {{ $isSelesai ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' : 'bg-green-100 text-green-700 hover:bg-green-200' }}">
+                                            {{ $isSelesai ? 'Tandai Diproses' : 'Tandai Selesai' }}
+                                        </button>
+                                    </form>
+
+                                </div>
+                                
                                 @include('components.layout.modal-kembalikan-disposisiStaf', [
                                     'disposisi' => $activeDisposisi,
                                 ])
+                            @endif --}}
+
+                            @if (auth()->user()->role->name === 'Staf')
+                                <div class="flex flex-row gap-1.5">
+                                    @php
+                                        $isSelesai = strtolower($surat->status) === 'selesai'; // pakai strtolower untuk jaga-jaga
+                                    @endphp
+
+                                    <form action="{{ route('surat.toggleStatus', $surat->id) }}" method="POST"
+                                        onsubmit="return confirm('Yakin ubah status surat ini?')">
+                                        @csrf
+                                        <button type="submit"
+                                            class="px-3 py-1 rounded-md text-sm font-semibold
+                {{ $isSelesai ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' : 'bg-green-100 text-green-700 hover:bg-green-200' }}">
+                                            {{ $isSelesai ? 'Tandai Diproses' : 'Tandai Selesai' }}
+                                        </button>
+                                    </form>
+                                </div>
+
+                                @unless ($isSelesai)
+                                    @include('components.layout.modal-kembalikan-disposisiStaf', [
+                                        'disposisi' => $activeDisposisi,
+                                    ])
+                                @endunless
                             @endif
+
                         </div>
                     </div>
                     <div class="p-4">
