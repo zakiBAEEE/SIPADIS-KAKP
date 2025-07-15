@@ -35,7 +35,7 @@
         </x-slot:tableContent>
     </x-layout.page-list-layout>
 
-    <div class="mt-4 flex flex-row justify-end">
+    <div class="mt-4 flex flex-row justify-center sm:justify-end overflow-auto">
         @include('components.base.pagination', ['surats' => $surats])
     </div>
 @endsection
