@@ -10,13 +10,13 @@
             <hr class="w-full border-t border-gray-300 my-2" />
         </div>
         <div class="relative tab-group">
-            <div class="mt-4 tab-content-container">
+            <div class=" tab-content-container">
                 <form action="{{ route('surat.update', $surat->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div id="tab1-group4" class="tab-content text-slate-800 block">
                         <div class="p-4">
-                            <div class="flex flex-row gap-3">
-                                <div class="mb-4 space-y-1.5 w-1/2">
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
                                     <div>
                                         <div class="relative w-full">
                                             @include('components.base.input-surat', [
@@ -29,36 +29,38 @@
                                     </div>
 
                                 </div>
-                                <div class="mb-4 space-y-1.5 w-1/3">
-                                    <div>
-                                        <div class="relative w-full">
-                                            @include('components.base.datepicker', [
-                                                'label' => 'Tanggal Surat',
-                                                'placeholder' => 'Pilih Tanggal Surat',
-                                                'id' => 'tanggal_surat',
-                                                'name' => 'tanggal_surat',
-                                                'value' => $surat->tanggal_surat,
-                                            ])
+                                <div class="flex flex-col sm:flex-row w-full gap-3 ">
+                                    <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
+                                        <div class="w-full">
+                                            <div class="relative w-full">
+                                                @include('components.base.datepicker', [
+                                                    'label' => 'Tanggal Surat',
+                                                    'placeholder' => 'Pilih Tanggal Surat',
+                                                    'id' => 'tanggal_surat',
+                                                    'name' => 'tanggal_surat',
+                                                    'value' => $surat->tanggal_surat,
+                                                ])
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="mb-4 space-y-1.5 w-1/3">
-                                    <div>
-                                        <div class="relative w-full">
-                                            @include('components.base.datepicker', [
-                                                'label' => 'Tanggal Terima',
-                                                'placeholder' => 'Pilih Tanggal Terima',
-                                                'id' => 'created_at',
-                                                'name' => 'created_at',
-                                                'value' => $surat->created_at,
-                                            ])
+                                    <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
+                                        <div class="w-full">
+                                            <div class="relative w-full">
+                                                @include('components.base.datepicker', [
+                                                    'label' => 'Tanggal Terima',
+                                                    'placeholder' => 'Pilih Tanggal Terima',
+                                                    'id' => 'created_at',
+                                                    'name' => 'created_at',
+                                                    'value' => $surat->created_at,
+                                                ])
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex flex-row gap-3 items-center">
-                                <div class="mb-4 space-y-1.5 w-1/2">
-                                    <div>
+                            <div class="flex flex-col sm:flex-row gap-3 items-center">
+                                <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
+                                    <div class="w-full">
                                         <div class="relative w-full">
                                             @include('components.base.input-surat', [
                                                 'label' => 'Pengirim',
@@ -69,32 +71,34 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mb-4 space-y-1.5 w-1/3">
-                                    <div>
-                                        <div class="relative w-full">
-                                            @include('components.base.dropdown', [
-                                                'label' => 'Klasifikasi',
-                                                'value' => ['Umum', 'Pengaduan', 'Permintaan Informasi'],
-                                                'name' => 'klasifikasi_surat',
-                                                'selected' => $surat->klasifikasi_surat ?? null,
-                                            ])
+                                <div class="flex flex-col sm:flex-row w-full">
+                                    <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
+                                        <div class="w-full">
+                                            <div class="relative w-full">
+                                                @include('components.base.dropdown', [
+                                                    'label' => 'Klasifikasi',
+                                                    'value' => ['Umum', 'Pengaduan', 'Permintaan Informasi'],
+                                                    'name' => 'klasifikasi_surat',
+                                                    'selected' => $surat->klasifikasi_surat ?? null,
+                                                ])
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="mb-4 space-y-1.5 w-1/3">
-                                    <div>
-                                        <div class="relative w-full">
-                                            @include('components.base.dropdown', [
-                                                'label' => 'Sifat',
-                                                'value' => ['Rahasia', 'Penting', 'Segera', 'Rutin'],
-                                                'name' => 'sifat',
-                                                'selected' => $surat->sifat ?? null,
-                                            ])
+                                    <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
+                                        <div>
+                                            <div class="relative w-full">
+                                                @include('components.base.dropdown', [
+                                                    'label' => 'Sifat',
+                                                    'value' => ['Rahasia', 'Penting', 'Segera', 'Rutin'],
+                                                    'name' => 'sifat',
+                                                    'selected' => $surat->sifat ?? null,
+                                                ])
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-4 space-y-1.5 w-1/3">
+                            <div class="mb-4 space-y-1.5 w-full">
                                 <div>
                                     <div class="relative w-full">
                                         @include('components.base.input-surat', [
