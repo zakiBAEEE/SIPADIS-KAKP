@@ -70,9 +70,9 @@
                     @endif
 
                     <div class="p-4">
-                        <div class="flex flex-row gap-3">
-                            <div class="mb-4 space-y-1.5 w-1/2">
-                                <div>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
+                                <div class="w-full">
                                     <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2"> Nomor
                                         Surat</label>
                                     <div class="relative w-full">
@@ -82,33 +82,37 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-4 space-y-1.5 w-1/3">
-                                <div>
-                                    <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2"> Tanggal
-                                        Surat</label>
-                                    <div class="relative w-full">
-                                        <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
-                                            id="modal_tgl_surat">
-                                            {{ \Carbon\Carbon::parse($surat->tanggal_surat)->translatedFormat('d F Y') }}
-                                        </h6>
+                            <div class="flex gap-3 flex-row w-full">
+                                <div class="mb-4 space-y-1.5 w-1/2">
+                                    <div class="w-full">
+                                        <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
+                                            Tanggal
+                                            Surat</label>
+                                        <div class="relative w-full">
+                                            <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
+                                                id="modal_tgl_surat">
+                                                {{ \Carbon\Carbon::parse($surat->tanggal_surat)->translatedFormat('d F Y') }}
+                                            </h6>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="mb-4 space-y-1.5 w-1/3">
-                                <div>
-                                    <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2"> Tanggal
-                                        Terima</label>
-                                    <div class="relative w-full">
-                                        <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
-                                            id="modal_tgl_terima">
-                                            {{ \Carbon\Carbon::parse($surat->created_at)->translatedFormat('d F Y') }}
-                                        </h6>
+                                <div class="mb-4 space-y-1.5 w-1/2">
+                                    <div class="w-full">
+                                        <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
+                                            Tanggal
+                                            Terima</label>
+                                        <div class="relative w-full">
+                                            <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
+                                                id="modal_tgl_terima">
+                                                {{ \Carbon\Carbon::parse($surat->created_at)->translatedFormat('d F Y') }}
+                                            </h6>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-row gap-3 items-center">
-                            <div class="mb-4 space-y-1.5 w-1/2">
+                        <div class="flex flex-col sm:flex-row gap-3 items-center">
+                            <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
                                 <div>
                                     <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
                                         Pengirim</label>
@@ -119,30 +123,32 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-4 space-y-1.5 w-1/3">
-                                <div>
-                                    <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
-                                        Klasifikasi</label>
-                                    <div class="relative w-full">
-                                        <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
-                                            id="modal_klasifikasi">
-                                            {{ $surat->klasifikasi_surat }} </h6>
+                            <div class="flex flex-row w-full">
+                                <div class="mb-4 space-y-1.5 w-1/2">
+                                    <div>
+                                        <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
+                                            Klasifikasi</label>
+                                        <div class="relative w-full">
+                                            <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
+                                                id="modal_klasifikasi">
+                                                {{ $surat->klasifikasi_surat }} </h6>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="mb-4 space-y-1.5 w-1/3">
-                                <div>
-                                    <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
-                                        Sifat</label>
-                                    <div class="relative w-full">
-                                        <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
-                                            id="modal_sifat">
-                                            {{ $surat->sifat }} </h6>
+                                <div class="mb-4 space-y-1.5 w-1/2">
+                                    <div>
+                                        <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
+                                            Sifat</label>
+                                        <div class="relative w-full">
+                                            <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
+                                                id="modal_sifat">
+                                                {{ $surat->sifat }} </h6>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-4 space-y-1.5 w-1/3">
+                        <div class="mb-4 space-y-1.5 w-full">
                             <div>
                                 <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
                                     Perihal</label>

@@ -22,10 +22,10 @@
                 <form action="{{ route('surat.agendaKepala') }}" method="GET">
                     <div class="px-4 py-2">
                         <div class="mb-4 space-y-1.5 w-full">
-                           
+
                         </div>
-                        <div class="flex flex-row gap-3">
-                            <div class="mb-4 space-y-1.5 w-1/2">
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
                                 @include('components.base.input-surat', [
                                     'label' => 'Nomor Surat',
                                     'placeholder' => 'Masukkan Nomor Surat',
@@ -33,27 +33,29 @@
                                     'value' => request('nomor_surat'),
                                 ])
                             </div>
-                            <div class="mb-4 space-y-1.5 w-1/3">
-                                @include('components.base.datepicker', [
-                                    'label' => 'Tanggal Surat',
-                                    'placeholder' => 'Pilih Tanggal Surat',
-                                    'id' => 'filter_tanggal_surat',
-                                    'name' => 'filter_tanggal_surat',
-                                    'value' => request('filter_tanggal_surat'),
-                                ])
-                            </div>
-                            <div class="mb-4 space-y-1.5 w-1/3">
-                                @include('components.base.datepicker', [
-                                    'label' => 'Tanggal Terima',
-                                    'placeholder' => 'Pilih Tanggal Terima',
-                                    'id' => 'filter_created_at',
-                                    'name' => 'filter_created_at',
-                                    'value' => request('filter_created_at'),
-                                ])
+                            <div class="flex flex-col sm:flex-row">
+                                <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
+                                    @include('components.base.datepicker', [
+                                        'label' => 'Tanggal Surat',
+                                        'placeholder' => 'Pilih Tanggal Surat',
+                                        'id' => 'filter_tanggal_surat',
+                                        'name' => 'filter_tanggal_surat',
+                                        'value' => request('filter_tanggal_surat'),
+                                    ])
+                                </div>
+                                <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
+                                    @include('components.base.datepicker', [
+                                        'label' => 'Tanggal Terima',
+                                        'placeholder' => 'Pilih Tanggal Terima',
+                                        'id' => 'filter_created_at',
+                                        'name' => 'filter_created_at',
+                                        'value' => request('filter_created_at'),
+                                    ])
+                                </div>
                             </div>
                         </div>
-                        <div class="flex flex-row gap-3 items-center">
-                            <div class="mb-4 space-y-1.5 w-1/2">
+                        <div class="flex sm:flex-row flex-col gap-3">
+                            <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
                                 @include('components.base.input-surat', [
                                     'label' => 'Pengirim',
                                     'placeholder' => 'Masukkan Pengirim Surat',
@@ -61,21 +63,23 @@
                                     'value' => request('pengirim'),
                                 ])
                             </div>
-                            <div class="mb-4 space-y-1.5 w-1/3">
-                                @include('components.base.dropdown', [
-                                    'label' => 'Klasifikasi',
-                                    'value' => ['Umum', 'Pengaduan', 'Permintaan Informasi'],
-                                    'name' => 'klasifikasi_surat',
-                                    'selected' => request('klasifikasi_surat'),
-                                ])
-                            </div>
-                            <div class="mb-4 space-y-1.5 w-1/3">
-                                @include('components.base.dropdown', [
-                                    'label' => 'Sifat',
-                                    'value' => ['Rahasia', 'Penting', 'Segera', 'Rutin'],
-                                    'name' => 'sifat',
-                                    'selected' => request('sifat'),
-                                ])
+                            <div class="flex flex-col sm:flex-row">
+                                <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
+                                    @include('components.base.dropdown', [
+                                        'label' => 'Klasifikasi',
+                                        'value' => ['Umum', 'Pengaduan', 'Permintaan Informasi'],
+                                        'name' => 'klasifikasi_surat',
+                                        'selected' => request('klasifikasi_surat'),
+                                    ])
+                                </div>
+                                <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
+                                    @include('components.base.dropdown', [
+                                        'label' => 'Sifat',
+                                        'value' => ['Rahasia', 'Penting', 'Segera', 'Rutin'],
+                                        'name' => 'sifat',
+                                        'selected' => request('sifat'),
+                                    ])
+                                </div>
                             </div>
                         </div>
                         <div class="space-y-1.5 mb-4">
@@ -109,7 +113,7 @@
                             Terapkan Filter
                         </button>
 
-                         <button type="submit" name="mode"  value="terima" 
+                        <button type="submit" name="mode" value="terima"
                             formaction="{{ route('surat.printAgendaKepala') }}" {{-- Mengarah ke route printAgenda --}} formmethod="GET"
                             {{-- Pastikan method GET --}} formtarget="_blank" {{-- Opsional: buka di tab baru --}}
                             class="inline-flex items-center justify-center border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-green-700 border-green-700 text-slate-50 hover:bg-green-600 hover:border-green-600">
@@ -126,7 +130,7 @@
             </div>
         </div>
         @include('components.table.table-agenda-kepala', ['suratMasuk' => $suratMasuk])
-        <div class="mt-4 flex flex-row justify-end">
+        <div class="mt-4 flex flex-row justify-center sm:justify-end overflow-auto">
             @include('components.base.pagination', ['surats' => $suratMasuk])
         </div>
     </div>

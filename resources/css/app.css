@@ -12,17 +12,21 @@
 
 /* resources/css/app.css atau file CSS utama Anda */
 
-/* *{
+/* * {
     border: 1px solid red;
 } */
 
 @media print {
     @page {
-        margin-top: 1cm;    /* Atur margin atas halaman */
-        margin-bottom: 1cm; /* Atur margin bawah halaman */
-        margin-left: 1.5cm; /* Atur margin kiri halaman */
-        margin-right: 1.5cm;/* Atur margin kanan halaman */
-        
+        margin-top: 1cm;
+        /* Atur margin atas halaman */
+        margin-bottom: 1cm;
+        /* Atur margin bawah halaman */
+        margin-left: 1.5cm;
+        /* Atur margin kiri halaman */
+        margin-right: 1.5cm;
+        /* Atur margin kanan halaman */
+
         /* Anda bisa mencoba margin: 0; jika ingin menghilangkan margin sepenuhnya,
            tapi hati-hati konten bisa terpotong. */
         /* @page { margin: 0; } */
@@ -35,6 +39,7 @@
     @page :header {
         display: none;
     }
+
     @page :footer {
         display: none;
     }
