@@ -111,8 +111,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col sm:flex-row gap-3 items-center">
-                            <div class="mb-4 space-y-1.5 sm:w-1/2 w-1/2">
+                        <div class="flex flex-col sm:flex-row gap-3 w-full">
+                            <div class="mb-4 space-y-1.5 sm:w-1/3 w-full">
                                 <div>
                                     <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
                                         Pengirim</label>
@@ -122,29 +122,46 @@
                                             {{ $surat->pengirim }} </h6>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="flex md:flex-row gap-3 flex-col md:w-1/2 w-full">
-                                <div class="mb-4 space-y-1.5 md:w-1/2 w-full">
+                                <div class="mb-4 space-y-1.5 sm:w-1/3 w-full">
                                     <div>
-                                        <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
-                                            Asal Instansi</label>
+                                        <label for="email"
+                                            class="font-sans text-sm text-slate-800 font-bold mb-2">Pengirim</label>
                                         <div class="relative w-full">
-                                            <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl">
-                                                {{ $surat->asal_instansi }} </h6>
+                                            <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
+                                                id="modal_pengirim">
+                                                {{ $surat->pengirim }}
+                                            </h6>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mb-4 space-y-1.5  md:w-1/2 w-full">
+
+                                <!-- Asal Instansi -->
+                                <div class="mb-4 space-y-1.5 sm:w-1/3 w-full">
                                     <div>
-                                        <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
-                                            Email Pengirim</label>
+                                        <label for="email" class="font-sans text-sm text-slate-800 font-bold mb-2">Asal
+                                            Instansi</label>
                                         <div class="relative w-full">
                                             <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl">
-                                                {{ $surat->email_pengirim }} </h6>
+                                                {{ $surat->asal_instansi }}
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Email Pengirim -->
+                                <div class="mb-4 space-y-1.5 sm:w-1/3 w-full">
+                                    <div>
+                                        <label for="email" class="font-sans text-sm text-slate-800 font-bold mb-2">Email
+                                            Pengirim</label>
+                                        <div class="relative w-full">
+                                            <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl">
+                                                {{ $surat->email_pengirim }}
+                                            </h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                         <div class="flex flex-row w-full">
                             <div class="mb-4 space-y-1.5 w-1/2">
