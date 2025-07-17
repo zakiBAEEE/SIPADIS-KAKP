@@ -27,7 +27,22 @@
                                             ])
                                         </div>
                                     </div>
-
+                                </div>
+                                <div class="flex md:flex-row gap-3 flex-col">
+                                    <div class="mb-4 space-y-1.5 md:w-1/2 w-full">
+                                        @include('components.base.input-surat', [
+                                            'label' => 'Asal Instansi',
+                                            'placeholder' => 'Masukkan Asal Instansi Surat',
+                                            'name' => 'asal_instansi',
+                                        ])
+                                    </div>
+                                    <div class="mb-4 space-y-1.5  md:w-1/2 w-full">
+                                        @include('components.base.input-email', [
+                                            'label' => 'Email Pengirim',
+                                            'placeholder' => 'Masukkan Email Pengirim',
+                                            'name' => 'email_pengirim',
+                                        ])
+                                    </div>
                                 </div>
                                 <div class="flex flex-col sm:flex-row w-full gap-3 ">
                                     <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
