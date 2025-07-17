@@ -202,12 +202,15 @@
                                         <iframe src="{{ asset('storage/' . $surat->file_path) }}" class="w-full h-[500px]"
                                             frameborder="0"></iframe>
                                     @else
-                                        <img src="{{ asset('storage/' . $surat->file_path) }}" alt="Preview Dokumen"
-                                            class="max-w-full h-auto border rounded">
-                                        <a href="{{ asset('storage/' . $surat->file_path) }}" download
-                                            class="inline-block mt-2 px-4 py-2 text-sm bg-slate-700 text-white rounded hover:bg-slate-800 transition">
-                                            Download Gambar
-                                        </a>
+                                        <div class="flex flex-col items-start gap-2 mt-4">
+                                            <img src="{{ asset('storage/' . $surat->file_path) }}" alt="Preview Dokumen"
+                                                class="max-w-full h-auto border rounded">
+
+                                            <a href="{{ asset('storage/' . $surat->file_path) }}" download
+                                                class="px-4 py-2 text-sm bg-slate-700 text-white rounded hover:bg-slate-800 transition">
+                                                Download Gambar
+                                            </a>
+                                        </div>
                                     @endif
                                 </div>
                             @else
