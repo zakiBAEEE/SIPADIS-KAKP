@@ -123,27 +123,43 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex flex-row w-full">
-                                <div class="mb-4 space-y-1.5 w-1/2">
-                                    <div>
-                                        <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
-                                            Klasifikasi</label>
-                                        <div class="relative w-full">
-                                            <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
-                                                id="modal_klasifikasi">
-                                                {{ $surat->klasifikasi_surat }} </h6>
-                                        </div>
+                            <div class="flex md:flex-row gap-3 flex-col">
+                                <div class="mb-4 space-y-1.5 md:w-1/2 w-full">
+                                    @include('components.base.input-surat', [
+                                        'label' => 'Asal Instansi',
+                                        'placeholder' => 'Masukkan Asal Instansi Surat',
+                                        'name' => 'asal_instansi',
+                                    ])
+                                </div>
+                                <div class="mb-4 space-y-1.5  md:w-1/2 w-full">
+                                    @include('components.base.input-email', [
+                                        'label' => 'Email Pengirim',
+                                        'placeholder' => 'Masukkan Email Pengirim',
+                                        'name' => 'email_pengirim',
+                                    ])
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-row w-full">
+                            <div class="mb-4 space-y-1.5 w-1/2">
+                                <div>
+                                    <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
+                                        Klasifikasi</label>
+                                    <div class="relative w-full">
+                                        <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
+                                            id="modal_klasifikasi">
+                                            {{ $surat->klasifikasi_surat }} </h6>
                                     </div>
                                 </div>
-                                <div class="mb-4 space-y-1.5 w-1/2">
-                                    <div>
-                                        <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
-                                            Sifat</label>
-                                        <div class="relative w-full">
-                                            <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
-                                                id="modal_sifat">
-                                                {{ $surat->sifat }} </h6>
-                                        </div>
+                            </div>
+                            <div class="mb-4 space-y-1.5 w-1/2">
+                                <div>
+                                    <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
+                                        Sifat</label>
+                                    <div class="relative w-full">
+                                        <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
+                                            id="modal_sifat">
+                                            {{ $surat->sifat }} </h6>
                                     </div>
                                 </div>
                             </div>
@@ -215,28 +231,6 @@
                                     ])
                                 @endif
                             @endif
-                            {{-- @if (auth()->user()->role->name === 'Staf')
-                                <div class="flex flex-row gap-1.5">
-                                    @php
-                                        $isSelesai = $surat->status === 'selesai';
-                                    @endphp
-
-                                    <form action="{{ route('surat.toggleStatus', $surat->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ubah status surat ini?')">
-                                        @csrf
-                                        <button type="submit"
-                                            class="px-3 py-1 rounded-md text-sm font-semibold
-            {{ $isSelesai ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' : 'bg-green-100 text-green-700 hover:bg-green-200' }}">
-                                            {{ $isSelesai ? 'Tandai Diproses' : 'Tandai Selesai' }}
-                                        </button>
-                                    </form>
-
-                                </div>
-                                
-                                @include('components.layout.modal-kembalikan-disposisiStaf', [
-                                    'disposisi' => $activeDisposisi,
-                                ])
-                            @endif --}}
 
                             @if (auth()->user()->role->name === 'Staf')
                                 <div class="flex flex-row gap-1.5">
