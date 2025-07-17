@@ -12,9 +12,9 @@
 
 /* resources/css/app.css atau file CSS utama Anda */
 
-* {
+/* * {
     border: 1px solid red;
-}
+} */
 
 @media print {
     @page {
