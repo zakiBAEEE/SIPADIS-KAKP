@@ -15,6 +15,8 @@ class SuratMasuk extends Model
         'id',
         'nomor_surat',
         'pengirim',
+        'asal_instansi', // tambahkan ini
+        'email_pengirim', // dan ini
         'tanggal_surat',
         'perihal',
         'klasifikasi_surat',
@@ -23,7 +25,6 @@ class SuratMasuk extends Model
         'created_at',
         'status',
     ];
-
     public function disposisis()
     {
         return $this->hasMany(Disposisi::class, 'surat_id');
