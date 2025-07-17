@@ -165,10 +165,21 @@
                                     @endif
                                 </div>
                             @endif
-                            @include('components.base.file-picker', [
-                                'label' => 'Upload Ulang Dokumen (Opsional)',
-                                'name' => 'file_path',
-                            ])
+                            <div class="px-4">
+                                @include('components.base.file-picker', [
+                                    'label' => 'Upload Surat',
+                                    'name' => 'file_path',
+                                ])
+                                <p class="mt-2 text-sm text-gray-500">* Hanya file bertipe <span
+                                        class="font-medium text-gray-700">gambar (jpg, jpeg, png)</span> dan <span
+                                        class="font-medium text-gray-700">PDF</span> yang diperbolehkan.</p>
+                                <div class="mt-2">
+                                    @error('file_path')
+                                        <p class="text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                            </div>
                             <div class=" px-4 pb-4 flex justify-end gap-2">
                                 @include('components.base.tombol-simpan-surat')
                             </div>
