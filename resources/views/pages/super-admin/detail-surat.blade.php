@@ -123,7 +123,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex md:flex-row gap-3 flex-col">
+                            <div class="flex md:flex-row gap-3 flex-col md:w-1/2 w-full">
                                 <div class="mb-4 space-y-1.5 md:w-1/2 w-full">
                                     <div>
                                         <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
