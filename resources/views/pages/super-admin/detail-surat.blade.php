@@ -125,18 +125,24 @@
                             </div>
                             <div class="flex md:flex-row gap-3 flex-col">
                                 <div class="mb-4 space-y-1.5 md:w-1/2 w-full">
-                                    @include('components.base.input-surat', [
-                                        'label' => 'Asal Instansi',
-                                        'placeholder' => 'Masukkan Asal Instansi Surat',
-                                        'name' => 'asal_instansi',
-                                    ])
+                                    <div>
+                                        <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
+                                            Asal Instansi</label>
+                                        <div class="relative w-full">
+                                            <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl">
+                                                {{ $surat->asal_instansi }} </h6>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="mb-4 space-y-1.5  md:w-1/2 w-full">
-                                    @include('components.base.input-email', [
-                                        'label' => 'Email Pengirim',
-                                        'placeholder' => 'Masukkan Email Pengirim',
-                                        'name' => 'email_pengirim',
-                                    ])
+                                    <div>
+                                        <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
+                                            Email Pengirim</label>
+                                        <div class="relative w-full">
+                                            <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl">
+                                                {{ $surat->email_pengirim }} </h6>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
