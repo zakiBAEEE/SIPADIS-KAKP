@@ -19,11 +19,27 @@
              ])
          </div>
      </div>
+     <div class="flex md:flex-row gap-3 flex-col">
+         <div class="mb-4 space-y-1.5 md:w-1/2 w-full">
+             @include('components.base.input-surat', [
+                 'label' => 'Asal Instansi',
+                 'placeholder' => 'Masukkan Asal Instansi Surat',
+                 'name' => 'asal_instansi',
+             ])
+         </div>
+         <div class="mb-4 space-y-1.5  md:w-1/2 w-full">
+             @include('components.base.input-surat', [
+                 'label' => 'Email Pengirim',
+                 'placeholder' => 'Masukkan Email Pengirim',
+                 'name' => 'email_pengirim',
+             ])
+         </div>
+     </div>
      <div class="flex flex-col gap-3 items-center md:flex-row">
          <div class="mb-4 space-y-1.5 md:w-1/2 w-full">
              @include('components.base.input-surat', [
                  'label' => 'Pengirim',
-                 'placeholder' => 'Masukkan Pengirim Surat',
+                 'placeholder' => 'Masukkan Nama Pengirim Surat',
                  'name' => 'pengirim',
              ])
          </div>
