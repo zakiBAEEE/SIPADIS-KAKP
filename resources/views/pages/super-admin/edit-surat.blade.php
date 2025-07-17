@@ -1,4 +1,25 @@
 @extends('layouts.super-admin-layout')
+
+@if (session('success'))
+    <div class="js-dismissable-alert fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md flex items-center justify-between rounded-lg bg-green-100 px-6 py-5 text-base text-green-700 shadow-lg transition-opacity duration-300"
+        role="alert">
+        <span>{{ session('success') }}</span>
+        <button type="button" class="js-close-alert text-green-700 hover:text-green-900">
+            &times;
+        </button>
+    </div>
+@endif
+
+@if (session('error'))
+    <div class="js-dismissable-alert fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md flex items-center justify-between rounded-lg bg-red-100 px-6 py-5 text-base text-red-700 shadow-lg transition-opacity duration-300"
+        role="alert">
+        <span>{{ session('error') }}</span>
+        <button type="button" class="js-close-alert text-red-700 hover:text-red-900">
+            &times;
+        </button>
+    </div>
+@endif
+
 @section('content')
     <div class="bg-white min-w-full h-full rounded-xl shadow-neutral-400 shadow-lg overflow-scroll p-4">
         <div class="flex flex-col gap-4">
@@ -59,11 +80,19 @@
                             </div>
                             <div class="flex md:flex-row gap-3 flex-col">
                                 <div class="mb-4 space-y-1.5 md:w-1/2 w-full">
-                                    @include('components.base.input-surat', [
-                                        'label' => 'Asal Instansi',
-                                        'placeholder' => 'Masukkan Asal Instansi Surat',
-                                        'name' => 'asal_instansi',
-                                    ])
+                                    <button tabindex="0" type="button"
+                                        class="flex items-center gap-4 justify-between h-max outline-none focus:outline-none text-slate-600 bg-transparent ring-transparent border border-slate-200 transition-all duration-300 ease-in disabled:opacity-50 disabled:pointer-events-none data-[error=true]:border-error data-[success=true]:border-success select-none text-start data-[shape=pill]:rounded-full [&amp;_data-slot=placeholder]:text-foreground/60 text-sm rounded-md py-2 px-2.5 ring shadow-sm hover:border-slate-800 hover:ring-slate-800/10 focus:border-slate-800 focus:ring-slate-800/10 data-[open=true]:border-primary data-[open=true]:ring-primary/10 w-72"
+                                        data-open="false" data-error="false" data-success="false" aria-expanded="false"
+                                        aria-haspopup="listbox" role="combobox"><span data-slot="placeholder">Select
+                                            Version</span><svg viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg" color="currentColor"
+                                            class="h-[1em] w-[1em] translate-x-0.5 stroke-[1.5]">
+                                            <path d="M17 8L12 3L7 8" stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round"></path>
+                                            <path d="M17 16L12 21L7 16" stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round"></path>
+                                        </svg></button><input readonly="" style="display:none" value="" />
+
                                 </div>
                                 <div class="mb-4 space-y-1.5  md:w-1/2 w-full">
                                     @include('components.base.input-email', [
@@ -79,7 +108,7 @@
                                         <div class="relative w-full">
                                             @include('components.base.input-surat', [
                                                 'label' => 'Pengirim',
-                                                'placeholder' => 'Masukkan Noma Pengirim',
+                                                'placeholder' => 'Masukkan Nama Pengirim',
                                                 'name' => 'pengirim',
                                                 'value' => $surat->pengirim,
                                             ])
