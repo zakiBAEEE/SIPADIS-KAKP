@@ -241,69 +241,136 @@ class SuratMasukController extends Controller
         return view('pages.super-admin.tambah-surat-masuk');
     }
 
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'nomor_surat' => 'required|string|unique:surat_masuk,nomor_surat',
+    //         'pengirim' => 'required|string',
+    //         'tanggal_surat' => 'required|date',
+    //         'perihal' => 'required|string',
+    //         'klasifikasi_surat' => 'nullable|string',
+    //         'sifat' => 'nullable|string',
+    //         'file_path' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+    //     ]);
+
+    //     try {
+    //         if ($request->hasFile('file_path')) {
+    //             // Simpan ke storage/app/public/surat
+    //             $path = $request->file('file_path')->store('surat', 'public');
+    //             $validated['file_path'] = $path;
+
+    //             // Cek apakah public/storage adalah symlink
+    //             if (!is_link(public_path('storage'))) {
+    //                 // HANYA copy file kalau symlink tidak ada (di hosting)
+    //                 $source = storage_path('app/public/' . $path);
+    //                 $destination = public_path('storage/' . $path);
+
+    //                 \Illuminate\Support\Facades\File::ensureDirectoryExists(dirname($destination));
+    //                 \Illuminate\Support\Facades\File::copy($source, $destination);
+    //             }
+    //         }
+
+    //         $tahun = now()->format('Y');
+
+    //         // Ambil ID terakhir yang masih ada untuk tahun ini
+    //         $lastId = SuratMasuk::where('id', 'like', '%-TU-' . $tahun)
+    //             ->orderByDesc('id')
+    //             ->first();
+
+    //         if ($lastId) {
+    //             // Ambil nomor urut dari bagian depan ID, misalnya: "005-TU-2025"
+    //             $lastUrut = (int) explode('-', $lastId->id)[0];
+    //             $nomorUrut = str_pad($lastUrut + 1, 3, '0', STR_PAD_LEFT);
+    //         } else {
+    //             // Kalau belum ada surat tahun ini
+    //             $nomorUrut = '001';
+    //         }
+
+    //         $idSurat = "{$nomorUrut}-TU-{$tahun}";
+    //         $validated['id'] = $idSurat;
+    //         $surat = SuratMasuk::create($validated);
+
+    //         if ($surat) {
+    //             return redirect()->route('surat.tambah')->with('success', 'Surat berhasil ditambahkan!');
+    //         } else {
+    //             return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat.');
+    //         }
+
+    //     } 
+    //     catch (\Illuminate\Database\QueryException $e) {
+    //         dd($e->getMessage()); // Tampilkan error MySQL langsung di browser
+
+    //         return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat karena masalah database.');
+    //     } catch (\Exception $e) {
+    //         Log::error('Error umum saat menambahkan surat: ' . $e->getMessage());
+    //         return redirect()->route('surat.tambah')->with('error', 'Terjadi kesalahan tak terduga saat menambahkan surat.');
+    //     }
+    // }
+
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nomor_surat' => 'required|string|unique:surat_masuk,nomor_surat',
-            'pengirim' => 'required|string',
-            'tanggal_surat' => 'required|date',
-            'perihal' => 'required|string',
-            'klasifikasi_surat' => 'nullable|string',
-            'sifat' => 'nullable|string',
-            'file_path' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
-        ]);
+{
+    $validated = $request->validate([
+        'nomor_surat' => 'required|string|unique:surat_masuk,nomor_surat',
+        'pengirim' => 'required|string',
+        'asal_instansi' => 'nullable|string|max:255',
+        'email_pengirim' => 'nullable|email|max:255',
+        'tanggal_surat' => 'required|date',
+        'perihal' => 'required|string',
+        'klasifikasi_surat' => 'nullable|string',
+        'sifat' => 'nullable|string',
+        'file_path' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+    ]);
 
-        try {
-            if ($request->hasFile('file_path')) {
-                // Simpan ke storage/app/public/surat
-                $path = $request->file('file_path')->store('surat', 'public');
-                $validated['file_path'] = $path;
+    try {
+        if ($request->hasFile('file_path')) {
+            // Simpan ke storage/app/public/surat
+            $path = $request->file('file_path')->store('surat', 'public');
+            $validated['file_path'] = $path;
 
-                // Cek apakah public/storage adalah symlink
-                if (!is_link(public_path('storage'))) {
-                    // HANYA copy file kalau symlink tidak ada (di hosting)
-                    $source = storage_path('app/public/' . $path);
-                    $destination = public_path('storage/' . $path);
+            // Cek apakah public/storage adalah symlink
+            if (!is_link(public_path('storage'))) {
+                // HANYA copy file kalau symlink tidak ada (di hosting)
+                $source = storage_path('app/public/' . $path);
+                $destination = public_path('storage/' . $path);
 
-                    \Illuminate\Support\Facades\File::ensureDirectoryExists(dirname($destination));
-                    \Illuminate\Support\Facades\File::copy($source, $destination);
-                }
+                \Illuminate\Support\Facades\File::ensureDirectoryExists(dirname($destination));
+                \Illuminate\Support\Facades\File::copy($source, $destination);
             }
-            $tahun = now()->format('Y');
-
-            // Ambil ID terakhir yang masih ada untuk tahun ini
-            $lastId = SuratMasuk::where('id', 'like', '%-TU-' . $tahun)
-                ->orderByDesc('id')
-                ->first();
-
-            if ($lastId) {
-                // Ambil nomor urut dari bagian depan ID, misalnya: "005-TU-2025"
-                $lastUrut = (int) explode('-', $lastId->id)[0];
-                $nomorUrut = str_pad($lastUrut + 1, 3, '0', STR_PAD_LEFT);
-            } else {
-                // Kalau belum ada surat tahun ini
-                $nomorUrut = '001';
-            }
-
-            $idSurat = "{$nomorUrut}-TU-{$tahun}";
-            $validated['id'] = $idSurat;
-            $surat = SuratMasuk::create($validated);
-
-            if ($surat) {
-                return redirect()->route('surat.tambah')->with('success', 'Surat berhasil ditambahkan!');
-            } else {
-                return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat.');
-            }
-
-        } catch (\Illuminate\Database\QueryException $e) {
-            dd($e->getMessage()); // Tampilkan error MySQL langsung di browser
-
-            return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat karena masalah database.');
-        } catch (\Exception $e) {
-            Log::error('Error umum saat menambahkan surat: ' . $e->getMessage());
-            return redirect()->route('surat.tambah')->with('error', 'Terjadi kesalahan tak terduga saat menambahkan surat.');
         }
+
+        $tahun = now()->format('Y');
+
+        // Ambil ID terakhir yang masih ada untuk tahun ini
+        $lastId = SuratMasuk::where('id', 'like', '%-TU-' . $tahun)
+            ->orderByDesc('id')
+            ->first();
+
+        if ($lastId) {
+            $lastUrut = (int) explode('-', $lastId->id)[0];
+            $nomorUrut = str_pad($lastUrut + 1, 3, '0', STR_PAD_LEFT);
+        } else {
+            $nomorUrut = '001';
+        }
+
+        $idSurat = "{$nomorUrut}-TU-{$tahun}";
+        $validated['id'] = $idSurat;
+
+        $surat = SuratMasuk::create($validated);
+
+        if ($surat) {
+            return redirect()->route('surat.tambah')->with('success', 'Surat berhasil ditambahkan!');
+        } else {
+            return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat.');
+        }
+
+    } catch (\Illuminate\Database\QueryException $e) {
+        dd($e->getMessage());
+        return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat karena masalah database.');
+    } catch (\Exception $e) {
+        Log::error('Error umum saat menambahkan surat: ' . $e->getMessage());
+        return redirect()->route('surat.tambah')->with('error', 'Terjadi kesalahan tak terduga saat menambahkan surat.');
     }
+}
 
 
     public function show(SuratMasuk $surat) // Gunakan Route Model Binding
