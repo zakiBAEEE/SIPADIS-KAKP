@@ -395,7 +395,7 @@ class SuratMasukController extends Controller
     {
         try {
             $validated = $request->validate([
-                'nomor_surat' => 'required|string|unique:surat_masuk,nomor_surat',
+                'nomor_surat' => 'required|string',
                 'pengirim' => 'required|string',
                 'asal_instansi' => 'nullable|string|max:255',
                 'email_pengirim' => 'nullable|email|max:255',
