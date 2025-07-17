@@ -112,7 +112,7 @@
                             </div>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-3 items-center">
-                            <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
+                            <div class="mb-4 space-y-1.5 sm:w-1/2 w-1/2">
                                 <div>
                                     <label for="email" class="font-sans  text-sm text-slate-800 font-bold mb-2">
                                         Pengirim</label>
