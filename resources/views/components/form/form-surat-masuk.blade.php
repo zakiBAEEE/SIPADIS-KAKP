@@ -28,7 +28,7 @@
              ])
          </div>
          <div class="mb-4 space-y-1.5  md:w-1/2 w-full">
-             @include('components.base.input-surat', [
+             @include('components.base.input-email', [
                  'label' => 'Email Pengirim',
                  'placeholder' => 'Masukkan Email Pengirim',
                  'name' => 'email_pengirim',
