@@ -453,13 +453,15 @@ class SuratMasukController extends Controller
     {
         try {
             $validated = $request->validate([
-                'nomor_surat' => 'required|string',
+                'nomor_surat' => 'required|string|unique:surat_masuk,nomor_surat',
                 'pengirim' => 'required|string',
+                'asal_instansi' => 'nullable|string|max:255',
+                'email_pengirim' => 'nullable|email|max:255',
                 'tanggal_surat' => 'required|date',
                 'perihal' => 'required|string',
                 'klasifikasi_surat' => 'nullable|string',
                 'sifat' => 'nullable|string',
-                'file_path' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
+                'file_path' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
             ]);
 
             if ($request->hasFile('file_path')) {
