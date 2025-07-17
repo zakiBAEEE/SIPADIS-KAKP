@@ -204,6 +204,10 @@
                                     @else
                                         <img src="{{ asset('storage/' . $surat->file_path) }}" alt="Preview Dokumen"
                                             class="max-w-full h-auto border rounded">
+                                        <a href="{{ asset('storage/' . $surat->file_path) }}" download
+                                            class="inline-block mt-2 px-4 py-2 text-sm bg-slate-700 text-white rounded hover:bg-slate-800 transition">
+                                            Download Gambar
+                                        </a>
                                     @endif
                                 </div>
                             @else
