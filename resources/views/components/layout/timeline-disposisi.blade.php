@@ -84,7 +84,10 @@
 
                 {{-- Content Column --}}
                 <div class="flex-1 pb-8">
-                    <p class="text-sm font-medium">{{ $disposisi->penerima->name ?? 'N/A' }}</p>
+                    @if ($disposisi->penerima->role->name !== 'Staf')
+                        <p class="text-sm font-medium">{{ $disposisi->penerima->name ?? 'N/A' }}</p>
+                    @endif
+
                     @if ($disposisi->penerima && $disposisi->penerima->divisi)
                         <p class="text-xs text-gray-500">{{ $disposisi->penerima->divisi->nama_divisi }}
                             ({{ $disposisi->penerima->role->name }})
@@ -108,4 +111,27 @@
     @empty
         <div class="text-slate-500 italic">Belum ada disposisi.</div>
     @endforelse
+
+    @if (in_array(strtolower($surat->status), ['dikembalikan', 'ditindaklanjuti', 'selesai']))
+        <div class="flex w-full min-w-full">
+            {{-- Timeline Column --}}
+            <div class="relative w-12 flex flex-col items-center">
+                <div
+                    class="absolute top-0 {{ in_array(strtolower($surat->status), ['ditolak', 'ditindaklanjuti', 'selesai', 'dikembalikan']) ? 'h-0' : 'h-full' }} w-0.5 bg-slate-300">
+                </div>
+                <span class="z-10 grid h-10 w-10 place-items-center rounded-full bg-green-200">
+                    ✅
+                </span>
+            </div>
+
+            {{-- Content Column --}}
+            <div class="flex-1 pb-8">
+                <p class="font-bold text-green-800">Status Akhir Surat</p>
+                <p class="text-sm text-gray-700 capitalize">
+                    {{ $surat->status }} pada
+                    {{ \Carbon\Carbon::parse($surat->updated_at)->translatedFormat('d F Y H:i') }}
+                </p>
+            </div>
+        </div>
+    @endif
 </div>
