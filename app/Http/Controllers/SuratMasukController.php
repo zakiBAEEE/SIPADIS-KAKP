@@ -323,6 +323,7 @@ class SuratMasukController extends Controller
             ->get();
 
 
+
         return view('pages.super-admin.detail-surat', compact('surat', 'daftarUser', 'cleanTimeline'));
     }
 
