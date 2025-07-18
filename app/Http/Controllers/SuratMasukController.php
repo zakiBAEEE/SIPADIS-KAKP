@@ -322,6 +322,7 @@ class SuratMasukController extends Controller
             ->with(['pengirim.role', 'penerima.role'])
             ->get();
 
+
         return view('pages.super-admin.detail-surat', compact('surat', 'daftarUser', 'cleanTimeline'));
     }
 
