@@ -30,26 +30,9 @@
             <hr class="w-full border-t border-gray-300 my-2" />
         </div>
         <div class="relative tab-group">
-            <div class="flex border-b border-slate-200 relative justify-between" role="tablist">
-                <div>
-                    <div
-                        class="absolute bottom-0 h-0.5 bg-slate-800 transition-transform duration-300 transform scale-x-0 translate-x-0 tab-indicator">
-                    </div>
+            <div class="mt-4 ">
 
-                    <a href="#"
-                        class="tab-link text-sm active inline-block py-2 px-4 text-slate-800 transition-colors duration-300 mr-1"
-                        data-tab-target="tab1-group4">
-                        Data
-                    </a>
-                    <a href="#"
-                        class="tab-link text-sm inline-block py-2 px-4 text-slate-800 transition-colors duration-300 mr-1"
-                        data-tab-target="tab2-group4">
-                        Disposisi
-                    </a>
-                </div>
-            </div>
-            <div class="mt-4 tab-content-container">
-                <div id="tab1-group4" class="tab-content text-slate-800 block">
+                <div class="flex flex-row justify-end gap-2">
                     @php
                         $user = Auth::user();
                         $isAdmin = $user->role->name === 'Admin';
@@ -60,231 +43,149 @@
                     @endphp
 
                     @if ($isAdmin && ($belumPernahDidisposisikan || $terakhirKembalikan))
-                        <div class="flex justify-end">
-                            <a href="{{ route('surat.edit', ['surat' => $surat->id]) }}"
-                                class="inline-flex items-center gap-1 rounded-md border border-orange-400 bg-orange-100 px-2 py-1 text-sm font-medium text-orange-800 hover:bg-orange-200 hover:shadow transition duration-150 ease-in-out">
-                                @include('components.base.ikon-edit')
-                                <span>Edit Surat</span>
-                            </a>
-                        </div>
+                        <a href="{{ route('surat.edit', ['surat' => $surat->id]) }}"
+                            class="inline-flex items-center gap-1 rounded-md border border-orange-400 bg-orange-100 px-2 py-1 text-sm font-medium text-orange-800 hover:bg-orange-200 hover:shadow transition duration-150 ease-in-out">
+                            @include('components.base.ikon-edit')
+                            <span>Edit Surat</span>
+                        </a>
                     @endif
 
-                    <div class="p-4">
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <div class="mb-4 space-y-1.5 sm:w-1/2 w-full">
-                                <div class="w-full">
-                                    <label for="email" class="font-sans text-sm text-slate-800 font-bold mb-2">Nomor
-                                        Surat</label>
-                                    <div class="relative w-full">
-                                        <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
-                                            id="modal_nomor_surat">
-                                            {{ $surat->nomor_surat }}
-                                        </h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex gap-3 flex-row w-full">
-                                <div class="mb-4 space-y-1.5 w-1/2">
-                                    <div class="w-full">
-                                        <label for="email"
-                                            class="font-sans text-sm text-slate-800 font-bold mb-2">Tanggal Surat</label>
-                                        <div class="relative w-full">
-                                            <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
-                                                id="modal_tgl_surat">
-                                                {{ \Carbon\Carbon::parse($surat->tanggal_surat)->translatedFormat('d F Y') }}
-                                            </h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-4 space-y-1.5 w-1/2">
-                                    <div class="w-full">
-                                        <label for="email"
-                                            class="font-sans text-sm text-slate-800 font-bold mb-2">Tanggal Terima</label>
-                                        <div class="relative w-full">
-                                            <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
-                                                id="modal_tgl_terima">
-                                                {{ \Carbon\Carbon::parse($surat->created_at)->translatedFormat('d F Y') }}
-                                            </h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- ✅ Bagian yang diperbaiki -->
-                        <div class="flex flex-col sm:flex-row gap-3 w-full">
-                            <!-- Pengirim -->
-                            <div class="mb-4 space-y-1.5 sm:w-1/3 w-full">
-                                <div>
-                                    <label for="email"
-                                        class="font-sans text-sm text-slate-800 font-bold mb-2">Pengirim</label>
-                                    <div class="relative w-full">
-                                        <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
-                                            id="modal_pengirim">
-                                            {{ $surat->pengirim }}
-                                        </h6>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="flex flex-row gap-2">
+                        @php
+                            // 1. Cari disposisi terakhir yang statusnya masih aktif ('Terkirim' atau 'Dilihat')
+                            $activeDisposisi = $surat->disposisis
+                                ->whereIn('status', ['Menunggu', 'Dilihat'])
+                                ->sortByDesc('created_at')
+                                ->first();
+                        @endphp
 
-                            <!-- Asal Instansi -->
-                            <div class="mb-4 space-y-1.5 sm:w-1/3 w-full">
-                                <div>
-                                    <label for="email" class="font-sans text-sm text-slate-800 font-bold mb-2">Asal
-                                        Instansi</label>
-                                    <div class="relative w-full">
-                                        <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl">
-                                            {{ $surat->asal_instansi }}
-                                        </h6>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Email Pengirim -->
-                            <div class="mb-4 space-y-1.5 sm:w-1/3 w-full">
-                                <div>
-                                    <label for="email" class="font-sans text-sm text-slate-800 font-bold mb-2">Email
-                                        Pengirim</label>
-                                    <div class="relative w-full">
-                                        <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl">
-                                            {{ $surat->email_pengirim }}
-                                        </h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex flex-row w-full">
-                            <div class="mb-4 space-y-1.5 w-1/2">
-                                <div>
-                                    <label for="email"
-                                        class="font-sans text-sm text-slate-800 font-bold mb-2">Klasifikasi</label>
-                                    <div class="relative w-full">
-                                        <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
-                                            id="modal_klasifikasi">
-                                            {{ $surat->klasifikasi_surat }}
-                                        </h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-4 space-y-1.5 w-1/2">
-                                <div>
-                                    <label for="email"
-                                        class="font-sans text-sm text-slate-800 font-bold mb-2">Sifat</label>
-                                    <div class="relative w-full">
-                                        <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
-                                            id="modal_sifat">
-                                            {{ $surat->sifat }}
-                                        </h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-4 space-y-1.5 w-full">
-                            <div>
-                                <label for="email"
-                                    class="font-sans text-sm text-slate-800 font-bold mb-2">Perihal</label>
-                                <div class="relative w-full">
-                                    <h6 class="font-sans text-base font-light antialiased md:text-lg lg:text-xl"
-                                        id="modal_perihal">
-                                        {{ $surat->perihal }}
-                                    </h6>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="space-y-1.5">
-                            <p class="font-sans text-sm text-slate-800 font-bold mb-2">Preview Dokumen:</p>
-                            @if ($surat->file_path)
-                                <div class="mt-4">
-                                    @if (Str::endsWith($surat->file_path, '.pdf'))
-                                        <iframe src="{{ asset('storage/' . $surat->file_path) }}" class="w-full h-[500px]"
-                                            frameborder="0"></iframe>
-                                    @else
-                                        <div class="flex flex-col items-start gap-2 mt-4">
-                                            <a href="{{ asset('storage/' . $surat->file_path) }}" download
-                                                class="px-2 py-2 text-sm bg-slate-700 text-white rounded hover:bg-slate-800 transition">
-                                                Download Gambar
-                                            </a>
-                                            <img src="{{ asset('storage/' . $surat->file_path) }}" alt="Preview Dokumen"
-                                                class="max-w-full h-auto border rounded">
-                                        </div>
-                                    @endif
-                                </div>
-                            @else
-                                <p class="text-sm text-slate-600">Tidak ada dokumen terlampir.</p>
+                        @if (($activeDisposisi && $activeDisposisi->ke_user_id === auth()->id()) || $belumPernahDidisposisikan)
+                            @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin', 'Katimja']))
+                                @include('components.layout.modal-tambah-disposisi')
                             @endif
-                        </div>
+
+                            @if (in_array(auth()->user()->role->name, ['Katimja']))
+                                @include('components.layout.modal-kirimKeStaf')
+                            @endif
+
+
+                            @if ($isAdmin && ($belumPernahDidisposisikan || $terakhirKembalikan))
+                                @include('components.layout.modal-kirimKeKepala')
+                            @endif
+
+                            {{-- Tombol untuk mengembalikan disposisi (jika sudah dibuat) --}}
+                            @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin']))
+                                @include('components.layout.modal-kembalikan-disposisi', [
+                                    'disposisi' => $activeDisposisi,
+                                ])
+                            @endif
+                        @endif
+
+                        @if (auth()->user()->role->name === 'Staf')
+                            <div class="flex flex-row gap-1.5">
+                                @php
+                                    $isSelesai = strtolower($surat->status) === 'selesai'; // pakai strtolower untuk jaga-jaga
+                                @endphp
+
+                                <form action="{{ route('surat.toggleStatus', $surat->id) }}" method="POST"
+                                    onsubmit="return confirm('Yakin ubah status surat ini?')">
+                                    @csrf
+                                    <button type="submit"
+                                        class="px-3 py-1 rounded-md text-sm font-semibold
+                {{ $isSelesai ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' : 'bg-green-100 text-green-700 hover:bg-green-200' }}">
+                                        {{ $isSelesai ? 'Tandai Diproses' : 'Tandai Selesai' }}
+                                    </button>
+                                </form>
+                            </div>
+
+                            @unless ($isSelesai)
+                                @include('components.layout.modal-kembalikan-disposisiStaf', [
+                                    'disposisi' => $activeDisposisi,
+                                ])
+                            @endunless
+                        @endif
+
                     </div>
 
                 </div>
 
-                <div id="tab2-group4" class="tab-content text-slate-800 hidden">
 
-                    <div class="flex justify-end">
-                        <div class="flex flex-row gap-2">
+                <div class="p-4">
+                    @include('components.table.table-detail-surat', [
+                        'surat' => $surat,
+                    ])
+                    <div class="text-center">
+                        <button data-toggle="collapse" data-target="#collapseButton" aria-expanded="false"
+                            aria-controls="collapseButton"
+                            class="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-slate-800 border-slate-800 text-slate-50 hover:bg-slate-700 hover:border-slate-700">Lampiran
+                            File</button>
+                        <div class="overflow-hidden transition-[max-height] duration-300 ease-in-out max-h-0 mt-1"
+                            id="collapseButton">
+
+                            <div class="space-y-1.5">
+                                <p class="font-sans text-sm text-slate-800 font-bold mb-2">Preview Dokumen:</p>
+                                @if ($surat->file_path)
+                                    <div class="mt-4">
+                                        @if (Str::endsWith($surat->file_path, '.pdf'))
+                                            <iframe src="{{ asset('storage/' . $surat->file_path) }}"
+                                                class="w-full h-[500px]" frameborder="0"></iframe>
+                                        @else
+                                            <div class="flex flex-col items-start gap-2 mt-4">
+                                                <a href="{{ asset('storage/' . $surat->file_path) }}" download
+                                                    class="px-2 py-2 text-sm bg-slate-700 text-white rounded hover:bg-slate-800 transition">
+                                                    Download Gambar
+                                                </a>
+                                                <img src="{{ asset('storage/' . $surat->file_path) }}" alt="Preview Dokumen"
+                                                    class="max-w-full h-auto border rounded">
+                                            </div>
+                                        @endif
+                                    </div>
+                                @else
+                                    <p class="text-sm text-slate-600">Tidak ada dokumen terlampir.</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+                <div x-data="{ tab: 'timeline' }" class="p-4">
+                    <h2 class="text-xl font-semibold text-slate-800 mb-4">Progres Disposisi</h2>
+
+                    {{-- Tombol Tab --}}
+                    <div class="flex space-x-2 mb-4">
+                        <button class="px-4 py-2 rounded font-medium text-sm"
+                            :class="tab === 'timeline' ? 'bg-slate-700 text-white' : 'bg-slate-100 text-slate-700'"
+                            @click="tab = 'timeline'">
+                            Timeline
+                        </button>
+                        <button class="px-4 py-2 rounded font-medium text-sm"
+                            :class="tab === 'table' ? 'bg-slate-700 text-white' : 'bg-slate-100 text-slate-700'"
+                            @click="tab = 'table'">
+                            Tabel
+                        </button>
+                    </div>
+
+                    {{-- Konten Timeline --}}
+                    <div x-show="tab === 'timeline'" x-transition>
+                        @include('components.layout.timeline-disposisi', [
+                            'disposisis' => $surat->disposisis,
+                        ])
+                    </div>
+
+                    {{-- Konten Tabel --}}
+
+                    <div x-show="tab === 'table'" x-transition>
+                        <div class="flex flex-row justify-end mb-3">
                             @if (in_array(auth()->user()->role->name, ['Admin']))
                                 @include('components.base.tombol-print-disposisi', ['surat' => $surat])
                             @endif
 
-                            @php
-                                // 1. Cari disposisi terakhir yang statusnya masih aktif ('Terkirim' atau 'Dilihat')
-                                $activeDisposisi = $surat->disposisis
-                                    ->whereIn('status', ['Menunggu', 'Dilihat'])
-                                    ->sortByDesc('created_at')
-                                    ->first();
-                            @endphp
-
-                            @if (($activeDisposisi && $activeDisposisi->ke_user_id === auth()->id()) || $belumPernahDidisposisikan)
-                                @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin', 'Katimja']))
-                                    @include('components.layout.modal-tambah-disposisi')
-                                @endif
-
-                                @if (in_array(auth()->user()->role->name, ['Katimja']))
-                                    @include('components.layout.modal-kirimKeStaf')
-                                @endif
-
-
-                                @if ($isAdmin && ($belumPernahDidisposisikan || $terakhirKembalikan))
-                                    @include('components.layout.modal-kirimKeKepala')
-                                @endif
-
-                                {{-- Tombol untuk mengembalikan disposisi (jika sudah dibuat) --}}
-                                @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin']))
-                                    @include('components.layout.modal-kembalikan-disposisi', [
-                                        'disposisi' => $activeDisposisi,
-                                    ])
-                                @endif
-                            @endif
-
-                            @if (auth()->user()->role->name === 'Staf')
-                                <div class="flex flex-row gap-1.5">
-                                    @php
-                                        $isSelesai = strtolower($surat->status) === 'selesai'; // pakai strtolower untuk jaga-jaga
-                                    @endphp
-
-                                    <form action="{{ route('surat.toggleStatus', $surat->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ubah status surat ini?')">
-                                        @csrf
-                                        <button type="submit"
-                                            class="px-3 py-1 rounded-md text-sm font-semibold
-                {{ $isSelesai ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' : 'bg-green-100 text-green-700 hover:bg-green-200' }}">
-                                            {{ $isSelesai ? 'Tandai Diproses' : 'Tandai Selesai' }}
-                                        </button>
-                                    </form>
-                                </div>
-
-                                @unless ($isSelesai)
-                                    @include('components.layout.modal-kembalikan-disposisiStaf', [
-                                        'disposisi' => $activeDisposisi,
-                                    ])
-                                @endunless
-                            @endif
-
                         </div>
-                    </div>
-                    <div class="p-4">
                         @include('components.table.table-disposisi', [
                             'disposisis' => $surat->disposisis,
                         ])
