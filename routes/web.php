@@ -66,7 +66,8 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
         Route::post('/disposisi/{disposisi}/kembalikanKeKatimja', [DisposisiController::class, 'kembalikanSuratStaf'])
             ->name('disposisi.kembalikanSuratStaf');
 
-        Route::post('/surat/{surat}/toggle-status', [DisposisiController::class, 'toggleStatus'])->name('surat.toggleStatus');
+        Route::post('/surat/{surat}/tandai-selesai', [DisposisiController::class, 'tandaiSelesai'])->name('surat.tandaiSelesai');
+        Route::post('/surat/{surat}/tandai-ditindaklanjuti', [DisposisiController::class, 'tandaiDitindaklanjuti'])->name('surat.tandaiDitindaklanjuti');
 
     });
 

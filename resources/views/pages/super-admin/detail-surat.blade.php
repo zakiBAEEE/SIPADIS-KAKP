@@ -89,7 +89,7 @@
                                 @endphp
 
                                 @if (strtolower($surat->status) === 'selesai' || strtolower($surat->status) === 'ditindaklanjuti')
-                                    <form action="{{ route('surat.toggleStatus', $surat->id) }}" method="POST"
+                                    <form action="{{ route('surat.tandaiSelesai', $surat->id) }}" method="POST"
                                         onsubmit="return confirm('Yakin ingin menandai surat ini sebagai selesai?')">
                                         @csrf
                                         <button type="submit"
@@ -102,7 +102,7 @@
                                 @endif
 
                                 @if (strtolower($surat->status) === 'diproses')
-                                    <form action="" method="POST"
+                                    <form action="{{ route('surat.tandaiDitindaklanjuti', $surat->id) }}" method="POST"
                                         onsubmit="return confirm('Yakin ingin menandai surat ini sebagai Ditindaklanjuti?')">
                                         @csrf
                                         <button type="submit"

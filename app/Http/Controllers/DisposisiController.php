@@ -515,7 +515,7 @@ class DisposisiController extends Controller
         ]);
     }
 
-    public function toggleStatus(SuratMasuk $surat)
+    public function tandaiSelesai(SuratMasuk $surat)
     {
         // Hanya izinkan staff (opsional, jika pakai middleware bisa dilepas)
         if (auth()->user()->role->name !== 'Staf') {
@@ -527,5 +527,20 @@ class DisposisiController extends Controller
 
         return redirect()->back()->with('success', 'Status surat berhasil diperbarui.');
     }
+
+    public function tandaiDitindaklanjuti(SuratMasuk $surat)
+{
+    // Hanya izinkan staf (jika tidak pakai middleware, tetap aman)
+    if (auth()->user()->role->name !== 'Staf') {
+        abort(403, 'Akses ditolak.');
+    }
+
+    // Ubah status menjadi 'ditindaklanjuti'
+    $surat->status = 'ditindaklanjuti';
+    $surat->save();
+
+    return redirect()->back()->with('success', 'Status surat berhasil diperbarui menjadi Ditindaklanjuti.');
+}
+
 
 }

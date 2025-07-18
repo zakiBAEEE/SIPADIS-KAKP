@@ -334,62 +334,7 @@ class SuratMasukController extends Controller
 
 
 
-    // public function update(Request $request, SuratMasuk $surat)
-    // {
-    //     try {
-    //         $validated = $request->validate([
-    //             'nomor_surat' => 'required|string',
-    //             'pengirim' => 'required|string',
-    //             'asal_instansi' => 'nullable|string|max:255',
-    //             'email_pengirim' => 'nullable|email|max:255',
-    //             'tanggal_surat' => 'required|date',
-    //             'perihal' => 'required|string',
-    //             'klasifikasi_surat' => 'nullable|string',
-    //             'sifat' => 'nullable|string',
-    //             'file_path' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
-    //         ]);
-
-    //         if ($request->hasFile('file_path')) {
-    //             // Hapus file lama dari storage dan public jika ada
-    //             if ($surat->file_path && Storage::disk('public')->exists($surat->file_path)) {
-    //                 Storage::disk('public')->delete($surat->file_path);
-
-    //                 if (!is_link(public_path('storage'))) {
-    //                     $oldCopiedPath = public_path('storage/' . $surat->file_path);
-    //                     if (file_exists($oldCopiedPath)) {
-    //                         \Illuminate\Support\Facades\File::delete($oldCopiedPath);
-    //                     }
-    //                 }
-    //             }
-
-    //             $path = $request->file('file_path')->store('surat', 'public');
-    //             $validated['file_path'] = $path;
-
-    //             if (!is_link(public_path('storage'))) {
-    //                 $source = storage_path('app/public/' . $path);
-    //                 $destination = public_path('storage/' . $path);
-
-    //                 \Illuminate\Support\Facades\File::ensureDirectoryExists(dirname($destination));
-    //                 \Illuminate\Support\Facades\File::copy($source, $destination);
-    //             }
-    //         }
-
-    //         $surat->update($validated);
-
-    //         return redirect()
-    //             ->route('surat.show', ['surat' => $surat->id])
-    //             ->with('success', 'Surat berhasil diperbarui!');
-    //     } catch (\Exception $e) {
-    //         \Log::error('Gagal memperbarui surat: ' . $e->getMessage());
-
-    //         return redirect()
-    //             ->back()
-    //             ->withInput()
-    //             ->with('error', 'Terjadi kesalahan saat memperbarui surat. Silakan coba lagi.');
-    //     }
-    // }
-
-    public function update(Request $request, SuratMasuk $surat)
+       public function update(Request $request, SuratMasuk $surat)
     {
         // Pindahkan validasi ke sini agar Laravel bisa otomatis redirect + tampilkan error per field
         $validated = $request->validate([
