@@ -229,7 +229,7 @@
                     </div>
 
                     {{-- Konten Timeline --}}
-                    <div x-show="tab === 'timeline'" x-transition>
+                    <div x-show="tab === 'timeline'" x-transition class="flex justify-center overflow-auto">
                         @include('components.layout.timeline-disposisi', [
                             'disposisis' => $surat->disposisis,
                         ])

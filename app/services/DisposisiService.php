@@ -7,7 +7,7 @@ use App\Models\Disposisi;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Collection;
 class DisposisiService
 {
     /**
@@ -21,6 +21,28 @@ class DisposisiService
      * @param string|null $tanggal
      * @return Disposisi
      */
+
+    public static function getCleanTimeline(Collection $disposisis): Collection
+    {
+        $filtered = $disposisis->filter(function ($item) {
+            $status = strtolower($item->status);
+            return in_array($status, ['diteruskan', 'dilihat']);
+        })->sortBy('created_at');
+
+        $unique = collect();
+        $seen = [];
+
+        foreach ($filtered as $item) {
+            $receiverId = $item->penerima->id ?? null;
+            if ($receiverId && !in_array($receiverId, $seen)) {
+                $unique->push($item);
+                $seen[] = $receiverId;
+            }
+        }
+
+        return $unique;
+    }
+
     public function create(SuratMasuk $surat, User $pengirim, User $penerima, ?string $catatan, ?string $tanggal, string $tipeAksi): Disposisi
     {
         // Logika inti untuk membuat disposisi
