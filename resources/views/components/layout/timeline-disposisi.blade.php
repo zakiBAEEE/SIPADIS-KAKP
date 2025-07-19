@@ -123,15 +123,29 @@
         <div class="text-slate-500 italic">Belum ada disposisi.</div>
     @endforelse
 
-    @if (in_array(strtolower($surat->status), ['dikembalikan', 'ditindaklanjuti', 'selesai']))
+    @if (in_array(strtolower($surat->status), ['dikembalikan', 'ditindaklanjuti', 'selesai', 'ditolak']))
         <div class="flex w-full min-w-full">
             {{-- Timeline Column --}}
             <div class="relative w-12 flex flex-col items-center">
                 <div
-                    class="absolute top-0 {{ in_array(strtolower($surat->status), ['ditolak', 'ditindaklanjuti', 'selesai', 'dikembalikan']) ? 'h-0' : 'h-full' }} w-0.5 bg-slate-300">
+                    class="absolute top-0 {{ in_array(strtolower($surat->status), ['selesai', 'ditindaklanjuti', 'dikembalikan', 'ditolak']) ? 'h-0' : 'h-full' }} w-0.5 bg-slate-300">
                 </div>
-                <span class="z-10 grid h-10 w-10 place-items-center rounded-full bg-green-200">
-                    ✅
+
+                {{-- Icon Berdasarkan Status --}}
+                <span class="z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-200">
+                    @php
+                        $status = strtolower($surat->status);
+                    @endphp
+
+                    @if ($status === 'selesai')
+                        ✅
+                    @elseif ($status === 'ditindaklanjuti')
+                        {!! '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 1024 1024"><path d="M661.333333 170.666667l253.866667 34.133333-209.066667 209.066667zM362.666667 853.333333L108.8 819.2l209.066667-209.066667zM170.666667 362.666667L204.8 108.8l209.066667 209.066667z" fill="#9C27B0"/><path d="M198.4 452.266667l-89.6 17.066666c-2.133333 14.933333-2.133333 27.733333-2.133333 42.666667 0 98.133333 34.133333 192 98.133333 264.533333l64-55.466666C219.733333 663.466667 192 588.8 192 512c0-19.2 2.133333-40.533333 6.4-59.733333zM512 106.666667c-115.2 0-217.6 49.066667-292.266667 125.866666l59.733334 59.733334C339.2 230.4 420.266667 192 512 192c19.2 0 40.533333 2.133333 59.733333 6.4l14.933334-83.2C563.2 108.8 537.6 106.666667 512 106.666667zM825.6 571.733333l89.6-17.066666c2.133333-14.933333 2.133333-27.733333 2.133333-42.666667 0-93.866667-32-185.6-91.733333-258.133333l-66.133333 53.333333c46.933333 57.6 72.533333 130.133333 72.533333 202.666667 0 21.333333-2.133333 42.666667-6.4 61.866666zM744.533333 731.733333C684.8 793.6 603.733333 832 512 832c-19.2 0-40.533333-2.133333-59.733333-6.4l-14.933334 83.2c25.6 4.266667 51.2 6.4 74.666667 6.4 115.2 0 217.6-49.066667 292.266667-125.866667l-59.733334-57.6z" fill="#9C27B0"/><path d="M853.333333 661.333333l-34.133333 253.866667-209.066667-209.066667z" fill="#9C27B0"/></svg>' !!}
+                    @elseif ($status === 'ditolak')
+                        {!! '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512"><style>.st0{fill:#333;}</style><path class="st0" d="M263.24,43.5c-117.36,0-212.5,95.14-212.5,212.5s95.14,212.5,212.5,212.5s212.5-95.14,212.5-212.5S380.6,43.5,263.24,43.5z M367.83,298.36c17.18,17.18,17.18,45.04,0,62.23v0c-17.18,17.18-45.04,17.18-62.23,0l-42.36-42.36l-42.36,42.36c-17.18,17.18-45.04,17.18-62.23,0v0c-17.18-17.18-17.18-45.04,0-62.23L201.01,256l-42.36-42.36c-17.18-17.18-17.18-45.04,0-62.23v0c17.18-17.18,45.04-17.18,62.23,0l42.36,42.36l42.36-42.36c17.18-17.18,45.04-17.18,62.23,0v0c17.18,17.18,17.18,45.04,0,62.23L325.46,256L367.83,298.36z"/></svg>' !!}
+                    @elseif ($status === 'dikembalikan')
+                        🔁
+                    @endif
                 </span>
             </div>
 
@@ -145,4 +159,5 @@
             </div>
         </div>
     @endif
+
 </div>
