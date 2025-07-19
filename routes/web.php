@@ -13,6 +13,14 @@ use App\Http\Controllers\AgendaController;
 
 require __DIR__ . '/auth.php';
 
+Route::get('/tes-email', function () {
+    Mail::raw('Ini email percobaan', function ($message) {
+        $message->to('muhammaddzakyraihan91@gmail.com')
+            ->subject('Tes Email');
+    });
+
+    return 'Email dikirim!';
+});
 
 Route::middleware(['auth', 'cekAktif'])->group(function () {
 

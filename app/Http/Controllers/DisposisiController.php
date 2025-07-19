@@ -527,11 +527,7 @@ class DisposisiController extends Controller
         $surat->status = $surat->status === 'selesai' ? 'diproses' : 'selesai';
         $surat->save();
 
-        $pengirim = $surat->email_pengirim; // Pastikan relasi pengirim sudah ada
-        if ($pengirim) {
-            Notification::route('mail', $pengirim)
-                ->notify(new SuratStatusUpdated($surat, auth()->user()));
-        }
+        $this->kirimNotifikasi($surat);
 
         return redirect()->back()->with('success', 'Status surat berhasil diperbarui.');
     }
@@ -547,6 +543,9 @@ class DisposisiController extends Controller
         $surat->status = 'ditindaklanjuti';
         $surat->save();
 
+        $this->kirimNotifikasi($surat);
+
+
         return redirect()->back()->with('success', 'Status surat berhasil diperbarui menjadi Ditindaklanjuti.');
     }
 
@@ -561,7 +560,20 @@ class DisposisiController extends Controller
         $surat->status = 'ditolak';
         $surat->save();
 
+        $this->kirimNotifikasi($surat);
+
+
         return redirect()->back()->with('success', 'Status surat berhasil diperbarui menjadi Ditolak.');
+    }
+
+    private function kirimNotifikasi(SuratMasuk $surat)
+    {
+        $pengirim = $surat->email_pengirim;
+
+        if (filter_var($pengirim, FILTER_VALIDATE_EMAIL)) {
+            Notification::route('mail', $pengirim)
+                ->notify(new SuratStatusUpdated($surat, auth()->user()));
+        }
     }
 
 
