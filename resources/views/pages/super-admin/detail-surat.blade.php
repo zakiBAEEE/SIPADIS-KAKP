@@ -138,7 +138,7 @@
                                     </form>
 
                                     {{-- Tandai Ditolak (Route dibuat nanti) --}}
-                                    <form action="#" method="POST"
+                                    <form action="{{ route('surat.tandaiDitolak') }}" method="POST"
                                         onsubmit="return confirm('Yakin ingin menandai surat ini sebagai Ditolak?')">
                                         @csrf
                                         <button type="submit"

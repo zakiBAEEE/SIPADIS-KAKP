@@ -68,6 +68,7 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
 
         Route::post('/surat/{surat}/tandai-selesai', [DisposisiController::class, 'tandaiSelesai'])->name('surat.tandaiSelesai');
         Route::post('/surat/{surat}/tandai-ditindaklanjuti', [DisposisiController::class, 'tandaiDitindaklanjuti'])->name('surat.tandaiDitindaklanjuti');
+        Route::post('/surat/{surat}/tandai-ditolak', [DisposisiController::class, 'tandaiDitolak'])->name('surat.tandaiDitolak');
 
     });
 
