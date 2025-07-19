@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\{SuratMasuk, Disposisi, User, Lembaga};
 use App\Services\DisposisiService;
+use App\Notifications\SuratStatusUpdated;
+use Illuminate\Support\Facades\Notification;
 
 class DisposisiController extends Controller
 {
@@ -524,6 +526,12 @@ class DisposisiController extends Controller
 
         $surat->status = $surat->status === 'selesai' ? 'diproses' : 'selesai';
         $surat->save();
+
+        $pengirim = $surat->email_pengirim; // Pastikan relasi pengirim sudah ada
+        if ($pengirim) {
+            Notification::route('mail', $pengirim)
+                ->notify(new SuratStatusUpdated($surat, auth()->user()));
+        }
 
         return redirect()->back()->with('success', 'Status surat berhasil diperbarui.');
     }
