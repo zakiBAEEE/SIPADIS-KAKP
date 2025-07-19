@@ -20,12 +20,12 @@
             </button>
         </div>
     @endif
-    
+
     <x-layout.page-list-layout>
 
         {{-- Isi slot "title" dengan judul yang berbeda --}}
         <x-slot:title>
-            {{ $pageTitle ?? 'Disposisi Masuk' }}
+            Surat Masuk
         </x-slot:title>
 
         {{-- Isi slot "filterId" dengan ID yang berbeda --}}

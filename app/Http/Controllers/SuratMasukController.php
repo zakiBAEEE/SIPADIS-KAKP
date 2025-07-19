@@ -173,7 +173,7 @@ class SuratMasukController extends Controller
             ->paginate(8)
             ->appends($request->query());
 
-        return view('pages.super-admin.arsip-surat-masuk', compact('surats'));
+        return view('pages.shared.terkirim', compact('surats'));
     }
 
 
