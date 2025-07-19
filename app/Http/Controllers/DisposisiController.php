@@ -496,6 +496,8 @@ class DisposisiController extends Controller
                 ]);
 
                 $surat->update(['status' => 'Diproses']);
+
+                $this->kirimNotifikasi($surat);
             });
 
             return redirect()->back()->with('success', 'Surat berhasil dikirim ke Kepala.');

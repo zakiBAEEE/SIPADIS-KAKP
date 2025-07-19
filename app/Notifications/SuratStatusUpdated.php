@@ -38,13 +38,15 @@ class SuratStatusUpdated extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Status Surat Diperbarui')
-            ->greeting('Halo,')
-            ->line('Status surat dengan nomor: ' . $this->surat->nomor . ' telah diperbarui.')
-            ->line('Status sekarang: ' . ucfirst($this->surat->status))
-            ->line('Diperbarui oleh: ' . $this->updatedBy->name)
-            ->action('Lihat Surat', url('/surat/' . $this->surat->id))
-            ->line('Terima kasih telah menggunakan sistem.');
+            ->subject('Pembaruan Status Surat - LLDIKTI Wilayah II')
+            ->greeting('Yth. Bapak/Ibu,')
+            ->line('Kami informasikan bahwa status surat dengan nomor **' . $this->surat->nomor_surat . '** telah mengalami pembaruan.')
+            ->line('Status terkini: **' . ucfirst($this->surat->status) . '**')
+            ->line('Surat ini diperbarui oleh: ' . $this->updatedBy->name)
+            ->action('Lihat Detail Surat', url('/surat/' . $this->surat->id))
+            ->line('Demikian informasi ini kami sampaikan. Atas perhatian dan kerja sama Bapak/Ibu, kami ucapkan terima kasih.')
+            ->salutation('Hormat kami,')
+            ->salutation('Tim LLDIKTI Wilayah II');
     }
 
     /**
