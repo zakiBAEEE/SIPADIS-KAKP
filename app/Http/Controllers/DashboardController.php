@@ -26,16 +26,19 @@ class DashboardController extends Controller
                 ->pluck('surat_id');
 
             // Ambil surat draft ATAU surat yang disposisi terakhirnya ke admin
+            // dan status BUKAN selesai atau ditolak
             $rekapSifatAktif = SuratMasuk::where(function ($query) use ($suratDiteruskanKeAdmin) {
                 $query->where('status', 'draft')
                     ->orWhereIn('id', $suratDiteruskanKeAdmin);
             })
+                ->whereNotIn('status', ['selesai', 'ditolak'])
                 ->selectRaw('sifat, COUNT(*) as total')
                 ->groupBy('sifat')
                 ->pluck('total', 'sifat')
                 ->toArray();
         } else {
-            // Non-admin: Ambil surat yang disposisi terakhirnya ke user login dan status menunggu/dilihat
+            // Non-admin: Ambil surat yang disposisi terakhirnya ke user login
+            // dan status disposisinya menunggu/dilihat
             $latestDisposisiIds = Disposisi::selectRaw('MAX(id) as id')
                 ->groupBy('surat_id');
 
@@ -45,6 +48,7 @@ class DashboardController extends Controller
                 ->pluck('surat_id');
 
             $rekapSifatAktif = SuratMasuk::whereIn('id', $suratAktifIds)
+                ->whereNotIn('status', ['selesai', 'ditolak'])
                 ->selectRaw('sifat, COUNT(*) as total')
                 ->groupBy('sifat')
                 ->pluck('total', 'sifat')
@@ -55,6 +59,7 @@ class DashboardController extends Controller
             'rekapSifatAktif' => $rekapSifatAktif
         ]);
     }
+
 
 
 }

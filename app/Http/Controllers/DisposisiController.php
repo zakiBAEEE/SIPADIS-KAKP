@@ -103,7 +103,7 @@ class DisposisiController extends Controller
         // Update status surat
         $surat->update(['status' => 'diproses']);
 
-        return redirect()->route('inbox.index', $surat->id)->with('success', 'Disposisi berhasil diteruskan.');
+        return redirect()->route('surat.terkirim', $surat->id)->with('success', 'Disposisi berhasil diteruskan.');
     }
 
     // public function disposisiKeSemuaStaf(SuratMasuk $surat, Request $request)

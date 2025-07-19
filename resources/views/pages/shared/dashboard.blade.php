@@ -1,15 +1,29 @@
+@php
+    $hour = now()->format('H');
+    if ($hour >= 5 && $hour < 11) {
+        $greeting = 'Selamat Pagi';
+    } elseif ($hour >= 11 && $hour < 15) {
+        $greeting = 'Selamat Siang';
+    } elseif ($hour >= 15 && $hour < 18) {
+        $greeting = 'Selamat Sore';
+    } else {
+        $greeting = 'Selamat Malam';
+    }
+@endphp
+
+
 @extends('layouts.super-admin-layout')
 
 @section('content')
     <div class="bg-white h-full rounded-xl shadow-neutral-400 shadow-lg p-4 flex flex-col gap-y-6 overflow-auto">
         <div class="flex flex-col">
             <div>
+
                 <h4 class="text-xl font-bold text-gray-700">
-                    Selamat datang, {{ auth()->user()->name }} 👋
+                    {{ $greeting }}, {{ auth()->user()->name }} 👋
                 </h4>
                 <p class="text-gray-600 text-sm md:text-base">
-                    Berikut adalah rekapitulasi surat masuk berdasarkan <span class="font-semibold">tingkat urgensi (Sifat
-                        Surat)</span> yang saat ini sedang dalam proses penanganan Anda.
+                    Berikut ini adalah jumlah surat masuk berdasarkan tingkat urgensi (Sifat Surat) yang saat ini berada dalam penanganan Anda.
                 </p>
             </div>
         </div>
@@ -20,7 +34,7 @@
             <hr class="w-full border-t border-gray-300 my-1" />
         </div>
 
-        <div class="flex flex-row md:gap-4 items-center justify-evenly flex-1 md:flex-wrap md:overflow-hidden overflow-auto">
+        <div class="flex flex-row md:gap-4  justify-evenly flex-1 md:flex-wrap md:overflow-hidden overflow-auto">
 
             <div class="flex flex-row gap-2 flex-1 justify-center">
                 <div class="flex flex-row gap-2 flex-1 justify-center">
