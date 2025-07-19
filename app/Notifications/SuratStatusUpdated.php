@@ -38,15 +38,29 @@ class SuratStatusUpdated extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Pembaruan Status Surat - LLDIKTI Wilayah II')
+            ->subject('📄 Pembaruan Status Surat | LLDIKTI Wilayah II')
             ->greeting('Yth. Bapak/Ibu,')
-            ->line('Kami informasikan bahwa status surat dengan nomor **' . $this->surat->nomor_surat . '** telah mengalami pembaruan.')
-            ->line('Status terkini: **' . ucfirst($this->surat->status) . '**')
-            ->line('Surat ini diperbarui oleh: ' . $this->updatedBy->name)
-            ->action('Lihat Detail Surat', url('/surat/' . $this->surat->id))
+            ->line('Dengan hormat,')
+            ->line('Kami ingin menginformasikan bahwa status surat dengan nomor:')
+            ->line('**' . $this->surat->nomor_surat . '**')
+            ->line('telah mengalami pembaruan status menjadi:')
+            ->line('**' . ucfirst($this->surat->status) . '**')
+            ->line('Surat ini diperbarui oleh: **' . $this->updatedBy->name . '** ('
+                . $this->updatedBy->role->name
+                . ($this->updatedBy->divisi ? ' - ' . $this->updatedBy->divisi->nama_divisi : '')
+                . ').')
+            ->line('')
+            ->line('**Penjelasan Status Surat:**')
+            ->line('- **Diproses** : Surat sedang dalam proses disposisi oleh pihak terkait.')
+            ->line('- **Ditindaklanjuti** : Surat sedang dalam tahap tindak lanjut oleh unit yang bersangkutan.')
+            ->line('- **Selesai** : Proses tindak lanjut terhadap surat telah selesai dilakukan.')
+            ->line('')
+            ->action('🔍 Lihat Detail Surat', url('/surat/' . $this->surat->id))
+            ->line('')
             ->line('Demikian informasi ini kami sampaikan. Atas perhatian dan kerja sama Bapak/Ibu, kami ucapkan terima kasih.')
             ->salutation('Hormat kami,')
             ->salutation('Tim LLDIKTI Wilayah II');
+
     }
 
     /**

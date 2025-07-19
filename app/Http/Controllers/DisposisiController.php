@@ -340,7 +340,7 @@ class DisposisiController extends Controller
                     'tipe_aksi' => 'Kembalikan',
                 ]);
 
-                $disposisi->suratMasuk->update(['status' => 'dikembalikan']);
+                // $disposisi->suratMasuk->update(['status' => 'dikembalikan']);
             });
 
             return redirect()->route('inbox.index')->with('success', 'Disposisi berhasil dikembalikan.');
@@ -398,7 +398,7 @@ class DisposisiController extends Controller
                 ]);
 
                 // Update status surat
-                $surat->update(['status' => 'Dikembalikan']);
+                // $surat->update(['status' => 'Dikembalikan']);
             });
 
             return redirect()->route('inbox.index')->with('success', 'Disposisi berhasil dikembalikan.');
@@ -497,7 +497,9 @@ class DisposisiController extends Controller
 
                 $surat->update(['status' => 'Diproses']);
 
-                $this->kirimNotifikasi($surat);
+                if (!empty($surat->email_pengirim)) {
+                    $this->kirimNotifikasi($surat);
+                }
             });
 
             return redirect()->back()->with('success', 'Surat berhasil dikirim ke Kepala.');
@@ -529,7 +531,9 @@ class DisposisiController extends Controller
         $surat->status = $surat->status === 'selesai' ? 'diproses' : 'selesai';
         $surat->save();
 
-        $this->kirimNotifikasi($surat);
+        if (!empty($surat->email_pengirim)) {
+            $this->kirimNotifikasi($surat);
+        }
 
         return redirect()->back()->with('success', 'Status surat berhasil diperbarui.');
     }
@@ -545,7 +549,9 @@ class DisposisiController extends Controller
         $surat->status = 'ditindaklanjuti';
         $surat->save();
 
-        $this->kirimNotifikasi($surat);
+        if (!empty($surat->email_pengirim)) {
+            $this->kirimNotifikasi($surat);
+        }
 
 
         return redirect()->back()->with('success', 'Status surat berhasil diperbarui menjadi Ditindaklanjuti.');
@@ -562,7 +568,9 @@ class DisposisiController extends Controller
         $surat->status = 'ditolak';
         $surat->save();
 
-        $this->kirimNotifikasi($surat);
+        if (!empty($surat->email_pengirim)) {
+            $this->kirimNotifikasi($surat);
+        }
 
 
         return redirect()->back()->with('success', 'Status surat berhasil diperbarui menjadi Ditolak.');

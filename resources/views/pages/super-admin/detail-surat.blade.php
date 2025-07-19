@@ -102,16 +102,17 @@
                             @endif
                         @endif
 
-                        @if (auth()->user()->role->name === 'Staf')
+                        @if (auth()->user()->role->name === 'Staf' || auth()->user()->role->name === 'Admin')
                             @php
                                 $status = strtolower($surat->status);
+                                $role = auth()->user()->role->name;
                             @endphp
 
                             <div class="flex flex-row gap-1.5">
-                                {{-- Jika status DIPROSES: Tampilkan tombol tindak lanjut dan kembalikan --}}
-                                @if ($status === 'diproses')
+                                {{-- Jika status DIPROSES: Tampilkan tombol tindak lanjut dan kembalikan (khusus staf) --}}
+                                @if ($status === 'diproses' && $role === 'Staf')
                                     <form action="{{ route('surat.tandaiDitindaklanjuti', $surat->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menandai surat ini sebagai Ditindaklanjuti?')">
+                                        onsubmit="return confirm('PERINGATAN!\n\nSetelah surat ditindaklanjuti, proses tidak dapat dibatalkan dan surat tidak dapat dikembalikan ke status sebelumnya.\n\nApakah Anda yakin ingin melanjutkan?')">
                                         @csrf
                                         <button type="submit"
                                             class="px-3 py-1 rounded-md text-sm font-semibold bg-blue-100 text-blue-700 hover:bg-blue-200">
@@ -119,15 +120,15 @@
                                         </button>
                                     </form>
 
+
                                     {{-- Modal Kembalikan --}}
                                     @include('components.layout.modal-kembalikan-disposisiStaf', [
                                         'disposisi' => $activeDisposisi,
                                     ])
                                 @endif
 
-                                {{-- Jika status DITINDAKLANJUTI: Tampilkan tombol selesai dan ditolak --}}
-                                @if ($status === 'ditindaklanjuti')
-                                    {{-- Tandai Selesai --}}
+                                {{-- Jika status DITINDAKLANJUTI: Tampilkan tombol selesai (khusus staf) --}}
+                                @if ($status === 'ditindaklanjuti' && $role === 'Staf')
                                     <form action="{{ route('surat.tandaiSelesai', $surat->id) }}" method="POST"
                                         onsubmit="return confirm('Yakin ingin menandai surat ini sebagai Selesai?')">
                                         @csrf
@@ -136,8 +137,10 @@
                                             Tandai Selesai
                                         </button>
                                     </form>
+                                @endif
 
-                                    {{-- Tandai Ditolak (Route dibuat nanti) --}}
+                                {{-- Tombol ditolak: --}}
+                                @if (($status === 'ditindaklanjuti' && $role === 'Staf') || ($status === 'draft' && $role === 'Admin'))
                                     <form action="{{ route('surat.tandaiDitolak', $surat->id) }}" method="POST"
                                         onsubmit="return confirm('Yakin ingin menandai surat ini sebagai Ditolak?')">
                                         @csrf
@@ -149,6 +152,8 @@
                                 @endif
                             </div>
                         @endif
+
+
                     </div>
                 </div>
 
