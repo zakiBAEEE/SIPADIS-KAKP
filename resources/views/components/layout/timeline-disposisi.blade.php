@@ -26,7 +26,7 @@
                     <p class="font-bold text-slate-800">{{ $disposisi->pengirim->name ?? '-' }}</p>
                     <small class="text-sm text-slate-600">
                         Instruksi: {{ $disposisi->catatan ?? '-' }}<br>
-                        Waktu: {{ \Carbon\Carbon::parse($disposisi->created_at)->translatedFormat('d F Y H:i') }}
+                        Waktu: {{ \Carbon\Carbon::parse($disposisi->updated_at)->translatedFormat('d F Y H:i') }}
                     </small>
                 </div>
             </div>
@@ -84,21 +84,32 @@
 
                 {{-- Content Column --}}
                 <div class="flex-1 pb-8">
-                    @if ($disposisi->penerima->role->name !== 'Staf')
-                        <p class="text-sm font-medium">{{ $disposisi->penerima->name ?? 'N/A' }}</p>
-                    @endif
-
-                    @if ($disposisi->penerima && $disposisi->penerima->divisi)
-                        <p class="text-xs text-gray-500">{{ $disposisi->penerima->divisi->nama_divisi }}
-                            ({{ $disposisi->penerima->role->name }})
+                    @if ($disposisi->penerima->role->name == 'Staf')
+                        <p class="text-sm text-black font-bold">
+                            {{ $disposisi->penerima->divisi->nama_divisi }} ({{ $disposisi->penerima->role->name }})
                         </p>
                     @else
-                        <p class="text-xs text-gray-500">{{ $disposisi->penerima->role->name ?? '' }}</p>
+                        <p class="text-sm text-black font-bold">{{ $disposisi->penerima->name ?? '' }}</p>
+                        @if ($disposisi->penerima && $disposisi->penerima->divisi)
+                            <p class="text-xs text-gray-500">
+                                {{ $disposisi->penerima->divisi->nama_divisi }} ({{ $disposisi->penerima->role->name }})
+                            </p>
+                        @endif
                     @endif
-                    <small class="text-sm text-slate-600">
-                        Waktu: {{ \Carbon\Carbon::parse($disposisi->created_at)->translatedFormat('d F Y H:i') }}
-                    </small>
+
+                    {{-- Hanya tampilkan instruksi jika bukan penerima terakhir --}}
+                    @if (!$loop->last)
+                        <small class="text-sm text-slate-600">
+                            Instruksi: {{ $disposisi->catatan ?? '-' }}<br>
+                            Waktu: {{ \Carbon\Carbon::parse($disposisi->updated_at)->translatedFormat('d F Y H:i') }}
+                        </small>
+                    @else
+                        <small class="text-sm text-slate-600">
+                            Waktu: {{ \Carbon\Carbon::parse($disposisi->updated_at)->translatedFormat('d F Y H:i') }}
+                        </small>
+                    @endif
                 </div>
+
 
             </div>
             @if ($roleName === 'staf')

@@ -83,43 +83,51 @@
                         @endif
 
                         @if (auth()->user()->role->name === 'Staf')
+                            @php
+                                $status = strtolower($surat->status);
+                            @endphp
+
                             <div class="flex flex-row gap-1.5">
-                                @php
-                                    $isSelesai = strtolower($surat->status) === 'selesai'; // pakai strtolower untuk jaga-jaga
-                                @endphp
-
-                                @if (strtolower($surat->status) === 'selesai' || strtolower($surat->status) === 'ditindaklanjuti')
-                                    <form action="{{ route('surat.tandaiSelesai', $surat->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menandai surat ini sebagai selesai?')">
-                                        @csrf
-                                        <button type="submit"
-                                            class="px-3 py-1 rounded-md text-sm font-semibold
-        {{ $isSelesai ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-green-100 text-green-700 hover:bg-green-200' }}"
-                                            {{ $isSelesai ? 'disabled' : '' }}>
-                                            Tandai Selesai
-                                        </button>
-                                    </form>
-                                @endif
-
-                                @if (strtolower($surat->status) === 'diproses')
+                                {{-- Jika status DIPROSES: Tampilkan tombol tindak lanjut dan kembalikan --}}
+                                @if ($status === 'diproses')
                                     <form action="{{ route('surat.tandaiDitindaklanjuti', $surat->id) }}" method="POST"
                                         onsubmit="return confirm('Yakin ingin menandai surat ini sebagai Ditindaklanjuti?')">
                                         @csrf
                                         <button type="submit"
-                                            class="px-3 py-1 rounded-md text-sm font-semibold
-        {{ $isSelesai ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-blue-100 text-blue-700 hover:bg-green-200' }}">
-                                            Tindak lanjut
+                                            class="px-3 py-1 rounded-md text-sm font-semibold bg-blue-100 text-blue-700 hover:bg-blue-200">
+                                            Tindak Lanjut
+                                        </button>
+                                    </form>
 
+                                    {{-- Modal Kembalikan --}}
+                                    @include('components.layout.modal-kembalikan-disposisiStaf', [
+                                        'disposisi' => $activeDisposisi,
+                                    ])
+                                @endif
+
+                                {{-- Jika status DITINDAKLANJUTI: Tampilkan tombol selesai dan ditolak --}}
+                                @if ($status === 'ditindaklanjuti')
+                                    {{-- Tandai Selesai --}}
+                                    <form action="{{ route('surat.tandaiSelesai', $surat->id) }}" method="POST"
+                                        onsubmit="return confirm('Yakin ingin menandai surat ini sebagai Selesai?')">
+                                        @csrf
+                                        <button type="submit"
+                                            class="px-3 py-1 rounded-md text-sm font-semibold bg-green-100 text-green-700 hover:bg-green-200">
+                                            Tandai Selesai
+                                        </button>
+                                    </form>
+
+                                    {{-- Tandai Ditolak (Route dibuat nanti) --}}
+                                    <form action="#" method="POST"
+                                        onsubmit="return confirm('Yakin ingin menandai surat ini sebagai Ditolak?')">
+                                        @csrf
+                                        <button type="submit"
+                                            class="px-3 py-1 rounded-md text-sm font-semibold bg-red-100 text-red-700 hover:bg-red-200">
+                                            Tandai Ditolak
                                         </button>
                                     </form>
                                 @endif
                             </div>
-
-                            @unless ($isSelesai || strtolower($surat->status) === 'ditindaklanjuti')
-                                @include('components.layout.modal-kembalikan-disposisiStaf', [
-                                    'disposisi' => $activeDisposisi,
-                                ])
-                            @endunless
                         @endif
 
                     </div>
