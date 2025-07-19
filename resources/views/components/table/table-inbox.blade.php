@@ -10,7 +10,7 @@
                     <p class="text-sm leading-none font-normal">Perihal</p>
                 </th>
                 <th class="p-3">
-                    <p class="text-sm leading-none font-normal">Pengirim</p>
+                    <p class="text-sm leading-none font-normal">Asal Instansi</p>
                 </th>
                 <th class="p-3">
                     <p class="text-sm leading-none font-normal">Diterima Dari (Disposisi)</p>
@@ -18,9 +18,16 @@
                 <th class="p-3 text-center">
                     <p class="text-sm leading-none font-normal">Status</p>
                 </th>
-                <th class="p-3 text-center">
-                    <p class="text-sm leading-none font-normal">Tipe Aksi</p>
-                </th>
+                @php
+                    $userRole = strtolower(auth()->user()->role->name);
+                @endphp
+
+                @if ($userRole !== 'staf')
+                    <th class="p-3 text-center">
+                        <p class="text-sm leading-none font-normal">Tipe Aksi</p>
+                    </th>
+                @endif
+
             </tr>
         </thead>
 
@@ -43,7 +50,7 @@
 
                     {{-- Asal Surat --}}
                     <td class="p-3 align-top">
-                        <p class="text-sm">{{ $disposisi->suratMasuk->pengirim ?? 'N/A' }}</p>
+                        <p class="text-sm">{{ $disposisi->suratMasuk->asal_instansi ?? 'N/A' }}</p>
                     </td>
 
                     {{-- Diterima Dari --}}
@@ -57,50 +64,65 @@
                     {{-- Status --}}
                     <td class="p-3 text-center">
                         @php
-                            $status = ucwords(strtolower(trim($disposisi->status))); // Normalisasi dulu
-                            $statusClass = 'bg-gray-100 text-gray-800'; // Default warna
+                            $userRole = strtolower(auth()->user()->role->name);
                         @endphp
 
-                        @if ($status === 'Menunggu')
-                            @php $statusClass = 'bg-yellow-100 text-yellow-800'; @endphp
-                        @elseif ($status === 'Dilihat')
-                            @php $statusClass = 'bg-blue-100 text-blue-800'; @endphp
-                        @endif
+                        @if ($userRole !== 'staf')
+                            @php
+                                $status = ucwords(strtolower(trim($disposisi->status))); // status dari disposisi
+                                $statusClass = 'bg-gray-100 text-gray-800'; // Default warna
 
-                        <span class="{{ $statusClass }} px-2 py-1 text-xs rounded-full">
-                            {{ $status }}
-                        </span>
+                                if ($status === 'Menunggu') {
+                                    $statusClass = 'bg-yellow-100 text-yellow-800';
+                                } elseif ($status === 'Dilihat') {
+                                    $statusClass = 'bg-blue-100 text-blue-800';
+                                }
+                            @endphp
+
+                            <span class="{{ $statusClass }} px-2 py-1 text-xs rounded-full">
+                                {{ $status }}
+                            </span>
+                        @else
+                            @php
+                                $suratStatus = ucwords(strtolower(trim($disposisi->suratMasuk->status))); // status dari surat
+                                $suratStatusClass = match (strtolower($disposisi->suratMasuk->status)) {
+                                    'diproses' => 'bg-yellow-100 text-yellow-800',
+                                    'ditindaklanjuti' => 'bg-blue-100 text-blue-800',
+                                    'selesai' => 'bg-green-100 text-green-800',
+                                    'dikembalikan' => 'bg-red-100 text-red-800',
+                                    'ditolak' => 'bg-gray-200 text-gray-800',
+                                    default => 'bg-slate-100 text-slate-700',
+                                };
+                            @endphp
+
+                            <span class="{{ $suratStatusClass }} px-2 py-1 text-xs rounded-full">
+                                {{ $suratStatus }}
+                            </span>
+                        @endif
                     </td>
 
 
                     {{-- Tipe Aksi --}}
-                    <td class="p-3 text-center">
-                        @php
-                            $tipeAksi = $disposisi->tipe_aksi;
-                            $badgeClass = 'bg-gray-100 text-gray-800'; // default
+                    @if ($userRole !== 'staf')
+                        <td class="p-3 text-center">
+                            @php
+                                $tipeAksi = $disposisi->tipe_aksi;
+                                $badgeClass = 'bg-gray-100 text-gray-800'; // default
 
-                            if ($tipeAksi === 'Kembalikan') {
-                                $badgeClass = 'bg-red-100 text-red-800';
-                            } elseif ($tipeAksi === 'Teruskan') {
-                                $badgeClass = 'bg-green-100 text-green-800';
-                            } elseif ($tipeAksi === 'Revisi') {
-                                $badgeClass = 'bg-yellow-100 text-yellow-800';
-                            }
-                        @endphp
+                                if ($tipeAksi === 'Kembalikan') {
+                                    $badgeClass = 'bg-red-100 text-red-800';
+                                } elseif ($tipeAksi === 'Teruskan') {
+                                    $badgeClass = 'bg-green-100 text-green-800';
+                                } elseif ($tipeAksi === 'Revisi') {
+                                    $badgeClass = 'bg-yellow-100 text-yellow-800';
+                                }
+                            @endphp
 
-                        <span class="text-xs font-medium px-2 py-1 rounded-full {{ $badgeClass }}">
-                            {{ ucfirst($tipeAksi) }}
-                        </span>
-                    </td>
-
-                    {{-- Aksi --}}
-                    {{-- <td class="p-3 align-top text-center">
-                        <div class="flex flex-row justify-center gap-x-1">
-                            <a href="{{ route('surat.show', ['surat' => $disposisi->surat_id]) }}">
-                                @include('components.base.ikon-mata')
-                            </a>
-                        </div>
-                    </td> --}}
+                            <span class="text-xs font-medium px-2 py-1 rounded-full {{ $badgeClass }}">
+                                {{ ucfirst($tipeAksi) }}
+                            </span>
+                        </td>
+                    @endif
                 </tr>
             @empty
                 <tr>
