@@ -115,6 +115,69 @@ class SuratMasukController extends Controller
         return view('pages.super-admin.arsip-surat-masuk', compact('surats'));
     }
 
+    public function suratTerkirim(Request $request)
+    {
+        $userId = auth()->id(); // Ambil ID user yang sedang login
+
+        $query = SuratMasuk::whereHas('disposisis', function ($q) use ($userId) {
+            $q->where('dari_user_id', $userId);
+        });
+
+        // Filter nomor surat
+        if ($request->filled('nomor_surat')) {
+            $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
+        }
+
+        // Filter pengirim
+        if ($request->filled('pengirim')) {
+            $query->where('pengirim', 'like', '%' . $request->pengirim . '%');
+        }
+
+        // Filter tanggal surat
+        if ($request->filled('filter_tanggal_surat')) {
+            $range = explode(' to ', $request->filter_tanggal_surat);
+            if (count($range) === 2) {
+                $query->whereBetween('tanggal_surat', [$range[0], $range[1]]);
+            } elseif (count($range) === 1) {
+                $query->whereDate('tanggal_surat', $range[0]);
+            }
+        }
+
+        // Filter tanggal terima
+        if ($request->filled('filter_created_at')) {
+            $range = explode(' to ', $request->filter_created_at);
+            if (count($range) === 2) {
+                $query->whereBetween('created_at', [$range[0], $range[1]]);
+            } elseif (count($range) === 1) {
+                $query->whereDate('created_at', $range[0]);
+            }
+        }
+
+        // Filter perihal
+        if ($request->filled('perihal')) {
+            $query->where('perihal', 'like', '%' . $request->perihal . '%');
+        }
+
+        // Filter klasifikasi
+        if ($request->filled('klasifikasi_surat')) {
+            $query->where('klasifikasi_surat', $request->klasifikasi_surat);
+        }
+
+        // Filter sifat
+        if ($request->filled('sifat')) {
+            $query->where('sifat', $request->sifat);
+        }
+
+        // Ambil hasil paginasi
+        $surats = $query->orderBy('created_at', 'desc')
+            ->paginate(8)
+            ->appends($request->query());
+
+        return view('pages.super-admin.arsip-surat-masuk', compact('surats'));
+    }
+
+
+
     public function detailByKlasifikasi(Request $request)
     {
         $klasifikasi = $request->input('klasifikasi');
@@ -334,7 +397,7 @@ class SuratMasukController extends Controller
 
 
 
-       public function update(Request $request, SuratMasuk $surat)
+    public function update(Request $request, SuratMasuk $surat)
     {
         // Pindahkan validasi ke sini agar Laravel bisa otomatis redirect + tampilkan error per field
         $validated = $request->validate([

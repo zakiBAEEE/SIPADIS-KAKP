@@ -70,7 +70,7 @@
                                     class="flex items-center justify-between min-w-60 cursor-pointer py-1.5 px-2.5 rounded-md align-middle transition-all duration-300 ease-in text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
                                     <span class="flex items-center gap-3">
                                         <img src="{{ asset('images/email.png') }}" alt="" width="23px">
-                                        Surat Masuk
+                                        Disposisi
                                     </span>
                                     <span data-icon
                                         class="grid place-items-center shrink-0 transition-transform duration-300 ease-in-out">
@@ -86,7 +86,7 @@
                                     id="suratmasukcollapselist">
                                     <ul class="flex flex-col gap-0.5 min-w-60">
                                         <li>
-                                            <a href="{{ route('outbox.index') }}"
+                                            <a href="{{ route('surat.terkirim') }}"
                                                 class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Terkirim</a>
                                         </li>
                                         <li>
@@ -113,7 +113,10 @@
                             </li>
 
 
-                            <li>
+
+
+
+                            <li class="hidden">
                                 <div data-toggle="collapse" data-target="#agendasuratcollapselist" aria-expanded="false"
                                     aria-controls="sidebarCollapseList"
                                     class="flex items-center justify-between min-w-60 cursor-pointer py-1.5 px-2.5 rounded-md align-middle transition-all duration-300 ease-in text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
@@ -153,7 +156,12 @@
                                 </div>
                             </li>
 
-                            <li>
+
+
+
+
+
+                            <li class="hidden">
                                 <a href="{{ route('surat.arsip') }}"
                                     class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
                                     <span class="grid place-items-center shrink-0 me-2.5">
@@ -240,7 +248,7 @@
 
                             @if (!in_array(auth()->user()->role->name, ['Staf']))
                                 <li>
-                                    <a href="{{ route('outbox.index') }}"
+                                    <a href="{{ route('surat.terkirim') }}"
                                         class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
                                         <span class="grid place-items-center shrink-0 me-2.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none"
