@@ -11,7 +11,7 @@
         <div
             class="h-full w-64 md:w-64 rounded-lg border shadow-sm bg-white
            border-slate-200 shadow-slate-950/5 transition-all duration-300">
-            <a href="{{ auth()->check() && in_array(optional(auth()->user())->role->name, ['Super Admin', 'Admin']) ? route('surat.home') : route('inbox.index') }}"
+            <a href="{{ auth()->check() && in_array(optional(auth()->user())->role->name, ['Super Admin', 'Admin']) ? route('dashboard') : route('inbox.index') }}"
                 class="rounded m-2 mx-4 mt-4 h-max mb-4 flex flex-row gap-5 items-center">
                 <img src="{{ asset('images/logo-lldikti.jpg') }}" alt="" class="h-10 w-auto">
                 <p class="font-sans antialiased text-current text-2xl font-semibold">SIPADIS</p>
@@ -31,7 +31,7 @@
 
                         @if (in_array(auth()->user()->role->name, ['Admin']))
                             <li>
-                                <a href="{{ route('surat.home') }}"
+                                <a href="{{ route('dashboard') }}"
                                     class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
                                     <span class="grid place-items-center shrink-0 me-2.5">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="1.4em" height="1.4em"
@@ -243,7 +243,7 @@
                         @if (in_array(auth()->user()->role->name, ['Kepala LLDIKTI', 'KBU', 'Katimja', 'Staf']))
 
                             <li>
-                                <a href="{{ route('surat.home') }}"
+                                <a href="{{ route('dashboard') }}"
                                     class="relative flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
                                     <span class="grid place-items-center shrink-0 me-2.5 relative">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24"

@@ -32,7 +32,8 @@ class SuratMasukController extends Controller
         $this->userService = $userService;
     }
 
-    public function dashboard(Request $request)
+
+    public function rekapitulasi(Request $request)
     {
         $tanggalRange = $request->input('tanggal_range');
         $groupBy = $request->input('group_by', 'daily'); // default harian
@@ -61,6 +62,7 @@ class SuratMasukController extends Controller
             'categories' => $chartData['categories'],
         ]);
     }
+
 
     public function arsipSurat(Request $request)
     {

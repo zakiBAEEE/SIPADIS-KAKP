@@ -19,25 +19,7 @@ class AuthenticatedSessionController extends Controller
         return view('auth.login');
     }
 
-    /**
-     * Handle an incoming authentication request.
-     */
-    // public function store(LoginRequest $request): RedirectResponse
-    // {
-    //     $request->authenticate();
-    //     $request->session()->regenerate();
-
-    //     $user = Auth::user();
-
-    //     // Asumsikan user->role adalah relasi belongsTo
-    //     $role = $user->role->name ?? null;
-
-    //     if ($role === 'Admin') {
-    //         return redirect()->route('surat.home');
-    //     }
-
-    //     return redirect()->route('inbox.index');
-    // }
+   
     public function store(LoginRequest $request): RedirectResponse
     {
         // Autentikasi dahulu
@@ -55,11 +37,7 @@ class AuthenticatedSessionController extends Controller
 
         $role = $user->role->name ?? null;
 
-        if ($role === 'Admin') {
-            return redirect()->route('surat.home');
-        }
-
-        return redirect()->route('inbox.index');
+        return redirect()->route('dashboard');
     }
 
 

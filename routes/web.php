@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\SuratMasukController;
@@ -24,7 +25,6 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
 
     Route::middleware(['role:Admin'])->group(function () {
 
-        Route::get('/', [SuratMasukController::class, 'dashboard'])->name('surat.home');
 
         // ---- Manajemen Surat Masuk ----
         Route::get('/surat-masuk-draft', [SuratMasukController::class, 'suratMasukDraft'])->name('surat.draft');
@@ -87,6 +87,8 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
     Route::middleware(['role:Admin,Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {
         Route::get('/outbox', [InboxController::class, 'outbox'])->name('outbox.index');
         Route::get('/inbox/ditolak', [InboxController::class, 'ditolak'])->name('inbox.ditolak');
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
     });
 
 

@@ -16,39 +16,7 @@
                     Masuk</h5>
                 <hr class="w-full border-t border-gray-300 my-1" />
             </div>
-            {{-- <form action="{{ route('surat.home') }}" method="GET" class="flex flex-row px-2 gap-x-4 my-1 items-end">
-                <div>
-                    <label for="startDate" class="block text-gray-700 font-semibold mb-2 md:text-sm sm:text-xs">Pilih
-                        Tanggal</label>
-                    <input type="text" name="tanggal_range" id="startDate"
-                        class="flatpickr w-full px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Select Date Range" value="{{ $tanggalRange ?? '' }}" />
-                </div>
-
-                <div class="flex flex-col">
-                    <label for="group_by" class="block text-gray-700 text-sm font-semibold mb-2">Tampilkan Per</label>
-                    <select name="group_by" id="group_by"
-                        class="w-full px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="daily" {{ request('group_by') === 'daily' ? 'selected' : '' }}>Harian</option>
-                        <option value="weekly" {{ request('group_by') === 'weekly' ? 'selected' : '' }}>Mingguan
-                        </option>
-                        <option value="monthly" {{ request('group_by') === 'monthly' ? 'selected' : '' }}>Bulanan
-                        </option>
-                    </select>
-                </div>
-                <div class="flex flex-row gap-3 ">
-                    <button type="submit"
-                        class="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-slate-800 border-slate-800 text-slate-50 hover:bg-slate-700 hover:border-slate-700">
-                        Tampilkan
-                    </button>
-                    <a href="{{ route('surat.home') }}"
-                        class="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-red-800 border-red-800 text-slate-50 hover:bg-red-500 hover:border-red-500">
-                        Reset
-                    </a>
-                </div>
-
-
-            </form> --}}
+           
 
             <form action="{{ route('surat.home') }}" method="GET"
                 class="flex flex-col md:flex-row px-2 gap-4 my-1 items-stretch md:items-end">

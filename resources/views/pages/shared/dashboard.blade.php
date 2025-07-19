@@ -25,20 +25,20 @@
             <div class="flex flex-row gap-2 flex-1 justify-center">
                 <div class="flex flex-row gap-2 flex-1 justify-center">
                     @include('components.layout.card-dashboard', [
-                        'jenis' => 'biasa',
-                        'count' => $rekapSifatAktif['biasa'] ?? 0,
+                        'jenis' => 'Rahasia',
+                        'count' => $rekapSifatAktif['Rahasia'] ?? 0,
                     ])
                     @include('components.layout.card-dashboard', [
-                        'jenis' => 'penting',
-                        'count' => $rekapSifatAktif['penting'] ?? 0,
+                        'jenis' => 'Penting',
+                        'count' => $rekapSifatAktif['Penting'] ?? 0,
                     ])
                     @include('components.layout.card-dashboard', [
-                        'jenis' => 'segera',
-                        'count' => $rekapSifatAktif['segera'] ?? 0,
+                        'jenis' => 'Segera',
+                        'count' => $rekapSifatAktif['Segera'] ?? 0,
                     ])
                     @include('components.layout.card-dashboard', [
-                        'jenis' => 'rahasia',
-                        'count' => $rekapSifatAktif['rahasia'] ?? 0,
+                        'jenis' => 'Rutin',
+                        'count' => $rekapSifatAktif['Rutin'] ?? 0,
                     ])
                 </div>
             </div>
