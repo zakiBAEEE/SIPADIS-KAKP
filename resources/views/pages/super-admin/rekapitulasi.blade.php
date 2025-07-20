@@ -76,12 +76,13 @@
                 </p>
             </div>
 
-            <div class="tab-group w-full ">
+            <div class="tab-group w-full">
+                {{-- TAB HEADERS --}}
                 <div class="flex bg-slate-100 p-0.5 relative rounded-lg" role="tablist">
                     <div
                         class="absolute shadow-sm top-1 left-0.5 h-8 bg-white rounded-md transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
                     </div>
-                    @foreach (["Klasifikasi", "Sifat", "Status"] as $index => $kategori)
+                    @foreach (array_keys($rekap) as $kategori)
                         <a href="#"
                             class="tab-link flex items-center text-sm inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
                             data-tab-target="tab-{{ $kategori }}">
@@ -91,12 +92,23 @@
                     @endforeach
                 </div>
 
+
+
+                {{-- TAB CONTENTS --}}
                 <div class="mt-4 tab-content-container">
-                    @foreach ($sifatList as $index => $kategori)
+                    @foreach ($rekap as $kategori => $groupedSurats)
                         <div id="tab-{{ $kategori }}" class="tab-content text-slate-800 hidden">
-                            @include('components.table.table', [
-                                'surats' => $listSuratAktif[$kategori] ?? collect(),
+                            @includeIf('components.rekap.card-' . $kategori, [
+                                'data' => $groupedSurats,
                             ])
+
+
+                            @foreach ($groupedSurats as $value => $surats)
+                                <div class="my-6">
+                                    <h3 class="font-bold mb-2 text-slate-600">{{ $value ?: 'Tanpa Kategori' }}</h3>
+                                    @include('components.table.table', ['surats' => $surats])
+                                </div>
+                            @endforeach
                         </div>
                     @endforeach
                 </div>

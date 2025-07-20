@@ -37,13 +37,15 @@ class RekapitulasiController extends Controller
         // Ambil semua surat dalam range
         $surats = $query->get();
 
-        
+
 
         return view('pages.super-admin.rekapitulasi', [
             'tanggalRange' => $tanggalRange,
-            'suratsBySifat' => $surats->groupBy('sifat'),
-            'byKlasifikasi' => $surats->groupBy('klasifikasi_surat'),
-            'byStatus' => $surats->groupBy('status'),
+            'rekap' => [
+                'Klasifikasi' => $surats->groupBy('klasifikasi_surat'),
+                'Sifat' => $surats->groupBy('sifat'),
+                'Status' => $surats->groupBy('status'),
+            ],
         ]);
     }
 
