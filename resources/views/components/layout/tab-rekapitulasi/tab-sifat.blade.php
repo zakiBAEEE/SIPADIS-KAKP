@@ -17,44 +17,22 @@
             <div class="text-3xl font-bold">7</div>
         </div>
     </div>
-    {{-- <div class="tab-group w-full mt-5">
-        <div class="flex bg-slate-100 p-0.5 relative rounded-lg" role="tablist">
-            <div
-                class="absolute shadow-sm top-1 left-0.5 h-8 bg-white rounded-md transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
-            </div>
 
-            @foreach ($sifatList as $index => $sifat)
-                <a href="#"
-                    class="tab-link flex items-center text-sm {{ $index === 0 ? 'active' : '' }} inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
-                    data-tab-target="tab-{{ $sifat }}">
-                    <span class="mr-2 h-4 w-4 bg-slate-400 rounded-full"></span>
-                    {{ ucfirst($sifat) }}
-                </a>
-            @endforeach
-        </div>
+    @php
+        $group = 'inner-' . uniqid();
+    @endphp
 
-        <div class="mt-4 tab-content-container">
-            @foreach ($sifatList as $index => $sifat)
-                <div id="tab-{{ $sifat }}"
-                    class="tab-content text-slate-800 {{ $index === 0 ? 'block' : 'hidden' }}">
-                    @include('components.table.table', [
-                        'surats' => $suratsBySifat[$sifat] ?? collect(),
-                    ])
-                </div>
-            @endforeach
-        </div>
-    </div> --}}
-
-    {{-- <div class="tab-group w-full mt-5">
+    <div class="tab-group w-full mt-5" data-tab-group="{{ $group }}">
         <div class="flex bg-slate-100 p-0.5 relative rounded-lg" role="tablist">
             <div
                 class="absolute shadow-sm top-1 left-0.5 h-8 bg-white rounded-md transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
             </div>
 
             @foreach ($tabs as $index => $label)
+                @php $slug = Str::slug($label); @endphp
                 <a href="#"
-                    class="tab-link flex items-center text-sm {{ $index === 0 ? 'active' : '' }} inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
-                    data-tab-target="tab-{{ Str::slug($label) }}">
+                    class="tab-link-inner flex items-center text-sm {{ $index === 0 ? 'active' : '' }} inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
+                    data-tab-target="tab-{{ $group }}-{{ $slug }}" data-tab-group="{{ $group }}">
                     <span class="mr-2 h-4 w-4 bg-slate-400 rounded-full"></span>
                     {{ ucfirst($label) }}
                 </a>
@@ -63,51 +41,17 @@
 
         <div class="mt-4 tab-content-container">
             @foreach ($tabs as $index => $label)
-                <div id="tab-{{ Str::slug($label) }}"
-                    class="tab-content text-slate-800 {{ $index === 0 ? 'block' : 'hidden' }}">
+                @php $slug = Str::slug($label); @endphp
+                <div id="tab-{{ $group }}-{{ $slug }}"
+                    class="tab-content-inner text-slate-800 {{ $index === 0 ? 'block' : 'hidden' }}"
+                    data-tab-group="{{ $group }}">
                     @include('components.table.table', [
                         'surats' => $tabData[$label] ?? collect(),
                     ])
                 </div>
             @endforeach
         </div>
-    </div> --}}
-
-    @php
-    $group = 'inner-' . uniqid();
-@endphp
-
-<div class="tab-group w-full mt-5" data-tab-group="{{ $group }}">
-    <div class="flex bg-slate-100 p-0.5 relative rounded-lg" role="tablist">
-        <div
-            class="absolute shadow-sm top-1 left-0.5 h-8 bg-white rounded-md transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
-        </div>
-
-        @foreach ($tabs as $index => $label)
-            @php $slug = Str::slug($label); @endphp
-            <a href="#"
-                class="tab-link-inner flex items-center text-sm {{ $index === 0 ? 'active' : '' }} inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
-                data-tab-target="tab-{{ $group }}-{{ $slug }}"
-                data-tab-group="{{ $group }}">
-                <span class="mr-2 h-4 w-4 bg-slate-400 rounded-full"></span>
-                {{ ucfirst($label) }}
-            </a>
-        @endforeach
     </div>
-
-    <div class="mt-4 tab-content-container">
-        @foreach ($tabs as $index => $label)
-            @php $slug = Str::slug($label); @endphp
-            <div id="tab-{{ $group }}-{{ $slug }}"
-                class="tab-content-inner text-slate-800 {{ $index === 0 ? 'block' : 'hidden' }}"
-                data-tab-group="{{ $group }}">
-                @include('components.table.table', [
-                    'surats' => $tabData[$label] ?? collect(),
-                ])
-            </div>
-        @endforeach
-    </div>
-</div>
 
 
 </div>

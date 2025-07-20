@@ -81,7 +81,7 @@
         $group = 'inner-' . uniqid();
     @endphp
 
-    <div class="tab-group w-full mt-5" data-tab-group="{{ $group }}">
+    {{-- <div class="tab-group w-full mt-5" data-tab-group="{{ $group }}">
         <div class="flex bg-slate-100 p-0.5 relative rounded-lg" role="tablist">
             <div
                 class="absolute shadow-sm top-1 left-0.5 h-8 bg-white rounded-md transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
@@ -110,6 +110,38 @@
                 </div>
             @endforeach
         </div>
+    </div> --}}
+
+    <div class="tabs w-full mt-5" data-tabs="tabs" id="tabs-{{ $group }}">
+    <ul class="tab-list flex bg-slate-100 p-0.5 relative rounded-lg" role="tablist">
+        @foreach ($tabs as $index => $label)
+            @php $slug = Str::slug($label); @endphp
+            <li role="presentation">
+                <button
+                    class="tab {{ $index === 0 ? 'tab-active' : '' }} inline-block py-2 px-4 text-sm text-slate-800"
+                    data-tab-target="#tab-{{ $group }}-{{ $slug }}"
+                    type="button"
+                    role="tab">
+                    {{ ucfirst($label) }}
+                </button>
+            </li>
+        @endforeach
+    </ul>
+
+    <div class="tab-content-container mt-4">
+        @foreach ($tabs as $index => $label)
+            @php $slug = Str::slug($label); @endphp
+            <div
+                id="tab-{{ $group }}-{{ $slug }}"
+                class="tab-content {{ $index === 0 ? '' : 'hidden' }}"
+                role="tabpanel">
+                @include('components.table.table', [
+                    'surats' => $tabData[$label] ?? collect(),
+                ])
+            </div>
+        @endforeach
     </div>
+</div>
+
 
 </div>

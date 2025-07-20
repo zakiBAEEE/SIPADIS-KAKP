@@ -76,15 +76,14 @@
                 </p>
             </div>
 
-            <div class="tab-group w-full">
+            <div class="tab-group w-full ">
                 <div class="flex bg-slate-100 p-0.5 relative rounded-lg" role="tablist">
                     <div
                         class="absolute shadow-sm top-1 left-0.5 h-8 bg-white rounded-md transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
                     </div>
-
-                    @foreach (['Klasifikasi', 'Sifat', 'Status'] as $index => $kategori)
+                    @foreach (["Klasifikasi", "Sifat", "Status"] as $index => $kategori)
                         <a href="#"
-                            class="tab-link flex items-center text-sm {{ $index === 0 ? 'active' : '' }} inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
+                            class="tab-link flex items-center text-sm inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
                             data-tab-target="tab-{{ $kategori }}">
                             <span class="mr-2 h-4 w-4 bg-slate-400 rounded-full"></span>
                             {{ ucfirst($kategori) }}
@@ -93,29 +92,13 @@
                 </div>
 
                 <div class="mt-4 tab-content-container">
-                    {{-- Tab Klasifikasi --}}
-                    <div id="tab-Klasifikasi" class="tab-content text-slate-800 block">
-                        @include('components.layout.tab-rekapitulasi.tab-klasifikasi', [
-                            'tabs' => ['Umum', 'Pengaduan', 'Permintaan Informasi'],
-                            'tabData' => $byKlasifikasi,
-                        ])
-                    </div>
-
-                    {{-- Tab Sifat --}}
-                    <div id="tab-Sifat" class="tab-content text-slate-800 hidden">
-                        @include('components.layout.tab-rekapitulasi.tab-sifat', [
-                            'tabs' => ['Rahasia', 'Penting', 'Segera', 'Rutin'],
-                            'tabData' => $suratsBySifat,
-                        ])
-                    </div>
-
-                    {{-- Tab Status --}}
-                    <div id="tab-Status" class="tab-content text-slate-800 hidden">
-                        @include('components.layout.tab-rekapitulasi.tab-status', [
-                            'tabs' => ['draft', 'diproses', 'ditindaklanjuti', 'ditolak', 'selesai'],
-                            'tabData' => $byStatus,
-                        ])
-                    </div>
+                    @foreach ($sifatList as $index => $kategori)
+                        <div id="tab-{{ $kategori }}" class="tab-content text-slate-800 hidden">
+                            @include('components.table.table', [
+                                'surats' => $listSuratAktif[$kategori] ?? collect(),
+                            ])
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
