@@ -26,19 +26,17 @@ class DashboardController extends Controller
                 ->pluck('surat_id');
 
             // Ambil surat draft ATAU surat yang disposisi terakhirnya ke admin
-            // dan status BUKAN selesai atau ditolak
-            $rekapSifatAktif = SuratMasuk::where(function ($query) use ($suratDiteruskanKeAdmin) {
+            $listSuratAktif = SuratMasuk::where(function ($query) use ($suratDiteruskanKeAdmin) {
                 $query->where('status', 'draft')
                     ->orWhereIn('id', $suratDiteruskanKeAdmin);
             })
                 ->whereNotIn('status', ['selesai', 'ditolak'])
-                ->selectRaw('sifat, COUNT(*) as total')
-                ->groupBy('sifat')
-                ->pluck('total', 'sifat')
-                ->toArray();
+                ->get();
+
+            $rekapSifatAktif = $listSuratAktif->groupBy('sifat')->map->count()->toArray();
+
         } else {
-            // Non-admin: Ambil surat yang disposisi terakhirnya ke user login
-            // dan status disposisinya menunggu/dilihat
+            // Non-admin: ambil surat yang disposisi terakhirnya ke user login (status menunggu/dilihat)
             $latestDisposisiIds = Disposisi::selectRaw('MAX(id) as id')
                 ->groupBy('surat_id');
 
@@ -47,16 +45,20 @@ class DashboardController extends Controller
                 ->whereIn('status', ['menunggu', 'dilihat'])
                 ->pluck('surat_id');
 
-            $rekapSifatAktif = SuratMasuk::whereIn('id', $suratAktifIds)
+            $listSuratAktif = SuratMasuk::whereIn('id', $suratAktifIds)
                 ->whereNotIn('status', ['selesai', 'ditolak'])
-                ->selectRaw('sifat, COUNT(*) as total')
-                ->groupBy('sifat')
-                ->pluck('total', 'sifat')
-                ->toArray();
+                ->get();
+
+            $listSuratAktif = $listSuratAktif->groupBy('sifat');
+
+            $rekapSifatAktif = $listSuratAktif->groupBy('sifat')->map->count()->toArray();
         }
 
+
+
         return view('pages.shared.dashboard', [
-            'rekapSifatAktif' => $rekapSifatAktif
+            'rekapSifatAktif' => $rekapSifatAktif,
+            'listSuratAktif' => $listSuratAktif
         ]);
     }
 

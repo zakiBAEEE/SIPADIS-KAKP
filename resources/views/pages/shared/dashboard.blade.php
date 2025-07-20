@@ -9,53 +9,75 @@
     } else {
         $greeting = 'Selamat Malam';
     }
-@endphp
 
+    $sifatList = ['Penting', 'Segera', 'Rutin', 'Rahasia'];
+@endphp
 
 @extends('layouts.super-admin-layout')
 
 @section('content')
     <div class="bg-white h-full rounded-xl shadow-neutral-400 shadow-lg p-4 flex flex-col gap-y-6 overflow-auto">
-        <div class="flex flex-col">
-            <div>
 
-                <h4 class="text-xl font-bold text-gray-700">
-                    {{ $greeting }}, {{ auth()->user()->name }} 👋
-                </h4>
-                <p class="text-gray-600 text-sm md:text-base">
-                    Berikut ini adalah surat masuk berdasarkan tingkat urgensi (Sifat Surat) yang saat ini berada dalam tanggung jawab anda.
-                </p>
-            </div>
+        {{-- Header --}}
+        <div>
+            <h4 class="text-xl font-bold text-gray-700">
+                {{ $greeting }}, {{ auth()->user()->name }} 👋
+            </h4>
+            <p class="text-sm text-gray-600">
+                Anda login sebagai <span class="font-semibold text-gray-800">
+                    {{ auth()->user()->role->name ?? '-' }}
+                </span>
+                @if (auth()->user()->divisi ?? null)
+                    | Divisi: <span class="font-semibold text-gray-800">
+                        {{ auth()->user()->divisi->nama_divisi }}
+                    </span>
+                @endif
+            </p>
+            <p class="text-gray-600 text-sm md:text-base mt-1">
+                Berikut ini adalah surat masuk berdasarkan tingkat urgensi (Sifat Surat) yang saat ini berada dalam tanggung jawab anda.
+            </p>
         </div>
-        <div class="flex flex-col gap-y-2">
-            {{-- <div>
-                <h5 class="font-sans text-lg font-bold antialiased md:text-xl lg:text-xl text-gray-600">Rekapitulasi Surat
-                    Masuk</h5> --}}
-            <hr class="w-full border-t border-gray-300 my-1" />
+
+        {{-- Garis pemisah --}}
+        <hr class="border-t border-gray-300 my-1" />
+
+        {{-- Bagian Card Dashboard --}}
+        <div class="flex flex-wrap justify-center gap-4">
+            @foreach ($sifatList as $sifat)
+                @include('components.layout.card-dashboard', [
+                    'jenis' => $sifat,
+                    'count' => $rekapSifatAktif[$sifat] ?? 0,
+                ])
+            @endforeach
         </div>
 
-        <div class="flex flex-row md:gap-4  justify-evenly flex-1 md:flex-wrap md:overflow-hidden overflow-auto">
-
-            <div class="flex flex-row gap-2 flex-1 justify-center">
-                <div class="flex flex-row gap-2 flex-1 justify-center">
-                    @include('components.layout.card-dashboard', [
-                        'jenis' => 'Rahasia',
-                        'count' => $rekapSifatAktif['Rahasia'] ?? 0,
-                    ])
-                    @include('components.layout.card-dashboard', [
-                        'jenis' => 'Penting',
-                        'count' => $rekapSifatAktif['Penting'] ?? 0,
-                    ])
-                    @include('components.layout.card-dashboard', [
-                        'jenis' => 'Segera',
-                        'count' => $rekapSifatAktif['Segera'] ?? 0,
-                    ])
-                    @include('components.layout.card-dashboard', [
-                        'jenis' => 'Rutin',
-                        'count' => $rekapSifatAktif['Rutin'] ?? 0,
-                    ])
+        {{-- Tabs untuk tabel surat --}}
+        <div class="tab-group w-full mt-6">
+            <div class="flex bg-slate-100 p-0.5 relative rounded-lg" role="tablist">
+                <div
+                    class="absolute shadow-sm top-1 left-0.5 h-8 bg-white rounded-md transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
                 </div>
+                @foreach ($sifatList as $index => $sifat)
+                    <a href="#"
+                        class="tab-link flex items-center text-sm {{ $index === 0 ? 'active' : '' }} inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
+                        data-tab-target="tab-{{ $sifat }}">
+                        <span class="mr-2 h-4 w-4 bg-slate-400 rounded-full"></span>
+                        {{ ucfirst($sifat) }}
+                    </a>
+                @endforeach
+            </div>
+
+            <div class="mt-4 tab-content-container">
+                @foreach ($sifatList as $index => $sifat)
+                    <div id="tab-{{ $sifat }}"
+                        class="tab-content text-slate-800 {{ $index === 0 ? 'block' : 'hidden' }}">
+                        @include('components.table.table', [
+                            'surats' => $listSuratAktif[$sifat] ?? collect(),
+                        ])
+                    </div>
+                @endforeach
             </div>
         </div>
+
     </div>
 @endsection

@@ -98,7 +98,7 @@
                                                 class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800 relative">
 
                                                 <span class="flex items-center gap-2">
-                                                    Ditolak
+                                                    Dikembalikan
                                                     @if ($jumlahSuratDitolakBelumDilihat > 0)
                                                         <span
                                                             class="grid min-h-[16px] min-w-[16px] place-items-center rounded-full border border-red-500 bg-red-500 px-1.5 text-xs leading-none text-white">
@@ -317,7 +317,7 @@
                                                 </span>
                                             @endif
                                         </span>
-                                        Ditolak
+                                        Dikembalikan
                                     </a>
                                 </li>
 
