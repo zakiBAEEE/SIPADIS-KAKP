@@ -1,5 +1,5 @@
 <div>
-    <div class="flex grid-cols-1 md:grid-cols-5 gap-4 mt-5">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-5">
         <div class="p-4 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-700 text-white shadow-lg">
             <div class="text-sm">Surat : Draft</div>
             <div class="text-3xl font-bold">0</div>
