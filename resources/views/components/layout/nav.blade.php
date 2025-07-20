@@ -172,7 +172,7 @@
                             </li>
 
                             <li>
-                                <a href=""
+                                <a href="{{route('rekapitulasi')}}"
                                     class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
                                     <span class="grid place-items-center shrink-0 me-2.5">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="1.4em" height="1.4em"
@@ -190,6 +190,21 @@
                                         </svg>
                                     </span>
                                     Rekapitulasi
+                                </a>
+                            </li>
+                            <li>
+                                <a href=""
+                                    class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
+                                    <span class="grid place-items-center shrink-0 me-2.5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4em" height="1.4em"
+                                            viewBox="0 0 24 24" fill="none">
+                                            <path
+                                                d="M18.5 19.5L20 21M11 14C7.13401 14 4 17.134 4 21H11M19 17.5C19 18.8807 17.8807 20 16.5 20C15.1193 20 14 18.8807 14 17.5C14 16.1193 15.1193 15 16.5 15C17.8807 15 19 16.1193 19 17.5ZM15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z"
+                                                stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                        </svg>
+                                    </span>
+                                    Logbook Pegawai
                                 </a>
                             </li>
 
@@ -321,6 +336,22 @@
                                     </a>
                                 </li>
 
+                                <li>
+                                    <a href=""
+                                        class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
+                                        <span class="grid place-items-center shrink-0 me-2.5">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="1.4em" height="1.4em"
+                                                viewBox="0 0 24 24" fill="none">
+                                                <path
+                                                    d="M18.5 19.5L20 21M11 14C7.13401 14 4 17.134 4 21H11M19 17.5C19 18.8807 17.8807 20 16.5 20C15.1193 20 14 18.8807 14 17.5C14 16.1193 15.1193 15 16.5 15C17.8807 15 19 16.1193 19 17.5ZM15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z"
+                                                    stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+                                        </span>
+                                        Logbook Pegawai
+                                    </a>
+                                </li>
+
                             @endif
                         @endif
                         <hr class="-mx-3 my-3 border-slate-200" />
@@ -346,6 +377,7 @@
                                 </a>
                             </form>
                         </li>
+
                     @endif
                 </ul>
             </div>

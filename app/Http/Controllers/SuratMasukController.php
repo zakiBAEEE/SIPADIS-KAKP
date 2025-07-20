@@ -33,36 +33,7 @@ class SuratMasukController extends Controller
     }
 
 
-    public function rekapitulasi(Request $request)
-    {
-        $tanggalRange = $request->input('tanggal_range');
-        $groupBy = $request->input('group_by', 'daily'); // default harian
-
-        if ($tanggalRange) {
-
-            $range = explode(' to ', $tanggalRange);
-
-            $start = Carbon::parse($range[0])->startOfDay();
-            $end = Carbon::parse($range[1])->endOfDay();
-
-            $query = SuratMasuk::whereBetween('tanggal_surat', [$start, $end]);
-
-
-        } else {
-            $query = SuratMasuk::whereDate('created_at', now()->toDateString());
-        }
-
-        $rekapRange = $this->rekapitulasiService->hitungRekapSurat(clone $query);
-        $chartData = $this->rekapitulasiService->getChartData(clone $query, $groupBy); // <-- tambahan groupBy
-
-        return view('pages.super-admin.home', [
-            'tanggalRange' => $tanggalRange,
-            'rekapRange' => $rekapRange,
-            'series' => $chartData['series'],
-            'categories' => $chartData['categories'],
-        ]);
-    }
-
+  
 
     public function arsipSurat(Request $request)
     {

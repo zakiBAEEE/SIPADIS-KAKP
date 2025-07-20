@@ -23,7 +23,7 @@
 
     {{-- Kita bisa gunakan kembali komponen layout halaman daftar --}}
     <x-layout.page-list-layout>
-        <x-slot:title>{{ $pageTitle ?? 'Surat Ditolak' }}</x-slot:title>
+        <x-slot:title>{{ $pageTitle ?? 'Surat Dikembalikan' }}</x-slot:title>
 
         <x-slot:filterId>filterSuratDitolak</x-slot:filterId>
 

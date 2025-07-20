@@ -4,7 +4,8 @@
     <div class="bg-white h-full rounded-xl shadow-neutral-400 shadow-lg p-4 flex flex-col gap-y-6 overflow-auto">
         <div class="flex flex-col">
             <div>
-                <h4 class="font-sans text-xl font-bold antialiased md:text-2xl lg:text-3xl text-gray-600">Dashboard
+                <h4 class="font-sans text-xl font-bold antialiased md:text-2xl lg:text-3xl text-gray-600">Rekapitulasi Surat
+                    Masuk
                 </h4>
                 <h6 class="font-sans text-base font-bold antialiased md:text-lg lg:text-lg text-gray-600">LLDIKTI Wilayah 2
                 </h6>
@@ -16,9 +17,9 @@
                     Masuk</h5>
                 <hr class="w-full border-t border-gray-300 my-1" />
             </div>
-           
 
-            <form action="{{ route('surat.home') }}" method="GET"
+
+            <form action="{{ route('rekapitulasi') }}" method="GET"
                 class="flex flex-col md:flex-row px-2 gap-4 my-1 items-stretch md:items-end">
 
                 <!-- Datepicker -->
@@ -48,7 +49,7 @@
                         class="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-slate-800 border-slate-800 text-slate-50 hover:bg-slate-700 hover:border-slate-700">
                         Tampilkan
                     </button>
-                    <a href="{{ route('surat.home') }}"
+                    <a href="{{ route('rekapitulasi') }}"
                         class="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-red-800 border-red-800 text-slate-50 hover:bg-red-500 hover:border-red-500">
                         Reset
                     </a>
@@ -74,51 +75,51 @@
                     @endif
                 </p>
             </div>
-            <div
-                class="flex flex-row md:gap-4 items-center justify-evenly flex-1 md:flex-wrap md:overflow-hidden overflow-auto">
 
-                <div class="flex flex-row gap-2 flex-1 justify-center">
-                    <div>
-                        @include('components.layout.card-dashboard', [
-                            'jenis' => 'total',
-                            'count' => $rekapRange['total'] ?? 0,
+            <div class="tab-group w-full">
+                <div class="flex bg-slate-100 p-0.5 relative rounded-lg" role="tablist">
+                    <div
+                        class="absolute shadow-sm top-1 left-0.5 h-8 bg-white rounded-md transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">
+                    </div>
+
+                    @foreach (['Klasifikasi', 'Sifat', 'Status'] as $index => $kategori)
+                        <a href="#"
+                            class="tab-link flex items-center text-sm {{ $index === 0 ? 'active' : '' }} inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
+                            data-tab-target="tab-{{ $kategori }}">
+                            <span class="mr-2 h-4 w-4 bg-slate-400 rounded-full"></span>
+                            {{ ucfirst($kategori) }}
+                        </a>
+                    @endforeach
+                </div>
+
+                <div class="mt-4 tab-content-container">
+                    {{-- Tab Klasifikasi --}}
+                    <div id="tab-Klasifikasi" class="tab-content text-slate-800 block">
+                        @include('components.layout.tab-rekapitulasi.tab-klasifikasi', [
+                            'tabs' => ['Umum', 'Pengaduan', 'Permintaan Informasi'],
+                            'tabData' => $byKlasifikasi,
                         ])
                     </div>
 
-                    @include('components.base.ikon-panah-kanan')
-                    <a href="{{ route('surat.klasifikasi', ['klasifikasi' => 'Umum', 'tanggal_range' => $tanggalRange]) }}">
-                        @include('components.layout.card-dashboard', [
-                            'jenis' => 'umum',
-                            'count' => $rekapRange['umum'] ?? 0,
+                    {{-- Tab Sifat --}}
+                    <div id="tab-Sifat" class="tab-content text-slate-800 hidden">
+                        @include('components.layout.tab-rekapitulasi.tab-sifat', [
+                            'tabs' => ['Rahasia', 'Penting', 'Segera', 'Rutin'],
+                            'tabData' => $suratsBySifat,
                         ])
-                    </a>
-                    <a
-                        href="{{ route('surat.klasifikasi', ['klasifikasi' => 'Pengaduan', 'tanggal_range' => $tanggalRange]) }}">
-                        @include('components.layout.card-dashboard', [
-                            'jenis' => 'pengaduan',
-                            'count' => $rekapRange['pengaduan'] ?? 0,
+                    </div>
+
+                    {{-- Tab Status --}}
+                    <div id="tab-Status" class="tab-content text-slate-800 hidden">
+                        @include('components.layout.tab-rekapitulasi.tab-status', [
+                            'tabs' => ['draft', 'diproses', 'ditindaklanjuti', 'ditolak', 'selesai'],
+                            'tabData' => $byStatus,
                         ])
-                    </a>
-                    <a
-                        href="{{ route('surat.klasifikasi', ['klasifikasi' => 'Permintaan Informasi', 'tanggal_range' => $tanggalRange]) }}">
-                        @include('components.layout.card-dashboard', [
-                            'jenis' => 'permintaan informasi',
-                            'count' => $rekapRange['permintaan_informasi'] ?? 0,
-                        ])
-                    </a>
+                    </div>
                 </div>
             </div>
 
 
-            <div class="w-full overflow-auto">
-                <div class="min-w-[600px] max-w-full">
-                    @include('components.layout.chart', [
-                        'id' => 'suratChartBulanan',
-                        'series' => $series,
-                        'categories' => $categories,
-                    ])
-                </div>
-            </div>
 
         </div>
     </div>
