@@ -23,7 +23,7 @@
                     {{ $greeting }}, {{ auth()->user()->name }} 👋
                 </h4>
                 <p class="text-gray-600 text-sm md:text-base">
-                    Berikut ini adalah jumlah surat masuk berdasarkan tingkat urgensi (Sifat Surat) yang saat ini berada dalam penanganan Anda.
+                    Berikut ini adalah surat masuk berdasarkan tingkat urgensi (Sifat Surat) yang saat ini berada dalam tanggung jawab anda.
                 </p>
             </div>
         </div>
