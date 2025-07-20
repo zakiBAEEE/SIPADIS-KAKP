@@ -107,12 +107,21 @@ class DashboardController extends Controller
         $dikembalikanKeAndaCount = $this->getDikembalikanKeAndaCount($userId);
         $suratTerdisposisiHariIniCount = $this->getSuratTerdisposisiHariIniCount($userId);
 
+        $diprosesCount = $this->getSuratDiprosesCount($userId);
+        $ditindaklanjutiCount = $this->getSuratDitindaklanjutiCount($userId);
+        $ditolakHariIniCount = $this->getSuratDitolakHariIniCount($userId);
+        $selesaiHariIniCount = $this->getSuratSelesaiHariIniCount($userId);
+
         return view('pages.shared.dashboard', [
             'rekapSifatAktif' => $rekapSifatAktif,
             'listSuratAktif' => $listSuratAktif,
             'inboxSuratCount' => $inboxSuratCount,
             'dikembalikanKeAndaCount' => $dikembalikanKeAndaCount,
             'suratTerdisposisiHariIniCount' => $suratTerdisposisiHariIniCount,
+            'diprosesCount' => $diprosesCount,
+            'ditindaklanjutiCount' => $ditindaklanjutiCount,
+            'ditolakHariIniCount' => $ditolakHariIniCount,
+            'selesaiHariIniCount' => $selesaiHariIniCount,
         ]);
     }
 
@@ -149,6 +158,67 @@ class DashboardController extends Controller
     }
 
 
+    protected function getSuratDiprosesCount($userId)
+    {
+        $latestDisposisiIds = Disposisi::selectRaw('MAX(id) as id')
+            ->groupBy('surat_id');
+
+        $suratIds = Disposisi::whereIn('id', $latestDisposisiIds)
+            ->where('ke_user_id', $userId)
+            ->pluck('surat_id');
+
+        return SuratMasuk::whereIn('id', $suratIds)
+            ->where('status', 'diproses')
+            ->count();
+    }
+
+    protected function getSuratDitindaklanjutiCount($userId)
+    {
+        $latestDisposisiIds = Disposisi::selectRaw('MAX(id) as id')
+            ->groupBy('surat_id');
+
+        $suratIds = Disposisi::whereIn('id', $latestDisposisiIds)
+            ->where('ke_user_id', $userId)
+            ->pluck('surat_id');
+
+        return SuratMasuk::whereIn('id', $suratIds)
+            ->where('status', 'ditindaklanjuti')
+            ->count();
+    }
+
+    protected function getSuratDitolakHariIniCount($userId)
+    {
+        $today = \Carbon\Carbon::today();
+
+        $latestDisposisiIds = Disposisi::selectRaw('MAX(id) as id')
+            ->groupBy('surat_id');
+
+        $suratIds = Disposisi::whereIn('id', $latestDisposisiIds)
+            ->where('ke_user_id', $userId)
+            ->pluck('surat_id');
+
+        return SuratMasuk::whereIn('id', $suratIds)
+            ->where('status', 'ditolak')
+            ->whereDate('updated_at', $today)
+            ->count();
+    }
+
+    protected function getSuratSelesaiHariIniCount($userId)
+    {
+        $today = \Carbon\Carbon::today();
+
+        $latestDisposisiIds = Disposisi::selectRaw('MAX(id) as id')
+            ->groupBy('surat_id');
+
+        $suratIds = Disposisi::whereIn('id', $latestDisposisiIds)
+            ->where('ke_user_id', $userId)
+            ->pluck('surat_id');
+
+        return SuratMasuk::whereIn('id', $suratIds)
+            ->where('status', 'selesai')
+            ->whereDate('updated_at', $today)
+            ->count();
+    }
 
 
 }
