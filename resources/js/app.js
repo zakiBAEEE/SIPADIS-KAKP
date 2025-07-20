@@ -9,6 +9,7 @@ import { initializeAlerts } from './components/alert-handler';
 import { handleFormReset } from './components/resetForm';
 import { togglePassword } from './components/password-toggle';
 import { setupSidebarToggle } from './components/sidebarToggle';
+import setupTabPersistence from './components/tab-persistence';
 
 window.Alpine = Alpine;
 
@@ -16,6 +17,7 @@ Alpine.start();
 
 
 
+setupTabPersistence(); // jalankan script tab
 handleFormReset('#filterSuratKlasifikasi form', '#filterSuratKlasifikasi button[type="reset"]');
 handleFormReset('#filterSuratArsip form', '#resetDisposisiForm');
 handleFormReset('#filterSuratDraft form', '#resetDisposisiForm');
