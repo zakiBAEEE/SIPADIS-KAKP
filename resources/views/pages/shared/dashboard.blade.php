@@ -34,7 +34,8 @@
                 @endif
             </p>
             <p class="text-gray-600 text-sm md:text-base mt-1">
-                Berikut ini adalah surat masuk berdasarkan tingkat urgensi (Sifat Surat) yang saat ini berada dalam tanggung jawab anda.
+                Berikut ini adalah surat masuk berdasarkan tingkat urgensi (Sifat Surat) yang saat ini berada dalam tanggung
+                jawab anda.
             </p>
         </div>
 
@@ -59,7 +60,7 @@
                 </div>
                 @foreach ($sifatList as $index => $sifat)
                     <a href="#"
-                        class="tab-link flex items-center text-sm {{ $index === 0 ? 'active' : '' }} inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
+                        class="tab-link flex items-center text-sm inline-block py-2 px-4 text-slate-800 transition-all duration-300 relative z-1 mr-1"
                         data-tab-target="tab-{{ $sifat }}">
                         <span class="mr-2 h-4 w-4 bg-slate-400 rounded-full"></span>
                         {{ ucfirst($sifat) }}
@@ -69,8 +70,7 @@
 
             <div class="mt-4 tab-content-container">
                 @foreach ($sifatList as $index => $sifat)
-                    <div id="tab-{{ $sifat }}"
-                        class="tab-content text-slate-800 {{ $index === 0 ? 'block' : 'hidden' }}">
+                    <div id="tab-{{ $sifat }}" class="tab-content text-slate-800 hidden">
                         @include('components.table.table', [
                             'surats' => $listSuratAktif[$sifat] ?? collect(),
                         ])

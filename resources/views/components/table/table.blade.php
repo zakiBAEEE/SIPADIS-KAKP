@@ -34,11 +34,13 @@
                         Perihal
                     </p>
                 </th>
-                <th class="p-3">
-                    <p class="text-sm leading-none font-normal">
-                        Aksi
-                    </p>
-                </th>
+                @if (auth()->user()->role->name === 'Admin')
+                    <th class="p-3">
+                        <p class="text-sm leading-none font-normal">
+                            Aksi
+                        </p>
+                    </th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -65,23 +67,25 @@
                     <td class="p-3">
                         <p class="text-sm">{{ $surat->perihal }}</p>
                     </td>
-                    <td class="p-3">
-                        <div class="flex flex-row gap-x-1">
-                            {{-- Tampilkan tombol "Kirim ke Kepala" HANYA JIKA surat belum punya disposisi --}}
-                            @if (!$surat->disposisis()->exists())
-                                <form method="POST" action="{{ route('surat.destroy', $surat->id) }}"
-                                    class="inline-block"
-                                    onsubmit="return confirm('PENTING: Menghapus surat ini akan menghapus seluruh data disposisi terkait. Apakah Anda yakin ingin melanjutkan?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900"
-                                        onclick="event.stopPropagation();" title="Hapus Surat">
-                                        @include('components.base.ikon-hapus')
-                                    </button>
-                                </form>
-                            @endif
-                        </div>
-                    </td>
+                    @if (auth()->user()->role->name === 'Admin')
+                        <td class="p-3">
+                            <div class="flex flex-row gap-x-1">
+                                {{-- Tampilkan tombol "Kirim ke Kepala" HANYA JIKA surat belum punya disposisi --}}
+                                @if (!$surat->disposisis()->exists())
+                                    <form method="POST" action="{{ route('surat.destroy', $surat->id) }}"
+                                        class="inline-block"
+                                        onsubmit="return confirm('PENTING: Menghapus surat ini akan menghapus seluruh data disposisi terkait. Apakah Anda yakin ingin melanjutkan?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-900"
+                                            onclick="event.stopPropagation();" title="Hapus Surat">
+                                            @include('components.base.ikon-hapus')
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>
