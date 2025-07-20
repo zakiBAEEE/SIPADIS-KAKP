@@ -33,14 +33,33 @@
                     </span>
                 @endif
             </p>
-            <p class="text-gray-600 text-sm md:text-base mt-1">
-                Berikut ini adalah surat masuk berdasarkan tingkat urgensi (Sifat Surat) yang saat ini berada dalam tanggung
-                jawab anda.
-            </p>
+            <hr class="border-t border-gray-300 my-3" />
+            <h2 class="text-xl font-bold text-gray-700 mt-2">
+                Overview
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
+                <div class="p-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg">
+                    <div class="text-sm">Surat Masuk (Belum Ditindaklanjuti)</div>
+                    <div class="text-3xl font-bold">{{ $inboxSuratCount }}</div>
+                </div>
+                <div class="p-4 rounded-xl bg-gradient-to-r from-yellow-500 to-yellow-700 text-white shadow-lg">
+                    <div class="text-sm">Surat Dikembalikan</div>
+                    <div class="text-3xl font-bold">{{ $dikembalikanKeAndaCount }}</div>
+                </div>
+                <div class="p-4 rounded-xl bg-gradient-to-r from-green-500 to-green-700 text-white shadow-lg">
+                    <div class="text-sm">Surat Terkirim Hari Ini</div>
+                    <div class="text-3xl font-bold">{{ $suratTerdisposisiHariIniCount }}</div>
+                </div>
+            </div>
+
+
         </div>
 
         {{-- Garis pemisah --}}
-        <hr class="border-t border-gray-300 my-1" />
+        <p class="text-gray-600 text-sm md:text-base">
+            Berikut ini adalah surat masuk berdasarkan tingkat urgensi (Sifat Surat) yang saat ini berada dalam tanggung
+            jawab anda.
+        </p>
 
         {{-- Bagian Card Dashboard --}}
         <div class="flex flex-wrap justify-center gap-4">
@@ -52,8 +71,12 @@
             @endforeach
         </div>
 
+        <h2 class="text-xl font-bold text-gray-700">
+            Akses Cepat
+        </h2>
+
         {{-- Tabs untuk tabel surat --}}
-        <div class="tab-group w-full mt-6">
+        <div class="tab-group w-full ">
             <div class="flex bg-slate-100 p-0.5 relative rounded-lg" role="tablist">
                 <div
                     class="absolute shadow-sm top-1 left-0.5 h-8 bg-white rounded-md transition-all duration-300 transform scale-x-0 translate-x-0 tab-indicator z-0">

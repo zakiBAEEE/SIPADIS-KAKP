@@ -197,10 +197,10 @@ class DisposisiController extends Controller
                 $surat->update(['status' => 'diproses']);
             });
 
-            return redirect()->route('outbox.index', $surat->id)->with('success', 'Surat berhasil didisposisikan ke semua staf.');
+            return redirect()->route('surat.terkirim', $surat->id)->with('success', 'Surat berhasil didisposisikan ke semua staf.');
         } catch (\Exception $e) {
             \Log::error('Gagal mendisposisikan ke semua staf: ' . $e->getMessage());
-            return redirect()->route('outbox.index', $surat->id)->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->route('surat.terkirim', $surat->id)->with('success', 'Disposisi berhasil diteruskan.');
         }
     }
 

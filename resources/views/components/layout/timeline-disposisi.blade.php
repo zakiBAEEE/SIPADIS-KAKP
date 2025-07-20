@@ -1,4 +1,4 @@
-<div class="flex w-1/4 flex-col items-center">
+<div class="flex w-1/2 sm:w-1/4 flex-col items-center">
     @php
         $previousPenerimaId = null;
         $staffCheckpointShown = false;
