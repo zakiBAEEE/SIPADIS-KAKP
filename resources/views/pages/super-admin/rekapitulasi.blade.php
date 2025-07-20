@@ -102,10 +102,9 @@
                                 'data' => $groupedSurats,
                             ])
 
-
                             @foreach ($groupedSurats as $value => $surats)
                                 <div class="my-6">
-                                    <h3 class="font-bold mb-2 text-slate-600">{{ $value ?: 'Tanpa Kategori' }}</h3>
+                                    <h3 class="font-bold mb-2 text-slate-600 text-2xl">{{ $value ?: 'Tanpa Kategori' }}</h3>
                                     @include('components.table.table', ['surats' => $surats])
                                 </div>
                             @endforeach
@@ -113,8 +112,6 @@
                     @endforeach
                 </div>
             </div>
-
-
 
         </div>
     </div>
