@@ -35,8 +35,18 @@ class RekapitulasiController extends Controller
         }
 
         // Ambil semua surat dalam range
-        $surats = $query->get();
+        // $surats = $query->get();
+        $surats = $query
+            ->with([
+                'disposisiTerakhir.penerima.divisi'
+            ])
+            ->get();
 
+        $rekapDivisi = $surats->filter(function ($surat) {
+            return $surat->disposisiTerakhir && $surat->disposisiTerakhir->penerima && $surat->disposisiTerakhir->penerima->divisi;
+        })->groupBy(function ($surat) {
+            return $surat->disposisiTerakhir->penerima->divisi->nama_divisi ?? 'Tanpa Divisi';
+        });
 
 
         return view('pages.super-admin.rekapitulasi', [
@@ -45,6 +55,7 @@ class RekapitulasiController extends Controller
                 'Klasifikasi' => $surats->groupBy('klasifikasi_surat'),
                 'Sifat' => $surats->groupBy('sifat'),
                 'Status' => $surats->groupBy('status'),
+                'Divisi' => $rekapDivisi,
             ],
         ]);
     }

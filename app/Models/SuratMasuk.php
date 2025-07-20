@@ -30,4 +30,9 @@ class SuratMasuk extends Model
         return $this->hasMany(Disposisi::class, 'surat_id');
     }
 
+    public function disposisiTerakhir()
+    {
+        return $this->hasOne(Disposisi::class, 'surat_id')->latestOfMany();
+    }
+
 }

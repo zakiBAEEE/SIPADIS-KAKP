@@ -33,7 +33,7 @@
                 </div>
 
                 <!-- Select -->
-                <div class="flex flex-col w-full md:w-auto">
+                {{-- <div class="flex flex-col w-full md:w-auto">
                     <label for="group_by" class="block text-gray-700 text-sm font-semibold mb-2">Tampilkan Per</label>
                     <select name="group_by" id="group_by"
                         class="w-full px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -41,7 +41,7 @@
                         <option value="weekly" {{ request('group_by') === 'weekly' ? 'selected' : '' }}>Mingguan</option>
                         <option value="monthly" {{ request('group_by') === 'monthly' ? 'selected' : '' }}>Bulanan</option>
                     </select>
-                </div>
+                </div> --}}
 
                 <!-- Tombol -->
                 <div class="flexflex-row gap-3 w-full md:w-auto">
@@ -98,6 +98,7 @@
                 <div class="mt-4 tab-content-container">
                     @foreach ($rekap as $kategori => $groupedSurats)
                         <div id="tab-{{ $kategori }}" class="tab-content text-slate-800 hidden">
+                            
                             @includeIf('components.rekap.card-' . $kategori, [
                                 'data' => $groupedSurats,
                             ])
