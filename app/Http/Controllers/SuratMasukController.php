@@ -150,7 +150,6 @@ class SuratMasukController extends Controller
     }
 
 
-
     public function detailByKlasifikasi(Request $request)
     {
         $klasifikasi = $request->input('klasifikasi');
@@ -276,7 +275,6 @@ class SuratMasukController extends Controller
     {
         return view('pages.super-admin.tambah-surat-masuk');
     }
-
 
     public function store(Request $request)
     {

@@ -172,7 +172,7 @@
                             </li>
 
                             <li>
-                                <a href="{{route('rekapitulasi')}}"
+                                <a href="{{ route('rekapitulasi') }}"
                                     class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
                                     <span class="grid place-items-center shrink-0 me-2.5">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="1.4em" height="1.4em"
@@ -193,7 +193,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href=""
+                                <a href="{{ route('logbook.pegawai') }}"
                                     class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
                                     <span class="grid place-items-center shrink-0 me-2.5">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="1.4em" height="1.4em"
@@ -338,7 +338,7 @@
 
                                 <li>
                                     <a href=""
-                                        class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
+                                        class="hidden flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
                                         <span class="grid place-items-center shrink-0 me-2.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="1.4em" height="1.4em"
                                                 viewBox="0 0 24 24" fill="none">

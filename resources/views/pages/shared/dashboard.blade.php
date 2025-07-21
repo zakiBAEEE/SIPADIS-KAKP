@@ -48,7 +48,7 @@
                         <div class="text-3xl font-bold">{{ $dikembalikanKeAndaCount }}</div>
                     </div>
                     <div class="p-4 rounded-xl bg-gradient-to-r from-green-500 to-green-700 text-white shadow-lg">
-                        <div class="text-sm">Surat Terkirim Hari Ini</div>
+                        <div class="text-sm">Surat Terdisposisi Hari Ini</div>
                         <div class="text-3xl font-bold">{{ $suratTerdisposisiHariIniCount }}</div>
                     </div>
                 </div>

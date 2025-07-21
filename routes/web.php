@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LogbookPegawai;
 use App\Http\Controllers\RekapitulasiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\TimKerjaController;
 use App\Http\Controllers\LembagaController;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\LogbookPegawaiController;
 
 
 require __DIR__ . '/auth.php';
@@ -91,6 +93,7 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
         Route::get('/outbox', [InboxController::class, 'outbox'])->name('outbox.index');
         Route::get('/inbox/ditolak', [InboxController::class, 'ditolak'])->name('inbox.ditolak');
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/logbook-pegawai', [LogbookPegawaiController::class, 'index'])->name('logbook.pegawai');
 
     });
 

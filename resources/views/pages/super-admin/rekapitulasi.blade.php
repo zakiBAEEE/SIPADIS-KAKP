@@ -33,15 +33,16 @@
                 </div>
 
                 <!-- Select -->
-                {{-- <div class="flex flex-col w-full md:w-auto">
+                <div class="flex flex-col w-full md:w-auto">
                     <label for="group_by" class="block text-gray-700 text-sm font-semibold mb-2">Tampilkan Per</label>
                     <select name="group_by" id="group_by"
                         class="w-full px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="daily" {{ request('group_by') === 'daily' ? 'selected' : '' }}>Harian</option>
                         <option value="weekly" {{ request('group_by') === 'weekly' ? 'selected' : '' }}>Mingguan</option>
                         <option value="monthly" {{ request('group_by') === 'monthly' ? 'selected' : '' }}>Bulanan</option>
+                        <option value="monthly" {{ request('group_by') === 'yearly' ? 'selected' : '' }}>Tahunan</option>
                     </select>
-                </div> --}}
+                </div>
 
                 <!-- Tombol -->
                 <div class="flexflex-row gap-3 w-full md:w-auto">
@@ -98,14 +99,13 @@
                 <div class="mt-4 tab-content-container">
                     @foreach ($rekap as $kategori => $groupedSurats)
                         <div id="tab-{{ $kategori }}" class="tab-content text-slate-800 hidden">
-                            
                             @includeIf('components.rekap.card-' . $kategori, [
                                 'data' => $groupedSurats,
                             ])
-
                             @foreach ($groupedSurats as $value => $surats)
                                 <div class="my-6">
-                                    <h3 class="font-bold mb-2 text-slate-600 text-2xl">{{ $value ?: 'Tanpa Kategori' }}</h3>
+                                    <h3 class="font-bold mb-2 text-slate-600 text-2xl">{{ $value ?: 'Tanpa Kategori' }}
+                                    </h3>
                                     @include('components.table.table', ['surats' => $surats])
                                 </div>
                             @endforeach
@@ -114,6 +114,62 @@
                 </div>
             </div>
 
+
         </div>
+
+        <table class="w-full text-sm text-left border border-gray-300 mt-4">
+            <thead class="bg-gray-100 text-xs text-gray-700 uppercase">
+                <tr>
+                    <th class="px-4 py-2">#</th>
+                    <th class="px-4 py-2">
+                        @switch($groupBy)
+                            @case('weekly')
+                                Rentang Minggu
+                            @break
+
+                            @case('monthly')
+                                Bulan
+                            @break
+
+                            @case('yearly')
+                                Tahun
+                            @break
+
+                            @default
+                                Tanggal
+                        @endswitch
+                    </th>
+                    <th class="px-4 py-2">Jumlah Surat</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($rekap['Waktu'] as $label => $grouped)
+                    <tr class="border-t">
+                        <td class="px-4 py-2">{{ $loop->iteration }}</td>
+                        <td class="px-4 py-2">
+                            @if ($groupBy === 'weekly')
+                                @php
+                                    $start = \Carbon\Carbon::parse($label)->startOfWeek();
+                                    $end = \Carbon\Carbon::parse($label)->endOfWeek();
+                                @endphp
+                                {{ $start->format('d M Y') }} - {{ $end->format('d M Y') }}
+                            @elseif($groupBy === 'monthly')
+                                {{ \Carbon\Carbon::parse($label)->translatedFormat('F Y') }}
+                            @elseif($groupBy === 'yearly')
+                                {{ $label }}
+                            @else
+                                {{ \Carbon\Carbon::parse($label)->format('d M Y') }}
+                            @endif
+                        </td>
+                        <td class="px-4 py-2">{{ $grouped->count() }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="3" class="text-center py-4 text-gray-500">Tidak ada data</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+
     </div>
 @endsection
