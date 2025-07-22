@@ -19,14 +19,32 @@
         </div>
         <div class="flex flex-col gap-y-2">
             <div>
-                <h5 class="font-sans text-lg font-bold antialiased md:text-xl lg:text-xl text-gray-600">Rekapitulasi Surat
-                    Masuk</h5>
+                <div class="flex flex-row justify-between">
+                    <h5 class="font-sans text-lg font-bold antialiased md:text-xl lg:text-xl text-gray-600">Rekapitulasi
+                        Surat
+                        Masuk</h5>
+                    <form action="{{ route('rekapitulasi.export') }}" method="GET" class="inline">
+                        <input type="hidden" name="group_by" value="{{ $groupBy }}">
+                        <input type="hidden" name="tanggal_{{ $groupBy }}" value="{{ $tanggalInput }}">
+
+                        <button type="submit"
+                            class="inline-flex items-center px-2.5 py-1.5 bg-green-600 text-white text-sm font-medium rounded-md shadow cursor-pointer">
+                            {{-- SVG Excel Icon --}}
+                            <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M4 2a1 1 0 0 0-1 1v18a1 1 0 0 0 1.555.832L12 17.118l7.445 4.714A1 1 0 0 0 21 21V3a1 1 0 0 0-1-1H4zM12 15.382l-6 3.8V4h12v15.182l-6-3.8z" />
+                            </svg>
+                            Export ke Excel
+                        </button>
+                    </form>
+                </div>
+
                 <hr class="w-full border-t border-gray-300 my-1" />
             </div>
 
 
             <form action="{{ route('rekapitulasi') }}" method="GET"
-                class="flex flex-col md:flex-row px-2 gap-4 my-1 items-stretch md:items-end">
+                class="flex flex-col md:flex-row px-2 gap-4 my-1 items-stretch md:items-end ">
 
                 <!-- Group By Selector -->
                 <div class="flex flex-col w-full md:w-auto">
@@ -84,6 +102,15 @@
                 </h4>
             </div>
 
+            {{-- <form action="{{ route('rekapitulasi.export') }}" method="GET" class="inline">
+                <input type="hidden" name="group_by" value="{{ $groupBy }}">
+                <input type="hidden" name="tanggal_{{ $groupBy }}" value="{{ $tanggalInput }}">
+                <button type="submit" class="btn btn-success">Export ke Excel</button>
+            </form> --}}
+
+
+
+
             <div class="tab-group w-full">
                 {{-- TAB HEADERS --}}
                 <div class="flex bg-slate-100 p-0.5 relative rounded-lg" role="tablist">
@@ -127,9 +154,10 @@
         @foreach ($rekapPerWaktuDetail as $waktu => $data)
             <div class="mb-8">
 
-               
 
-                <h4 class="text-xl font-bold mb-4 text-slate-700">Rekapitulasi Surat Masuk: {{ $waktu ?? 'Tidak ada data waktu' }}</h4>
+
+                <h4 class="text-xl font-bold mb-4 text-slate-700">Rekapitulasi Surat Masuk:
+                    {{ $waktu ?? 'Tidak ada data waktu' }}</h4>
 
                 {{-- Grid Tabel: Klasifikasi, Sifat, Status, Divisi --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
