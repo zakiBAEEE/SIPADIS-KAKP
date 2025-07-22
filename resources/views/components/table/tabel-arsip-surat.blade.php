@@ -4,7 +4,7 @@
         <thead>
             <tr class="text-slate-500 border-b border-slate-300 bg-slate-50">
 
-                <th class="p-3">
+                <th class="p-3 hidden">
                     <p class="text-sm leading-none font-normal">
                         Nomor Agenda
                     </p>
@@ -45,7 +45,7 @@
             @foreach ($surats as $surat)
                 <tr class="hover:bg-slate-50 border-b border-slate-200 cursor-pointer"
                     onclick="window.location.href='{{ route('surat.show', ['surat' => $surat->id]) }}'">
-                    <td class="p-3">
+                    <td class="p-3 hidden">
                         <p class="text-sm">{{ $surat->id }}</p>
                     </td>
                     <td class="p-3">

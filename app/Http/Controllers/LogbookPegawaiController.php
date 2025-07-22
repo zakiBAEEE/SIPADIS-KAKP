@@ -73,6 +73,7 @@ class LogbookPegawaiController extends Controller
                 'suratTertahan' => collect(),
                 'statusCounts' => [],
                 'logRiwayat' => collect(),
+                'suratTertahanGroupedByKlasifikasi' => collect()
             ]);
         }
 
@@ -92,6 +93,23 @@ class LogbookPegawaiController extends Controller
                 'ditindaklanjuti' => $suratTertahan->where('status', 'ditindaklanjuti')->count(),
             ];
 
+
+            // $suratTertahanGroupedByKlasifikasi = $suratTertahan->groupBy(function ($disposisi) {
+            //     return optional($disposisi->suratMasuk)->klasifikasi_surat ?? 'Tidak Diketahui';
+            // });
+
+            $klasifikasiList = ['Umum', 'Pengaduan', 'Permintaan Informasi'];
+
+            // Lakukan mapping dan groupBy seperti biasa
+            $grouped = $suratTertahan->map(function ($item) use ($isStaff) {
+                return $isStaff ? $item : $item->suratMasuk;
+            })->groupBy('klasifikasi_surat');
+
+            // Pastikan semua key ada, meskipun kosong
+            $suratTertahanGroupedByKlasifikasi = collect($klasifikasiList)->mapWithKeys(function ($key) use ($grouped) {
+                return [$key => $grouped->get($key, collect())];
+            });
+
             $logRiwayat = collect(); // staff tidak punya log riwayat
         } else {
             // NON-STAFF
@@ -105,6 +123,23 @@ class LogbookPegawaiController extends Controller
 
             $statusCounts = []; // non-staff tidak butuh count status surat
 
+            // $suratTertahanGroupedByKlasifikasi = $suratTertahan->groupBy(function ($disposisi) {
+            //     return optional($disposisi->suratMasuk)->klasifikasi_surat ?? 'Tidak Diketahui';
+            // });
+
+            $klasifikasiList = ['Umum', 'Pengaduan', 'Permintaan Informasi'];
+
+            // Lakukan mapping dan groupBy seperti biasa
+            $grouped = $suratTertahan->map(function ($item) use ($isStaff) {
+                return $isStaff ? $item : $item->suratMasuk;
+            })->groupBy('klasifikasi_surat');
+
+            // Pastikan semua key ada, meskipun kosong
+            $suratTertahanGroupedByKlasifikasi = collect($klasifikasiList)->mapWithKeys(function ($key) use ($grouped) {
+                return [$key => $grouped->get($key, collect())];
+            });
+
+
             $logRiwayat = Disposisi::with('suratMasuk', 'pengirim', 'penerima')
                 ->where(function ($query) use ($userId) {
                     $query->where('dari_user_id', $userId)
@@ -112,6 +147,8 @@ class LogbookPegawaiController extends Controller
                 })
                 ->orderByDesc('created_at')
                 ->get();
+
+
         }
 
         return view('pages.shared.logbook', [
@@ -121,6 +158,7 @@ class LogbookPegawaiController extends Controller
             'suratTertahan' => $suratTertahan,
             'statusCounts' => $statusCounts,
             'logRiwayat' => $logRiwayat,
+            'suratTertahanGroupedByKlasifikasi' => $suratTertahanGroupedByKlasifikasi,
         ]);
     }
 

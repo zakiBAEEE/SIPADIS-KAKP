@@ -1,46 +1,39 @@
 <?php
 
 namespace Database\Seeders;
+use Illuminate\Support\Facades\DB;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\SuratMasuk;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+
 
 class SuratMasukSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        SuratMasuk::insert([
-            [
-                'nomor_surat' => 'UMDP/2025/139',
-                'pengirim' => 'Universitas Multi Data Palembang',
-                'tanggal_surat' => '2025-02-25',
-                'perihal' => 'Permohonan Beasiswa',
-                'klasifikasi_surat' => 'Umum',
-                'sifat' => 'Rahasia',
-                'file_path' => 'LogHarianMoza_21Maret2025 (1).pdf',
+        $faker = \Faker\Factory::create('id_ID');
+
+        $sifatList = ['Rahasia', 'Penting', 'Segera', 'Rutin'];
+        $klasifikasiList = ['Umum', 'Pengaduan', 'Permintaan Informasi'];
+
+        for ($i = 1; $i <= 100; $i++) {
+            $tanggal = $faker->dateTimeBetween('2024-06-01', '2025-07-31');
+
+            DB::table('surat_masuk')->insert([
+                'id' => $i,
+                'nomor_surat' => $faker->numerify('###/###/##'),
+                'pengirim' => $faker->name,
+                'asal_instansi' => $faker->company,
+                'email_pengirim' => 'raihanmuhammaddzaky623@gmail.com',
+                'tanggal_surat' => $tanggal->format('Y-m-d'),
+                'perihal' => $faker->sentence(6),
+                'klasifikasi_surat' => $faker->randomElement($klasifikasiList),
+                'sifat' => $faker->randomElement($sifatList),
+                'file_path' => 'surat/' . Str::uuid() . '.pdf',
+                'created_at' => $tanggal,
                 'status' => 'draft',
-            ],
-            [
-                'nomor_surat' => 'UNSRI/2025/140',
-                'pengirim' => 'Universitas Sriwijaya',
-                'tanggal_surat' => '2025-02-26',
-                'perihal' => 'Undangan Seminar',
-                'klasifikasi_surat' => 'Pengaduan',
-                'sifat' => 'Penting',
-                'file_path' => null,
-                'status' => 'diverifikasi',
-            ],
-            [
-                'nomor_surat' => 'POLSRI/2025/141',
-                'pengirim' => 'Politeknik Negeri Sriwijaya',
-                'tanggal_surat' => '2025-02-27',
-                'perihal' => 'Permintaan Data Alumni',
-                'klasifikasi_surat' => 'Permintaan Informasi',
-                'sifat' => 'Segera',
-                'file_path' => null,
-                'status' => 'diproses',
-            ],
-        ]);
+            ]);
+        }
     }
 }

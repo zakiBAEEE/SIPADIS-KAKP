@@ -1,5 +1,11 @@
 @extends('layouts.super-admin-layout')
 
+@php
+
+    use Carbon\Carbon;
+
+@endphp
+
 @section('content')
     <div class="bg-white h-full rounded-xl shadow-neutral-400 shadow-lg p-4 flex flex-col gap-y-6 overflow-auto">
         <div class="flex flex-col">
@@ -22,17 +28,7 @@
             <form action="{{ route('rekapitulasi') }}" method="GET"
                 class="flex flex-col md:flex-row px-2 gap-4 my-1 items-stretch md:items-end">
 
-                <!-- Datepicker -->
-                <div class="w-full md:w-auto">
-                    <label for="startDate" class="block text-gray-700 font-semibold mb-2 md:text-sm sm:text-xs">
-                        Pilih Tanggal
-                    </label>
-                    <input type="text" name="tanggal_range" id="startDate"
-                        class="flatpickr w-full px-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Select Date Range" value="{{ $tanggalRange ?? '' }}" />
-                </div>
-
-                <!-- Select -->
+                <!-- Group By Selector -->
                 <div class="flex flex-col w-full md:w-auto">
                     <label for="group_by" class="block text-gray-700 text-sm font-semibold mb-2">Tampilkan Per</label>
                     <select name="group_by" id="group_by"
@@ -40,11 +36,35 @@
                         <option value="daily" {{ request('group_by') === 'daily' ? 'selected' : '' }}>Harian</option>
                         <option value="weekly" {{ request('group_by') === 'weekly' ? 'selected' : '' }}>Mingguan</option>
                         <option value="monthly" {{ request('group_by') === 'monthly' ? 'selected' : '' }}>Bulanan</option>
-                        <option value="monthly" {{ request('group_by') === 'yearly' ? 'selected' : '' }}>Tahunan</option>
+                        <option value="yearly" {{ request('group_by') === 'yearly' ? 'selected' : '' }}>Tahunan</option>
                     </select>
                 </div>
 
-                <!-- Tombol -->
+                <!-- Dynamic Date Input -->
+                <div class="w-full md:w-auto">
+                    <label for="tanggal_input" class="block text-gray-700 font-semibold mb-2 md:text-sm sm:text-xs">Pilih
+                        Tanggal</label>
+
+                    <!-- Harian -->
+                    <input type="date" name="tanggal_daily" id="input-daily" class="date-input hidden">
+
+                    <!-- Mingguan -->
+                    <input type="week" name="tanggal_weekly" id="input-weekly" class="date-input hidden">
+
+                    <!-- Bulanan -->
+                    <input type="month" name="tanggal_monthly" id="input-monthly" class="date-input hidden">
+
+                    <!-- Tahunan -->
+                    <select name="tanggal_yearly" id="input-yearly"
+                        class="date-input hidden px-2 py-1 border border-gray-300 rounded-lg">
+                        @for ($year = now()->year; $year >= 2000; $year--)
+                            <option value="{{ $year }}" {{ request('tanggal_yearly') == $year ? 'selected' : '' }}>
+                                {{ $year }}
+                            </option>
+                        @endfor
+                    </select>
+                </div>
+
                 <div class="flexflex-row gap-3 w-full md:w-auto">
                     <button type="submit"
                         class="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-slate-800 border-slate-800 text-slate-50 hover:bg-slate-700 hover:border-slate-700">
@@ -59,22 +79,9 @@
 
 
             <div class="mt-4 px-2">
-                <p class="text-lg text-gray-600 font-medium">
-                    @if ($tanggalRange)
-                        @php
-                            $range = explode(' to ', $tanggalRange);
-                            $start = \Carbon\Carbon::parse($range[0])->translatedFormat('d M Y');
-                            $end = isset($range[1])
-                                ? \Carbon\Carbon::parse($range[1])->translatedFormat('d M Y')
-                                : $start;
-                        @endphp
-                        Rekapitulasi surat masuk dari <span class="font-semibold">{{ $start }}</span>
-                        sampai <span class="font-semibold">{{ $end }}</span>.
-                    @else
-                        rekapitulasi surat masuk hari ini
-                        ({{ \Carbon\Carbon::now()->translatedFormat('d M Y') }}).
-                    @endif
-                </p>
+                <h4 class="text-xl font-bold mb-4 text-slate-700">
+                    Rekapitulasi Per: {{ $waktu ?? 'Tidak ada data waktu' }}
+                </h4>
             </div>
 
             <div class="tab-group w-full">
@@ -117,59 +124,86 @@
 
         </div>
 
-        <table class="w-full text-sm text-left border border-gray-300 mt-4">
-            <thead class="bg-gray-100 text-xs text-gray-700 uppercase">
-                <tr>
-                    <th class="px-4 py-2">#</th>
-                    <th class="px-4 py-2">
-                        @switch($groupBy)
-                            @case('weekly')
-                                Rentang Minggu
-                            @break
+        @foreach ($rekapPerWaktuDetail as $waktu => $data)
+            <div class="mb-8">
 
-                            @case('monthly')
-                                Bulan
-                            @break
+               
 
-                            @case('yearly')
-                                Tahun
-                            @break
+                <h4 class="text-xl font-bold mb-4 text-slate-700">Rekapitulasi Surat Masuk: {{ $waktu ?? 'Tidak ada data waktu' }}</h4>
 
-                            @default
-                                Tanggal
-                        @endswitch
-                    </th>
-                    <th class="px-4 py-2">Jumlah Surat</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($rekap['Waktu'] as $label => $grouped)
-                    <tr class="border-t">
-                        <td class="px-4 py-2">{{ $loop->iteration }}</td>
-                        <td class="px-4 py-2">
-                            @if ($groupBy === 'weekly')
-                                @php
-                                    $start = \Carbon\Carbon::parse($label)->startOfWeek();
-                                    $end = \Carbon\Carbon::parse($label)->endOfWeek();
-                                @endphp
-                                {{ $start->format('d M Y') }} - {{ $end->format('d M Y') }}
-                            @elseif($groupBy === 'monthly')
-                                {{ \Carbon\Carbon::parse($label)->translatedFormat('F Y') }}
-                            @elseif($groupBy === 'yearly')
-                                {{ $label }}
-                            @else
-                                {{ \Carbon\Carbon::parse($label)->format('d M Y') }}
-                            @endif
-                        </td>
-                        <td class="px-4 py-2">{{ $grouped->count() }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="3" class="text-center py-4 text-gray-500">Tidak ada data</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                {{-- Grid Tabel: Klasifikasi, Sifat, Status, Divisi --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    {{-- Klasifikasi --}}
+                    <div class="overflow-x-auto">
+                        <h5 class="text-slate-600 font-semibold mb-2">Klasifikasi</h5>
+                        <table class="w-full text-left table-auto text-slate-800 min-w-0">
+                            <thead class="border-b border-slate-200 bg-slate-100 text-sm font-medium text-slate-600">
+                                <tr class="w-full text-left table-auto text-slate-800 min-w-0">
+                                    <th class="px-2.5 py-2 text-start">Klasifikasi</th>
+                                    <th class="px-2.5 py-2 text-start">Jumlah</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm text-slate-800">
+                                @foreach ($data['Klasifikasi'] as $klasifikasi => $jumlah)
+                                    <tr class="w-full text-left table-auto text-slate-800 min-w-0">
+                                        <td class="p-3">{{ $klasifikasi }}</td>
+                                        <td class="p-3">{{ $jumlah }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{-- Sifat --}}
+                    <div class="overflow-x-auto">
+                        <h5 class="text-slate-600 font-semibold mb-2">Sifat</h5>
+                        <table class="w-full text-left table-auto text-slate-800 min-w-0">
+                            <thead class="border-b border-slate-200 bg-slate-100 text-sm font-medium text-slate-600">
+                                <tr class="w-full text-left table-auto text-slate-800 min-w-0">
+                                    <th class="px-2.5 py-2 text-start">Sifat</th>
+                                    <th class="px-2.5 py-2 text-start">Jumlah</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm text-slate-800">
+                                @foreach ($data['Sifat'] as $sifat => $jumlah)
+                                    <tr class="w-full text-left table-auto text-slate-800 min-w-0">
+                                        <td class="p-3">{{ $sifat }}</td>
+                                        <td class="p-3">{{ $jumlah }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                    {{-- Status --}}
+                    <div class="overflow-x-auto">
+                        <h5 class="text-slate-600 font-semibold mb-2">Status</h5>
+                        <table class="w-full text-left table-auto text-slate-800 min-w-0">
+                            <thead class="border-b border-slate-200 bg-slate-100 text-sm font-medium text-slate-600">
+                                <tr class="text-slate-800 border-b border-slate-300 bg-slate-50">
+                                    <th class="px-2.5 py-2 text-start">Status</th>
+                                    <th class="px-2.5 py-2 text-start">Jumlah</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm text-slate-800">
+                                @foreach ($data['Status'] as $status => $jumlah)
+                                    <tr um text-slate-600">
+                                    <tr>
+                                        <td class="p-3">{{ $status }}</td>
+                                        <td class="p-3">{{ $jumlah }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+
 
     </div>
 @endsection

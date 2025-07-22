@@ -28,6 +28,8 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
 
     Route::middleware(['role:Admin'])->group(function () {
 
+        Route::get('/rekap/export', [RekapController::class, 'exportRekapPerWaktu'])->name('rekap.export');
+
 
         // ---- Manajemen Surat Masuk ----
         Route::get('/surat-masuk-draft', [SuratMasukController::class, 'suratMasukDraft'])->name('surat.draft');

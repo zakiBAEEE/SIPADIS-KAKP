@@ -20,78 +20,87 @@ class RekapitulasiController extends Controller
 
 
 
-    // public function rekapitulasi(Request $request)
-    // {
-    //     $tanggalRange = $request->input('tanggal_range');
-
-    //     if ($tanggalRange) {
-    //         $range = explode(' to ', $tanggalRange);
-    //         $start = Carbon::parse($range[0])->startOfDay();
-    //         $end = Carbon::parse($range[1])->endOfDay();
-
-    //         $query = SuratMasuk::whereBetween('tanggal_surat', [$start, $end]);
-    //     } else {
-    //         $query = SuratMasuk::whereDate('created_at', now()->toDateString());
-    //     }
-
-    //     // Ambil semua surat dalam range
-    //     // $surats = $query->get();
-    //     $surats = $query
-    //         ->with([
-    //             'disposisiTerakhir.penerima.divisi'
-    //         ])
-    //         ->get();
-
-    //     $rekapDivisi = $surats->filter(function ($surat) {
-    //         return $surat->disposisiTerakhir && $surat->disposisiTerakhir->penerima && $surat->disposisiTerakhir->penerima->divisi;
-    //     })->groupBy(function ($surat) {
-    //         return $surat->disposisiTerakhir->penerima->divisi->nama_divisi ?? 'Tanpa Divisi';
-    //     });
-
-
-    //     return view('pages.super-admin.rekapitulasi', [
-    //         'tanggalRange' => $tanggalRange,
-    //         'rekap' => [
-    //             'Klasifikasi' => $surats->groupBy('klasifikasi_surat'),
-    //             'Sifat' => $surats->groupBy('sifat'),
-    //             'Status' => $surats->groupBy('status'),
-    //             'Divisi' => $rekapDivisi,
-    //         ],
-    //     ]);
-    // }
-
-
-
     public function rekapitulasi(Request $request)
     {
-        $tanggalRange = $request->input('tanggal_range');
         $groupBy = $request->input('group_by', 'daily'); // default: harian
 
-        if ($tanggalRange) {
-            $range = explode(' to ', $tanggalRange);
-            $start = Carbon::parse($range[0])->startOfDay();
-            $end = Carbon::parse($range[1])->endOfDay();
+        // Ambil input tanggal sesuai group_by
+        switch ($groupBy) {
+            case 'daily':
+                $tanggal = $request->input('tanggal_daily');
+                $start = $tanggal ? Carbon::parse($tanggal)->startOfDay() : now()->startOfDay();
+                $end = $tanggal ? Carbon::parse($tanggal)->endOfDay() : now()->endOfDay();
+                $waktu = \Carbon\Carbon::parse($tanggal)->translatedFormat('d F Y');
+                break;
 
-            $query = SuratMasuk::whereBetween('tanggal_surat', [$start, $end]);
-        } else {
-            $query = SuratMasuk::whereDate('created_at', now()->toDateString());
+            case 'weekly':
+                $tanggal = $request->input('tanggal_weekly'); // format: "YYYY-Wnn"
+                if ($tanggal) {
+                    // Mengubah dari ISO week format (mis: 2024-W15) ke tanggal awal & akhir minggu
+                    [$year, $week] = explode('-W', $tanggal);
+                    $start = Carbon::now()->setISODate($year, $week)->startOfWeek();
+                    $end = Carbon::now()->setISODate($year, $week)->endOfWeek();
+                    $waktu = 'Pekan ' . $start->isoFormat('Wo') . ' ('
+                        . $start->translatedFormat('d M') . ' - '
+                        . $end->translatedFormat('d M Y') . ')';
+                } else {
+                    $start = now()->startOfWeek();
+                    $end = now()->endOfWeek();
+                    $waktu = 'Pekan ' . $start->isoFormat('Wo') . ' ('
+                        . $start->translatedFormat('d M') . ' - '
+                        . $end->translatedFormat('d M Y') . ')';
+                }
+                break;
+
+            case 'monthly':
+                $tanggal = $request->input('tanggal_monthly'); // format: "YYYY-MM"
+                if ($tanggal) {
+                    $start = Carbon::parse($tanggal)->startOfMonth();
+                    $end = Carbon::parse($tanggal)->endOfMonth();
+                    $waktu = \Carbon\Carbon::parse($start)->translatedFormat('F Y');
+                } else {
+                    $start = now()->startOfMonth();
+                    $end = now()->endOfMonth();
+                    $waktu = \Carbon\Carbon::parse($start)->translatedFormat('F Y');
+                }
+                break;
+
+            case 'yearly':
+                $tanggal = $request->input('tanggal_yearly'); // hanya tahun saja
+                if ($tanggal) {
+                    $start = Carbon::createFromDate($tanggal, 1, 1)->startOfYear();
+                    $end = Carbon::createFromDate($tanggal, 12, 31)->endOfYear();
+                    $waktu = \Carbon\Carbon::parse($start)->translatedFormat('Y');
+                } else {
+                    $start = now()->startOfYear();
+                    $end = now()->endOfYear();
+                    $waktu = \Carbon\Carbon::parse($start)->translatedFormat('Y');
+                }
+                break;
+
+            default:
+                // fallback
+                $start = now()->startOfDay();
+                $end = now()->endOfDay();
+                $waktu = null;
+                break;
         }
 
-        // Ambil semua surat dalam range
-        $surats = $query
-            ->with([
-                'disposisiTerakhir.penerima.divisi'
-            ])
-            ->get();
+        // Query surat berdasarkan range waktu
+        $query = SuratMasuk::whereBetween('tanggal_surat', [$start, $end]);
 
-        // Group berdasarkan kategori divisi dari disposisi terakhir
+        $surats = $query->with([
+            'disposisiTerakhir.penerima.divisi'
+        ])->get();
+
+        // Group berdasarkan divisi
         $rekapDivisi = $surats->filter(function ($surat) {
             return $surat->disposisiTerakhir && $surat->disposisiTerakhir->penerima && $surat->disposisiTerakhir->penerima->divisi;
         })->groupBy(function ($surat) {
             return $surat->disposisiTerakhir->penerima->divisi->nama_divisi ?? 'Tanpa Divisi';
         });
 
-        // Group berdasarkan waktu sesuai pilihan user
+        // Group berdasarkan waktu
         $rekapPerWaktu = match ($groupBy) {
             'weekly' => $surats->groupBy(fn($item) => Carbon::parse($item->tanggal_surat)->startOfWeek()->format('Y-m-d')),
             'monthly' => $surats->groupBy(fn($item) => Carbon::parse($item->tanggal_surat)->format('Y-m')),
@@ -99,17 +108,24 @@ class RekapitulasiController extends Controller
             default => $surats->groupBy(fn($item) => Carbon::parse($item->tanggal_surat)->format('Y-m-d')),
         };
 
+        $rekapPerWaktuDetail = $rekapPerWaktu->map(function ($items, $groupKey) {
+            return [
+                'Klasifikasi' => $items->groupBy('klasifikasi_surat')->map->count(),
+                'Sifat' => $items->groupBy('sifat')->map->count(),
+                'Status' => $items->groupBy('status')->map->count(),
+            ];
+        });
+
         return view('pages.super-admin.rekapitulasi', [
-            'tanggalRange' => $tanggalRange,
+            'rekapPerWaktuDetail' => $rekapPerWaktuDetail,
             'groupBy' => $groupBy,
+            'waktu' => $waktu,
             'rekap' => [
                 'Klasifikasi' => $surats->groupBy('klasifikasi_surat'),
                 'Sifat' => $surats->groupBy('sifat'),
                 'Status' => $surats->groupBy('status'),
-                'Divisi' => $rekapDivisi,
-                'Waktu' => $rekapPerWaktu,
             ],
+            'tanggalInput' => $tanggal ?? null, // hanya untuk tampilan kembali di form
         ]);
     }
-
 }
