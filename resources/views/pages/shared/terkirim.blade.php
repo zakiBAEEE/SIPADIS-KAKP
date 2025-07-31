@@ -35,7 +35,7 @@
 
         {{-- Isi slot "filterForm" --}}
         <x-slot:filterForm>
-            <form action="{{ route('surat.arsip') }}" method="GET">
+            <form action="{{ route('surat.terkirim') }}" method="GET">
                 @include('components.layout.input-filter-surat')
                 <div class="flex flex-row justify-end mb-5 gap-4">
                     <button type="button" id="resetDisposisiForm"
