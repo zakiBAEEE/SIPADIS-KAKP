@@ -22,8 +22,6 @@ class RekapitulasiController extends Controller
     }
 
 
-
-
     public function rekapitulasi(Request $request)
     {
         $groupBy = $request->input('group_by', 'daily'); // default: harian

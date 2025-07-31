@@ -12,19 +12,7 @@ use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
-    /**
-     * Menampilkan daftar semua pengguna.
-     */
-    // public function index()
-    // {
-    //     $users = User::with(['role', 'divisi'])->orderBy('created_at', 'desc')->paginate(10);
-
-    //     $roles = Role::all();
-    //     $divisis = Divisi::all();
-
-    //     return view('pages.super-admin.pegawai', compact('users', 'roles', 'divisis'));
-    // }
-
+   
     public function index(Request $request)
     {
         $query = User::with(['role', 'divisi'])->orderBy('created_at', 'desc');

@@ -28,8 +28,7 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
 
     Route::middleware(['role:Admin'])->group(function () {
 
-        // Cetak Rekapitulasi
-        //Route::get('/rekapitulasi/export', [RekapitulasiController::class, 'export'])->name('rekapitulasi.export');
+       
         Route::get('/rekapitulasi/export', [RekapitulasiController::class, 'rekapitulasiExport'])->name('rekapitulasi.export');
 
 
@@ -41,9 +40,7 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
         Route::post('/surat-masuk/{surat}', [SuratMasukController::class, 'update'])->name('surat.update');
         Route::delete('/surat-masuk/{surat}', [SuratMasukController::class, 'destroy'])->name('surat.destroy');
         Route::post('/surat-masuk/{surat}/kirim-ke-kepala', [DisposisiController::class, 'kirimKeKepala'])->name('surat.kirimKeKepala');
-        Route::post('/surat-masuk/{surat}/kirim-ulang-ke-kepala', [DisposisiController::class, 'kirimUlangKeKepala'])->name('surat.kirimUlangKeKepala');
-        Route::get('/surat/klasifikasi', [SuratMasukController::class, 'detailByKlasifikasi'])->name('surat.klasifikasi');
-        Route::get('/arsip-surat', [SuratMasukController::class, 'arsipSurat'])->name('surat.arsip');
+        
 
         Route::get('/rekapitulasi', [RekapitulasiController::class, 'rekapitulasi'])->name('rekapitulasi');
 
@@ -89,29 +86,19 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
 
     Route::middleware(['role:Katimja'])->group(function () {
         Route::post('/disposisi/{surat}/disposisiSemuaStaf', [DisposisiController::class, 'disposisiKeSemuaStaf'])->name('disposisi.disposisiSemuaStaf');
-
     });
 
 
     Route::middleware(['role:Admin,Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {
-        Route::get('/outbox', [InboxController::class, 'outbox'])->name('outbox.index');
         Route::get('/inbox/ditolak', [InboxController::class, 'ditolak'])->name('inbox.ditolak');
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/logbook-pegawai', [LogbookPegawaiController::class, 'index'])->name('logbook.pegawai');
-
     });
 
 
-    Route::middleware(['role:Super Admin,Admin,Kepala LLDIKTI,KBU,Katimja'])->group(function () {
+    Route::middleware(['role:Admin,Kepala LLDIKTI,KBU,Katimja'])->group(function () {
         Route::post('/surat-masuk/{surat}/disposisi', [DisposisiController::class, 'store'])->name('disposisi.store');
         Route::get('/disposisi/{id}/cetak', [DisposisiController::class, 'cetak'])->name('disposisi.cetak');
-    });
-
-    Route::middleware(['role:Kepala,KBU,Super Admin,Admin'])->group(function () {
-        Route::get('/agenda-kbu', [AgendaController::class, 'agendaKbu'])->name('surat.agendaKbu');
-        Route::get('/agenda-kepala', [AgendaController::class, 'agendaKepala'])->name('surat.agendaKepala');
-        Route::get('/print-agenda-kbu', [AgendaController::class, 'printAgendaKbu'])->name('surat.printAgendaKbu');
-        Route::get('/print-agenda-kepala', [AgendaController::class, 'printAgendaKepala'])->name('surat.printAgendaKepala');
     });
 
 });

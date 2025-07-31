@@ -140,36 +140,8 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="overflow-hidden transition-[max-height] duration-300 ease-in-out max-h-0"
-                                    id="agendasuratcollapselist">
-                                    <ul class="flex flex-col gap-0.5 min-w-60">
-                                        <li>
-                                            <a href="{{ route('surat.agendaKbu') }}"
-                                                class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">KBU</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('surat.agendaKepala') }}"
-                                                class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Kepala
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </li>
 
-
-
-
-
-
-                            <li class="hidden">
-                                <a href="{{ route('surat.arsip') }}"
-                                    class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
-                                    <span class="grid place-items-center shrink-0 me-2.5">
-                                        <img src="{{ asset('images/inbox.png') }}" alt="" width="23px">
-                                    </span>
-                                    Arsip Surat
-                                </a>
-                            </li>
 
                             <li>
                                 <a href="{{ route('rekapitulasi') }}"

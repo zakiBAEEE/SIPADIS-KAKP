@@ -52,22 +52,6 @@ class TimKerjaController extends Controller
         $divisi = Divisi::findOrFail($id);
     }
 
-    // UPDATE: Simpan perubahan
-    // public function update(Request $request, $id)
-    // {
-    //     $divisi = Divisi::findOrFail($id);
-
-    //     $request->validate([
-    //         'nama_divisi' => 'required|string|max:255|unique:divisis,nama_divisi,' . $divisi->id,
-    //     ]);
-
-    //     $divisi->update([
-    //         'nama_divisi' => $request->nama_divisi,
-    //     ]);
-
-    //     return redirect()->route('timKerja.index')->with('success', 'Tim kerja berhasil diperbarui.');
-    // }
-
     public function update(Request $request, $id)
     {
         $divisi = Divisi::findOrFail($id);
