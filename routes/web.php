@@ -29,7 +29,8 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
     Route::middleware(['role:Admin'])->group(function () {
 
         // Cetak Rekapitulasi
-        Route::get('/rekapitulasi/export', [RekapitulasiController::class, 'export'])->name('rekapitulasi.export');
+        //Route::get('/rekapitulasi/export', [RekapitulasiController::class, 'export'])->name('rekapitulasi.export');
+        Route::get('/rekapitulasi/export', [RekapitulasiController::class, 'rekapitulasiExport'])->name('rekapitulasi.export');
 
 
         // ---- Manajemen Surat Masuk ----

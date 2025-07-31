@@ -28,13 +28,9 @@
                         <input type="hidden" name="tanggal_{{ $groupBy }}" value="{{ $tanggalInput }}">
 
                         <button type="submit"
-                            class="inline-flex items-center px-2.5 py-1.5 bg-green-600 text-white text-sm font-medium rounded-md shadow cursor-pointer">
-                            {{-- SVG Excel Icon --}}
-                            <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M4 2a1 1 0 0 0-1 1v18a1 1 0 0 0 1.555.832L12 17.118l7.445 4.714A1 1 0 0 0 21 21V3a1 1 0 0 0-1-1H4zM12 15.382l-6 3.8V4h12v15.182l-6-3.8z" />
-                            </svg>
-                            Export ke Excel
+                            class="inline-flex items-center px-2.5 py-1.5 bg-red-600 text-white text-sm font-medium rounded-md shadow cursor-pointer">
+                            
+                            Export PDF
                         </button>
                     </form>
                 </div>
@@ -95,18 +91,11 @@
                 </div>
             </form>
 
-
             <div class="mt-4 px-2">
                 <h4 class="text-xl font-bold mb-4 text-slate-700">
-                    Rekapitulasi Per: {{ $waktu ?? 'Tidak ada data waktu' }}
+                    Rekapitulasi {{ $waktu ?? 'Tidak ada data waktu' }}
                 </h4>
             </div>
-
-            {{-- <form action="{{ route('rekapitulasi.export') }}" method="GET" class="inline">
-                <input type="hidden" name="group_by" value="{{ $groupBy }}">
-                <input type="hidden" name="tanggal_{{ $groupBy }}" value="{{ $tanggalInput }}">
-                <button type="submit" class="btn btn-success">Export ke Excel</button>
-            </form> --}}
 
 
 

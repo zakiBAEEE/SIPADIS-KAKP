@@ -36,7 +36,6 @@ class AgendaController extends Controller
 
     public function agendaKepala(Request $request)
     {
-        // Memanggil "mesin" utama dengan parameter 'Kepala'
         $suratMasuk = $this->getAgendaForRole('Kepala LLDIKTI', $request);
 
         return view('pages.super-admin.agenda-kepala', [
@@ -71,17 +70,14 @@ class AgendaController extends Controller
 
     private function getAgendaForRole(string $roleName, Request $request): LengthAwarePaginator
     {
-        // 1. Dapatkan semua ID user dengan peran tertentu
         $roleUserIds = User::whereHas('role', fn($q) => $q->where('name', $roleName))->pluck('id');
 
         if ($roleUserIds->isEmpty()) {
             return new LengthAwarePaginator([], 0, 10);
         }
 
-        // 2. Buat query dasar untuk surat masuk
         $query = SuratMasuk::query();
 
-        // 3. Filter berdasarkan input teks (opsional)
 
         if ($request->filled('nomor_surat')) {
             $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
@@ -103,7 +99,6 @@ class AgendaController extends Controller
             $query->where('sifat', $request->sifat);
         }
 
-        // 4. Filter berdasarkan rentang tanggal
         if ($request->filled('filter_created_at')) {
 
             $range = explode(' to ', $request->input('filter_created_at'));
@@ -131,7 +126,6 @@ class AgendaController extends Controller
         });
 
 
-        // 6. Paginasi + eager load relasi disposisi
         return $query->with([
             'disposisis' => fn($q) => $q->whereIn('dari_user_id', $roleUserIds)->latest(),
             'disposisis.penerima.role'
