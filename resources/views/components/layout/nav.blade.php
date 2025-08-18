@@ -11,7 +11,7 @@
         <div
             class="h-full w-64 md:w-64 rounded-lg border shadow-sm bg-white
            border-slate-200 shadow-slate-950/5 transition-all duration-300">
-            <a href="{{ auth()->check() && in_array(optional(auth()->user())->role->name, ['Super Admin', 'Admin']) ? route('dashboard') : route('inbox.index') }}"
+            <a href="{{ auth()->check() && in_array(optional(auth()->user())->role->name, ['Super Admin', 'Admin']) ? route('dashboard') : route('surat.inbox') }}"
                 class="rounded m-2 mx-4 mt-4 h-max mb-4 flex flex-row gap-5 items-center">
                 <img src="{{ asset('images/logo-lldikti.jpg') }}" alt="" class="h-10 w-auto">
                 <p class="font-sans antialiased text-current text-2xl font-semibold">SIPADIS</p>
@@ -247,7 +247,7 @@
                             </li>
 
                             <li>
-                                <a href="{{ route('inbox.index') }}"
+                                <a href="{{ route('surat.inbox') }}"
                                     class="relative flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
 
                                     <span class="grid place-items-center shrink-0 me-2.5 relative">

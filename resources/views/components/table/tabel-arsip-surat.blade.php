@@ -16,7 +16,7 @@
                 </th>
                 <th class="p-3">
                     <p class="text-sm leading-none font-normal">
-                        Pengirim
+                        Instansi Pengirim
                     </p>
                 </th>
                 <th class="p-3">
@@ -32,6 +32,11 @@
                 <th class="p-3">
                     <p class="text-sm leading-none font-normal">
                         Perihal
+                    </p>
+                </th>
+                <th class="p-3">
+                    <p class="text-sm leading-none font-normal">
+                        Disposisi Terakhir
                     </p>
                 </th>
                 <th class="p-3">
@@ -52,7 +57,7 @@
                         <p class="text-sm">{{ $surat->nomor_surat }}</p>
                     </td>
                     <td class="p-3">
-                        <p class="text-sm">{{ $surat->pengirim }}</p>
+                        <p class="text-sm">{{ $surat->asal_instansi }}</p>
                     </td>
                     <td class="p-3">
                         <p class="text-sm">
@@ -64,6 +69,20 @@
                     </td>
                     <td class="p-3">
                         <p class="text-sm">{{ $surat->perihal }}</p>
+                    </td>
+                    <td class="p-3">
+                        @php
+                            $lastDisposisi = $surat->disposisis->last();
+                            $role = $lastDisposisi->penerima->role->name;
+                        @endphp
+
+                        @if ($role == 'Katimja' || $role == 'Staf')
+                            <p class="text-sm">{{ $lastDisposisi->penerima->divisi->nama_divisi }} ||
+                                {{ $lastDisposisi->penerima->name }}</p>
+                        @else
+                            <p class="text-sm">{{ $lastDisposisi->penerima->role->name }} ||
+                                {{ $lastDisposisi->penerima->name }}</p>
+                        @endif
                     </td>
                     <td class="p-3">
                         @php

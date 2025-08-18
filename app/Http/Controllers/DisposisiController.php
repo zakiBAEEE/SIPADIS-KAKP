@@ -199,7 +199,7 @@ class DisposisiController extends Controller
                 // $disposisi->suratMasuk->update(['status' => 'dikembalikan']);
             });
 
-            return redirect()->route('inbox.index')->with('success', 'Disposisi berhasil dikembalikan.');
+            return redirect()->route('surat.inbox')->with('success', 'Disposisi berhasil dikembalikan.');
         } catch (\Exception $e) {
             \Log::error('Gagal mengembalikan disposisi: ' . $e->getMessage());
             return redirect()->back()->with('error', $e->getMessage());
@@ -257,7 +257,7 @@ class DisposisiController extends Controller
                 // $surat->update(['status' => 'Dikembalikan']);
             });
 
-            return redirect()->route('inbox.index')->with('success', 'Disposisi berhasil dikembalikan.');
+            return redirect()->route('surat.inbox')->with('success', 'Disposisi berhasil dikembalikan.');
         } catch (\Exception $e) {
             \Log::error('Gagal mengembalikan surat: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Gagal mengembalikan surat: ' . $e->getMessage());

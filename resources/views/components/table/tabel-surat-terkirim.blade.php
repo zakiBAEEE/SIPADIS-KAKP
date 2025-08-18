@@ -34,6 +34,12 @@
                         Perihal
                     </p>
                 </th>
+                </th>
+                <th class="p-3">
+                    <p class="text-sm leading-none font-normal">
+                        Disposisi Terakhir
+                    </p>
+                </th>
                 <th class="p-3">
                     <p class="text-sm leading-none font-normal">
                         Status
@@ -64,6 +70,9 @@
                     </td>
                     <td class="p-3">
                         <p class="text-sm">{{ $surat->perihal }}</p>
+                    </td>
+                    <td class="p-3">
+                        <p class="text-sm">{{ $surat->disposisis->last()->ke_user_id }}</p>
                     </td>
                     <td class="p-3">
                         @php
