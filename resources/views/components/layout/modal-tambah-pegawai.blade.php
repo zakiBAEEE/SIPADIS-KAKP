@@ -27,7 +27,7 @@
                 <div class="p-6 space-y-4">
                     <div>
                         <label for="tambah_name" class="block text-sm font-medium text-gray-700 mb-1">Nama
-                            Lengkap</label>
+                            Lengkap </label>
                         <input type="text" name="name" id="tambah_name"
                             class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                             value="{{ old('name') }}" required>
@@ -39,7 +39,7 @@
                     {{-- Username --}}
                     <div>
                         <label for="tambah_username" class="block text-sm font-medium text-gray-700 mb-1">Username
-                            (NIP/ID)</label>
+                            <span class="text-xs font-normal">(Username harus unik)</span> </label>
                         <input type="text" name="username" id="tambah_username"
                             class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                             value="{{ old('username') }}" required>
