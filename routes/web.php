@@ -71,7 +71,7 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
 
     Route::prefix('disposisi')->name('disposisi.')->group(function () {
         Route::post('{disposisi}/kembalikan', [DisposisiController::class, 'kembalikan'])->name('kembalikan');
-        Route::post('/kirim-ke-kepala', [DisposisiController::class, 'kirimKeKepala'])->name('kirimKeKepala');
+        Route::post('{surat}/kirim-ke-kepala', [DisposisiController::class, 'kirimKeKepala'])->name('kirimKeKepala');
         Route::post('{disposisi}/kembalikanKeKatimja', [DisposisiController::class, 'kembalikanSuratStaf'])
             ->name('kembalikanSuratStaf');
         Route::post('{surat}/disposisiSemuaStaf', [DisposisiController::class, 'disposisiKeSemuaStaf'])->name('disposisiSemuaStaf');

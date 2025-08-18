@@ -18,7 +18,7 @@
                     </svg>
                 </button>
             </div>
-            <form action="{{ route('surat.kirimKeKepala', $surat->id) }}" method="POST">
+            <form action="{{ route('disposisi.kirimKeKepala', $surat->id) }}" method="POST">
                 @csrf
                 <div class="p-4 flex flex-col gap-2">
                     <div>
