@@ -17,8 +17,6 @@ use App\Http\Controllers\LogbookPegawaiController;
 
 require __DIR__ . '/auth.php';
 
-
-
 Route::middleware(['auth', 'cekAktif'])->group(function () {
     Route::prefix('surat')->name('surat.')->group(function () {
         Route::get('inbox', [InboxController::class, 'index'])->name('inbox');

@@ -1,5 +1,4 @@
 <div class="bg-white w-full h-full rounded-xl shadow-neutral-400 shadow-lg overflow-scroll p-4">
-
     <div class="flex flex-row justify-between items-center w-full">
         <div>
             {{-- Judul halaman akan diisi secara dinamis --}}
@@ -19,14 +18,10 @@
         </div>
     </div>
     <hr class="w-full border-t border-gray-300 my-4" />
-
     <div>
         <div class="flex-col transition-[max-height] duration-300 ease-in-out max-h-0 mt-1" id="{{ $filterId }}">
             {{ $filterForm }}
         </div>
     </div>
-
     {{ $tableContent }}
-
-
 </div>

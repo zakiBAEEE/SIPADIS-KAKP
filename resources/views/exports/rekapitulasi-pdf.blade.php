@@ -117,12 +117,11 @@
     <div class="section-header2">{{ $waktu }}</div>
 
     {{-- LOOP PER KATEGORI --}}
-    @foreach (['Klasifikasi', 'Sifat', 'Status'] as $i => $kategori)
+    @foreach (['Klasifikasi', 'Sifat', 'Status', 'Divisi'] as $i => $kategori)
         <div class="section-header">Kategori: {{ $kategori }}</div>
 
         @foreach ($rekap[$kategori] as $label => $items)
             <div class="sub-kategori">{{ $label }} ({{ $items->count() }} surat)</div>
-
             <table>
                 <thead>
                     <tr>
@@ -149,8 +148,7 @@
             </table>
         @endforeach
 
-        {{-- PAGE BREAK jika bukan kategori terakhir --}}
-        @if ($i < 2)
+        @if ($i < 3)
             <div class="page-break"></div>
         @endif
     @endforeach
