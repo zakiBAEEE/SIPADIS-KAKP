@@ -24,15 +24,7 @@
 
             <form action="{{ route('pegawai.store') }}" method="POST">
                 @csrf
-                {{-- Tampilkan error umum dari session --}}
-                @if (session('error'))
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
-                        {{ session('error') }}
-                    </div>
-                @endif
-
                 <div class="p-6 space-y-4">
-                    {{-- Nama --}}
                     <div>
                         <label for="tambah_name" class="block text-sm font-medium text-gray-700 mb-1">Nama
                             Lengkap</label>
@@ -107,7 +99,7 @@
                                 class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                             <input type="password" name="password" id="tambah_password"
                                 class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
-                                required>
+                                minlength="8" required>
                             @error('password')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror

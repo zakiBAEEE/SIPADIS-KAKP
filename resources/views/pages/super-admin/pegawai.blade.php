@@ -21,6 +21,20 @@
         </div>
     @endif
 
+    @if ($errors->any())
+        <div class="js-dismissable-alert fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md flex items-center justify-between rounded-lg bg-red-100 px-6 py-5 text-base text-red-700 shadow-lg transition-opacity duration-300"
+            role="alert">
+            <ul class="list-disc ml-5">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="js-close-alert text-red-700 hover:text-red-900">
+                &times;
+            </button>
+        </div>
+    @endif
+
     <div class="bg-white w-full h-full rounded-xl shadow-neutral-400 shadow-lg overflow-scroll p-4">
         <div class="flex flex-row justify-between items-center w-full">
             <div>

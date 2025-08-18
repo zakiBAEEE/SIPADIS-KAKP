@@ -12,7 +12,7 @@ use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
-   
+
     public function index(Request $request)
     {
         $query = User::with(['role', 'divisi'])->orderBy('created_at', 'desc');
@@ -85,7 +85,12 @@ class UserController extends Controller
         $validated['password'] = Hash::make($validated['password']);
         $validated['is_active'] = true;
 
-        User::create($validated);
+        try {
+            User::create($validated);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
+        }
+
 
         return redirect()->back()->with('success', 'Pegawai baru berhasil ditambahkan.');
     }
