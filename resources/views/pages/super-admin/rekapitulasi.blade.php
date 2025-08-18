@@ -39,7 +39,7 @@
             </div>
 
 
-            <form action="{{ route('rekapitulasi') }}" method="GET"
+            <form action="{{ route('rekapitulasi.index') }}" method="GET"
                 class="flex flex-col md:flex-row px-2 gap-4 my-1 items-stretch md:items-end ">
 
                 <!-- Group By Selector -->
@@ -84,7 +84,7 @@
                         class="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-slate-800 border-slate-800 text-slate-50 hover:bg-slate-700 hover:border-slate-700">
                         Tampilkan
                     </button>
-                    <a href="{{ route('rekapitulasi') }}"
+                    <a href="{{ route('rekapitulasi.index') }}"
                         class="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-1 px-2 shadow-sm hover:shadow bg-red-800 border-red-800 text-slate-50 hover:bg-red-500 hover:border-red-500">
                         Reset
                     </a>

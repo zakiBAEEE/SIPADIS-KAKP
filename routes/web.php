@@ -79,12 +79,9 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
         Route::get('{id}/cetak', [DisposisiController::class, 'cetak'])->name('cetak');
     });
 
-
     Route::middleware(['role:Admin,Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/logbook-pegawai', [LogbookPegawaiController::class, 'index'])->name('logbook.pegawai');
     });
-
-
 
 });
