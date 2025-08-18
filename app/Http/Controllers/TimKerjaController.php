@@ -37,7 +37,7 @@ class TimKerjaController extends Controller
                 'parent_role_id' => $request->parent_role_id,
             ]);
 
-            return redirect()->route('timKerja.index')
+            return redirect()->route('tim-kerja.index')
                 ->with('success', 'Tim kerja berhasil ditambahkan.');
         } catch (\Exception $e) {
             return redirect()->back()
@@ -66,7 +66,7 @@ class TimKerjaController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('timKerja.index')->with('success', 'Tim kerja berhasil diperbarui.');
+        return redirect()->route('tim-kerja.index')->with('success', 'Tim kerja berhasil diperbarui.');
     }
 
 
@@ -81,6 +81,6 @@ class TimKerjaController extends Controller
 
         $divisi->delete();
 
-        return redirect()->route('timKerja.index')->with('success', 'Tim kerja berhasil dihapus.');
+        return redirect()->route('tim-kerja.index')->with('success', 'Tim kerja berhasil dihapus.');
     }
 }

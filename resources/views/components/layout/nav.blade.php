@@ -211,7 +211,7 @@
                                                 class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Pegawai</a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('timKerja.index') }}"
+                                            <a href="{{ route('tim-kerja.index') }}"
                                                 class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Tim
                                                 Kerja</a>
                                         </li>

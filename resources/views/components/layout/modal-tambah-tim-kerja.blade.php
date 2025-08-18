@@ -18,7 +18,7 @@
                     </svg>
                 </button>
             </div>
-            <form action="{{ route('timKerja.store') }}" method="POST">
+            <form action="{{ route('tim-kerja.store') }}" method="POST">
                 @csrf
                 <div class="p-4 flex flex-col gap-2">
                     <div>

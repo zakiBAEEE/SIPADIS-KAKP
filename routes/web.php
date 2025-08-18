@@ -55,7 +55,7 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
             Route::delete('{user}', [UserController::class, 'destroy'])->name('destroy');
         });
 
-        Route::prefix('tim-kerja')->name('timKerja.')->group(function () {
+        Route::prefix('tim-kerja')->name('tim-kerja.')->group(function () {
             Route::get('/', [TimKerjaController::class, 'index'])->name('index');
             Route::post('/store', [TimKerjaController::class, 'store'])->name('store');
             Route::put('{id}', [TimKerjaController::class, 'update'])->name('update');
