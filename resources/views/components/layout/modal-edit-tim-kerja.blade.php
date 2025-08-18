@@ -25,7 +25,7 @@
             {{-- Form --}}
             <form action="{{ route('timKerja.update', $id) }}" method="POST">
                 @csrf
-
+                @method('PUT')
                 <div class="px-6 py-4 space-y-6">
                     {{-- Nama Tim Kerja --}}
                     <div>

@@ -34,6 +34,7 @@
             <div class=" tab-content-container">
                 <form action="{{ route('surat.update', $surat->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <div id="tab1-group4" class="tab-content text-slate-800 block">
                         <div class="p-4">
                             <div class="flex flex-col sm:flex-row gap-3">

@@ -20,20 +20,17 @@
             </button>
         </div>
     @endif
-    {{-- Gunakan komponen layout kita --}}
+
     <x-layout.page-list-layout>
 
-        {{-- Isi slot "title" --}}
         <x-slot:title>
             Surat Terkirim
         </x-slot:title>
 
-        {{-- Isi slot "filterId" --}}
         <x-slot:filterId>
             filterSuratTerkirim
         </x-slot:filterId>
 
-        {{-- Isi slot "filterForm" --}}
         <x-slot:filterForm>
             <form action="{{ route('surat.terkirim') }}" method="GET">
                 @include('components.layout.input-filter-surat')
@@ -48,7 +45,6 @@
             </form>
         </x-slot:filterForm>
 
-        {{-- Isi slot "tableContent" --}}
         <x-slot:tableContent>
             @include('components.table.tabel-arsip-surat', ['surats' => $surats]) {{-- Asumsi tabel surat --}}
         </x-slot:tableContent>

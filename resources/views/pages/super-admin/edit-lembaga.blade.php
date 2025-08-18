@@ -24,6 +24,7 @@
             <hr class="w-full border-t border-gray-300 my-1" />
             <form action="{{ route('lembaga.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 <div class="flex flex-col gap-7">
                     <div class="flex flex-col">
                         <div class="flex flex-row gap-x-5">
@@ -69,8 +70,7 @@
                             <div class="flex flex-col gap-3 items-center">
                                 @if ($lembaga->logo)
                                     <div class="mb-4">
-                                        <label
-                                            class="block font-sans text-sm text-slate-800 font-bold mb-2">
+                                        <label class="block font-sans text-sm text-slate-800 font-bold mb-2">
                                             Logo Saat Ini:
                                         </label>
                                         <img src="{{ asset('storage/' . $lembaga->logo) }}" alt="Preview Dokumen"

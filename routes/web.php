@@ -20,85 +20,71 @@ require __DIR__ . '/auth.php';
 
 
 Route::middleware(['auth', 'cekAktif'])->group(function () {
-
-
-
-    Route::get('/surat-masuk/{surat}', [SuratMasukController::class, 'show'])->name('surat.show');
-
+    Route::prefix('surat')->name('surat.')->group(function () {
+        Route::get('inbox', [InboxController::class, 'index'])->name('inbox');
+        Route::middleware(['role:Admin,Kepala LLDIKTI,KBU,Katimja'])->group(function () {
+            Route::get('ditolak', [InboxController::class, 'ditolak'])->name('ditolak');
+            Route::get('terkirim', [SuratMasukController::class, 'suratTerkirim'])->name('terkirim');
+        });
+        Route::middleware(['role:Staf'])->group(function () {
+            Route::post('{surat}/tandai-selesai', [DisposisiController::class, 'tandaiSelesai'])->name('tandaiSelesai');
+            Route::post('{surat}/tandai-ditindaklanjuti', [DisposisiController::class, 'tandaiDitindaklanjuti'])->name('tandaiDitindaklanjuti');
+            Route::post('{surat}/tandai-ditolak', [DisposisiController::class, 'tandaiDitolak'])->name('tandaiDitolak');
+        });
+        Route::middleware(['role:Admin'])->group(function () {
+            Route::get('/draft', [SuratMasukController::class, 'suratMasukDraft'])->name('draft');
+            Route::get('tambah', [SuratMasukController::class, 'add'])->name('tambah');
+            Route::post('/', [SuratMasukController::class, 'store'])->name('store');
+            Route::get('{surat}/edit', [SuratMasukController::class, 'edit'])->name('edit');
+            Route::put('{surat}', [SuratMasukController::class, 'update'])->name('update');
+            Route::delete('{surat}', [SuratMasukController::class, 'destroy'])->name('destroy');
+        });
+        Route::get('{surat}', [SuratMasukController::class, 'show'])->name('show');
+    });
 
     Route::middleware(['role:Admin'])->group(function () {
+        Route::prefix('rekapitulasi')->name('rekapitulasi.')->group(function () {
+            Route::get('/', [RekapitulasiController::class, 'rekapitulasi'])->name('index');
+            Route::get('export', [RekapitulasiController::class, 'rekapitulasiExport'])->name('export');
+        });
+        Route::prefix('pegawai')->name('pegawai.')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::post('/store', [UserController::class, 'store'])->name('store');
+            Route::get('/pegawai/{user}/edit', [UserController::class, 'edit'])->name('edit');
+            Route::put('{user}', [UserController::class, 'update'])->name('update');
+            Route::delete('{user}', [UserController::class, 'destroy'])->name('destroy');
+        });
 
-       
-        Route::get('/rekapitulasi/export', [RekapitulasiController::class, 'rekapitulasiExport'])->name('rekapitulasi.export');
+        Route::prefix('tim-kerja')->name('timKerja.')->group(function () {
+            Route::get('/', [TimKerjaController::class, 'index'])->name('index');
+            Route::post('/store', [TimKerjaController::class, 'store'])->name('store');
+            Route::put('{id}', [TimKerjaController::class, 'update'])->name('update');
+            Route::delete('{id}', [TimKerjaController::class, 'destroy'])->name('destroy');
+        });
 
-
-        // ---- Manajemen Surat Masuk ----
-        Route::get('/surat-masuk-draft', [SuratMasukController::class, 'suratMasukDraft'])->name('surat.draft');
-        Route::get('/surat-masuk-tambah', [SuratMasukController::class, 'add'])->name('surat.tambah');
-        Route::post('/surat-masuk', [SuratMasukController::class, 'store'])->name('surat.store');
-        Route::get('/surat-masuk/{surat}/edit', [SuratMasukController::class, 'edit'])->name('surat.edit');
-        Route::post('/surat-masuk/{surat}', [SuratMasukController::class, 'update'])->name('surat.update');
-        Route::delete('/surat-masuk/{surat}', [SuratMasukController::class, 'destroy'])->name('surat.destroy');
-        Route::post('/surat-masuk/{surat}/kirim-ke-kepala', [DisposisiController::class, 'kirimKeKepala'])->name('surat.kirimKeKepala');
-        
-
-        Route::get('/rekapitulasi', [RekapitulasiController::class, 'rekapitulasi'])->name('rekapitulasi');
-
-
-        // ---- Manajemen Pegawai ----
-        Route::get('/pegawai', [UserController::class, 'index'])->name('pegawai.index');
-        Route::post('/pegawai', [UserController::class, 'store'])->name('pegawai.store');
-        Route::get('/pegawai/{user}/edit', [UserController::class, 'edit'])->name('pegawai.edit');
-        Route::post('/pegawai/{user}', [UserController::class, 'update'])->name('pegawai.update');
-        Route::delete('/pegawai/{user}', [UserController::class, 'destroy'])->name('pegawai.destroy');
-
-        // ---- Tim Kerja & Lembaga ----
-        Route::get('/tim-kerja', [TimKerjaController::class, 'index'])->name('timKerja.index');
-        Route::post('/tim-kerja', [TimKerjaController::class, 'store'])->name('timKerja.store');
-        Route::post('/tim-kerja/{id}/edit', [TimKerjaController::class, 'update'])->name('timKerja.update');
-        Route::delete('/tim-kerja/{id}', [TimKerjaController::class, 'destroy'])->name('tim-kerja.destroy');
-
-        Route::get('/lembaga', [LembagaController::class, 'index'])->name('lembaga.index');
-        Route::get('/lembaga/edit', [LembagaController::class, 'edit'])->name('lembaga.edit');
-        Route::post('/lembaga/update', [LembagaController::class, 'update'])->name('lembaga.update');
+        Route::prefix('lembaga')->name('lembaga.')->group(function () {
+            Route::get('/', [LembagaController::class, 'index'])->name('index');
+            Route::get('edit', [LembagaController::class, 'edit'])->name('edit');
+            Route::put('update', [LembagaController::class, 'update'])->name('update');
+        });
     });
 
-    Route::middleware(['role:Admin,Kepala LLDIKTI,KBU,Katimja'])->group(function () {
-        Route::get('/surat-terkirim', [SuratMasukController::class, 'suratTerkirim'])->name('surat.terkirim');
-
-    });
-
-
-    Route::middleware(['role:Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {
-        Route::get('/inbox', [InboxController::class, 'index'])->name('inbox.index');
-        Route::post('/disposisi/{disposisi}/kembalikan', [DisposisiController::class, 'kembalikan'])->name('disposisi.kembalikan');
-    });
-
-    Route::middleware(['role:Staf'])->group(function () {
-        Route::post('/disposisi/{disposisi}/kembalikanKeKatimja', [DisposisiController::class, 'kembalikanSuratStaf'])
-            ->name('disposisi.kembalikanSuratStaf');
-
-        Route::post('/surat/{surat}/tandai-selesai', [DisposisiController::class, 'tandaiSelesai'])->name('surat.tandaiSelesai');
-        Route::post('/surat/{surat}/tandai-ditindaklanjuti', [DisposisiController::class, 'tandaiDitindaklanjuti'])->name('surat.tandaiDitindaklanjuti');
-        Route::post('/surat/{surat}/tandai-ditolak', [DisposisiController::class, 'tandaiDitolak'])->name('surat.tandaiDitolak');
-
-    });
-
-    Route::middleware(['role:Katimja'])->group(function () {
-        Route::post('/disposisi/{surat}/disposisiSemuaStaf', [DisposisiController::class, 'disposisiKeSemuaStaf'])->name('disposisi.disposisiSemuaStaf');
+    Route::prefix('disposisi')->name('disposisi.')->group(function () {
+        Route::post('{disposisi}/kembalikan', [DisposisiController::class, 'kembalikan'])->name('kembalikan');
+        Route::post('/kirim-ke-kepala', [DisposisiController::class, 'kirimKeKepala'])->name('kirimKeKepala');
+        Route::post('{disposisi}/kembalikanKeKatimja', [DisposisiController::class, 'kembalikanSuratStaf'])
+            ->name('kembalikanSuratStaf');
+        Route::post('{surat}/disposisiSemuaStaf', [DisposisiController::class, 'disposisiKeSemuaStaf'])->name('disposisiSemuaStaf');
+        Route::post('{surat}/disposisi', [DisposisiController::class, 'store'])->name('store');
+        Route::get('{id}/cetak', [DisposisiController::class, 'cetak'])->name('cetak');
     });
 
 
     Route::middleware(['role:Admin,Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {
-        Route::get('/inbox/ditolak', [InboxController::class, 'ditolak'])->name('inbox.ditolak');
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/logbook-pegawai', [LogbookPegawaiController::class, 'index'])->name('logbook.pegawai');
     });
 
 
-    Route::middleware(['role:Admin,Kepala LLDIKTI,KBU,Katimja'])->group(function () {
-        Route::post('/surat-masuk/{surat}/disposisi', [DisposisiController::class, 'store'])->name('disposisi.store');
-        Route::get('/disposisi/{id}/cetak', [DisposisiController::class, 'cetak'])->name('disposisi.cetak');
-    });
 
 });

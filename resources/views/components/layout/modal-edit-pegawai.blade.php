@@ -25,6 +25,7 @@
             {{-- Form --}}
             <form action="{{ route('pegawai.update', $user->id) }}" method="POST">
                 @csrf
+                @method('PUT')
                 <div class="p-6 space-y-4">
 
                     <div>

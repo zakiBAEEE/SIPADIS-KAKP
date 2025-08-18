@@ -94,7 +94,7 @@
                                                 class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">Draft</a>
                                         </li>
                                         <li class="relative inline-flex">
-                                            <a href="{{ route('inbox.ditolak') }}"
+                                            <a href="{{ route('surat.ditolak') }}"
                                                 class="pl-10 flex items-center cursor-pointer py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800 relative">
 
                                                 <span class="flex items-center gap-2">
@@ -144,7 +144,7 @@
 
 
                             <li>
-                                <a href="{{ route('rekapitulasi') }}"
+                                <a href="{{ route('rekapitulasi.index') }}"
                                     class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in aria-disabled:opacity-50 aria-disabled:pointer-events-none bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
                                     <span class="grid place-items-center shrink-0 me-2.5">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="1.4em" height="1.4em"
@@ -286,7 +286,7 @@
                                     </a>
                                 </li>
                                 <li class="relative inline-flex">
-                                    <a href="{{ route('inbox.ditolak') }}"
+                                    <a href="{{ route('surat.ditolak') }}"
                                         class="flex items-center py-1.5 px-2.5 rounded-md align-middle select-none font-sans transition-all duration-300 ease-in bg-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-200 focus:bg-slate-200 focus:text-slate-800">
 
                                         <span class="grid place-items-center shrink-0 me-2.5 relative">
