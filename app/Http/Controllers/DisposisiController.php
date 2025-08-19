@@ -20,7 +20,7 @@ class DisposisiController extends Controller
         $this->disposisiService = $disposisiService;
     }
 
-    
+
     public function store(Request $request, SuratMasuk $surat)
     {
         $validated = $request->validate([
@@ -264,8 +264,8 @@ class DisposisiController extends Controller
         }
     }
 
-   
-  
+
+
     public function kirimKeKepala(Request $request, SuratMasuk $surat)
     {
         $validated = $request->validate([
@@ -307,7 +307,7 @@ class DisposisiController extends Controller
 
                 $surat->update(['status' => 'Diproses']);
 
-                if (!empty($surat->email_pengirim)) {
+                if (!empty($surat->email_pengirim) && $surat->status !== 'Diproses') {
                     $this->kirimNotifikasi($surat);
                 }
             });
