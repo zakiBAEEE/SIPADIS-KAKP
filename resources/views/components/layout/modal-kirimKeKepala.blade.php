@@ -22,11 +22,10 @@
                 @csrf
                 <div class="p-4 flex flex-col gap-2">
                     <div>
-                        @include('components.base.input-surat', [
-                            'label' => 'Catatan untuk Kepala LLDIKTI',
-                            'placeholder' => 'Tambahkan Catatan',
-                            'name' => 'catatan',
-                        ])
+                        <p class="text-lg text-slate-600">
+                            Apakah Anda yakin ingin mengirim surat ini ke Kepala LLDIKTI? Pastikan semua informasi
+                            sudah benar sebelum mengirim.
+                        </p>
                     </div>
                 </div>
                 <div class="p-4 flex justify-end gap-2">

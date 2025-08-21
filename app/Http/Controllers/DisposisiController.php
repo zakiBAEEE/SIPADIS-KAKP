@@ -268,9 +268,6 @@ class DisposisiController extends Controller
 
     public function kirimKeKepala(Request $request, SuratMasuk $surat)
     {
-        $validated = $request->validate([
-            'catatan' => 'required|string|max:1000',
-        ]);
 
         $pengirim = Auth::user();
 
@@ -283,7 +280,7 @@ class DisposisiController extends Controller
         }
 
         try {
-            DB::transaction(function () use ($surat, $pengirim, $kepala, $validated) {
+            DB::transaction(function () use ($surat, $pengirim, $kepala) {
 
                 $previousDisposisi = $surat->disposisis()
                     ->where('ke_user_id', $pengirim->id)
@@ -300,7 +297,7 @@ class DisposisiController extends Controller
                     'surat_id' => $surat->id,
                     'dari_user_id' => $pengirim->id,
                     'ke_user_id' => $kepala->id,
-                    'catatan' => $validated['catatan'],
+                    'catatan' => 'Mohon Arahan Pimpinan',
                     'status' => 'Menunggu',
                     'tipe_aksi' => 'Teruskan',
                 ]);
