@@ -27,7 +27,7 @@
                         <div class=" w-full">
                             @include('components.base.dropdown', [
                                 'label' => 'Tujuan Disposisi',
-                                'value' => $daftarUser->values()->toArray(),
+                                'value' => $daftarUserDisposisi->values()->toArray(),
                                 'name' => 'ke_user_id',
                             ])
                         </div>

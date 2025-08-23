@@ -53,4 +53,3 @@
         </tbody>
     </table>
 </div>
-@include('components.layout.modal-edit-disposisi', ['users' => $daftarUser])

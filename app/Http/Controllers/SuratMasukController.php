@@ -236,7 +236,7 @@ class SuratMasukController extends Controller
     {
         $this->disposisiService->tandaiSebagaiDilihat($surat, Auth::user());
 
-        $daftarUser = $this->userService->getRecipientListFor(Auth::user());
+        $daftarUserDisposisi = $this->userService->getRecipientListFor(Auth::user());
 
         $surat->load(['disposisis.pengirim.role', 'disposisis.penerima.role']);
 
@@ -245,10 +245,7 @@ class SuratMasukController extends Controller
             ->where('tipe_aksi', '!=', 'Kembalikan')
             ->with(['pengirim.role', 'penerima.role'])
             ->get();
-
-
-
-        return view('pages.super-admin.detail-surat', compact('surat', 'daftarUser', 'cleanTimeline'));
+        return view('pages.super-admin.detail-surat', compact('surat', 'daftarUserDisposisi', 'cleanTimeline'));
     }
 
     public function edit(SuratMasuk $surat)
@@ -341,10 +338,6 @@ class SuratMasukController extends Controller
             return redirect()->back()->with('error', 'Gagal menghapus surat. Terjadi kesalahan pada server.');
         }
     }
-
-
-
-
 
 }
 
