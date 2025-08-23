@@ -264,8 +264,6 @@ class DisposisiController extends Controller
         }
     }
 
-
-
     public function kirimKeKepala(Request $request, SuratMasuk $surat)
     {
 
@@ -304,7 +302,7 @@ class DisposisiController extends Controller
 
                 $surat->update(['status' => 'Diproses']);
 
-                if (!empty($surat->email_pengirim) && $surat->status !== 'Diproses') {
+                if (!empty($surat->email_pengirim) && $surat->status !== 'diproses') {
                     $this->kirimNotifikasi($surat);
                 }
             });

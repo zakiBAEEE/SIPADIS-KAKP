@@ -33,7 +33,7 @@ class SuratMasukController extends Controller
     }
 
 
-  
+
 
     public function suratTerkirim(Request $request)
     {
@@ -225,8 +225,7 @@ class SuratMasukController extends Controller
             }
 
         } catch (\Illuminate\Database\QueryException $e) {
-            dd($e->getMessage());
-            return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat karena masalah database.');
+            return redirect()->route('surat.tambah')->with('error', 'Gagal menambahkan surat karena nomor surat sudah digunakan.');
         } catch (\Exception $e) {
             Log::error('Error umum saat menambahkan surat: ' . $e->getMessage());
             return redirect()->route('surat.tambah')->with('error', 'Terjadi kesalahan tak terduga saat menambahkan surat.');

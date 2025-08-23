@@ -24,7 +24,7 @@
     <x-layout.page-list-layout>
 
         <x-slot:title>
-            Surat Terkirim
+            Riwayat Terkirim
         </x-slot:title>
 
         <x-slot:filterId>
