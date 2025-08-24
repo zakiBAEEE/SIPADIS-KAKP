@@ -246,7 +246,7 @@ class SuratMasukController extends Controller
             ->where('tipe_aksi', '!=', 'Kembalikan')
             ->with(['pengirim.role', 'penerima.role'])
             ->get();
-        return view('pages.super-admin.detail-surat', compact('surat', 'daftarUserDisposisi', 'cleanTimeline'));
+        return view('pages.super-admin.detail-surat', compact('surat', 'daftarUserDisposisi', 'daftarUserSuratDikembalikan','cleanTimeline'));
     }
 
     public function edit(SuratMasuk $surat)
