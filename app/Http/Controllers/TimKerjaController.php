@@ -26,7 +26,7 @@ class TimKerjaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_timKerja' => 'required|string|max:255|unique:timKerja,nama_timKerja',
+            'nama_timKerja' => 'required|string|max:255|unique:tim_kerjas,nama_timKerja',
         ]);
 
         try {
@@ -56,7 +56,7 @@ class TimKerjaController extends Controller
         $timKerja = TimKerja::findOrFail($id);
 
         $request->validate([
-            'nama_timKerja' => 'required|string|max:255|unique:timKerja,nama_timKerja,' . $timKerja->id,
+            'nama_timKerja' => 'required|string|max:255|unique:tim_kerjas,nama_timKerja,' . $timKerja->id,
             'is_active' => 'required|boolean',
         ]);
 
