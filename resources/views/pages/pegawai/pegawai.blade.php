@@ -44,7 +44,7 @@
                 </h6>
             </div>
             <div class="flex flex-row gap-2 items-center">
-                @include('components.layout.modal-tambah-pegawai')
+                @include('components.modal.modal-tambah-pegawai')
                 @include('components.base.collapse-button', [
                     'dataTarget' => 'collapseFilterPegawai',
                     'label' => 'Filter',

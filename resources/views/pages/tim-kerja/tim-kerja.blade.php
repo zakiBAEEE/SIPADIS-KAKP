@@ -30,7 +30,7 @@
                 </h6>
             </div>
             <div class="flex flex-row gap-2">
-                @include('components.layout.modal-tambah-tim-kerja')
+                @include('components.modal.modal-tambah-tim-kerja')
             </div>
         </div>
         <hr class="w-full border-t border-gray-300 my-4" />

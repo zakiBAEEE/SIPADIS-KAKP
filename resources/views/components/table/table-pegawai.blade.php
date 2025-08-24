@@ -55,7 +55,7 @@
                     </td>
                     <td class="p-3">
                         <div class="flex flex-row gap-x-1">
-                            @include('components.layout.modal-edit-pegawai', [
+                            @include('components.modal.modal-edit-pegawai', [
                                 'id' => $user->id,
                                 'isActive' => $user->is_active,
                                 'nama_lengkap' => $user->name,

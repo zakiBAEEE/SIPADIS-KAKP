@@ -39,7 +39,7 @@
                     </td>
                     <td class="p-3">
                         <div class="flex flex-row gap-x-1">
-                            @include('components.layout.modal-edit-tim-kerja', [
+                            @include('components.modal.modal-edit-tim-kerja', [
                                 'id' => $timKerja->id,
                                 'namaTimKerja' => $timKerja->nama_timKerja,
                                 'isActive' => $timKerja->is_active,

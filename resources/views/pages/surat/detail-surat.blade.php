@@ -80,50 +80,31 @@
                                 ->first();
                         @endphp
 
-                        {{-- @if (($activeDisposisi && $activeDisposisi->ke_user_id === auth()->id()) || $belumPernahDidisposisikan)
-                            @if (!in_array(auth()->user()->role->name, ['Staf', 'Katimja']))
-                                @include('components.layout.modal-tambah-disposisi')
-                            @endif
-
-                            @if (in_array(auth()->user()->role->name, ['Katimja']))
-                                @include('components.layout.modal-kirimKeStaf')
-                            @endif
-
-                            @if ($isAdmin && ($belumPernahDidisposisikan || $terakhirKembalikan))
-                                @include('components.layout.modal-kirimKeKepala')
-                            @endif --}}
-
-                        {{-- Tombol untuk mengembalikan disposisi (jika sudah dibuat) --}}
-                        {{-- @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin']))
-                                @include('components.layout.modal-kembalikan-disposisi', [
-                                    'disposisi' => $activeDisposisi,
-                                ])
-                            @endif
-                        @endif --}}
+            
 
                         @if (($activeDisposisi && $activeDisposisi->ke_user_id === auth()->id()) || $belumPernahDidisposisikan)
 
                             {{-- Khusus untuk Admin --}}
                             @if ($isAdmin)
                                 @if ($belumPernahDidisposisikan)
-                                    @include('components.layout.modal-kirimKeKepala')
+                                    @include('components.modal.modal-kirimKeKepala')
                                 @else
-                                    @include('components.layout.modal-tambah-disposisi')
+                                    @include('components.modal.modal-tambah-disposisi')
                                 @endif
                             @else
                                 {{-- Non-Admin --}}
                                 @if (!in_array(auth()->user()->role->name, ['Staf', 'Katimja']))
-                                    @include('components.layout.modal-tambah-disposisi')
+                                    @include('components.modal.modal-tambah-disposisi')
                                 @endif
 
                                 @if (in_array(auth()->user()->role->name, ['Katimja']))
-                                    @include('components.layout.modal-kirimKeStaf')
+                                    @include('components.modal.modal-kirimKeStaf')
                                 @endif
                             @endif
 
                             {{-- Tombol kembalikan disposisi untuk selain Staf & Admin --}}
                             @if (!in_array(auth()->user()->role->name, ['Staf', 'Admin']))
-                                @include('components.layout.modal-kembalikan-disposisi', [
+                                @include('components.modal.modal-kembalikan-disposisi', [
                                     'disposisi' => $activeDisposisi,
                                 ])
                             @endif
@@ -150,7 +131,7 @@
 
 
                                     {{-- Modal Kembalikan --}}
-                                    @include('components.layout.modal-kembalikan-disposisiStaf', [
+                                    @include('components.modal.modal-kembalikan-disposisiStaf', [
                                         'disposisi' => $activeDisposisi,
                                     ])
                                 @endif
