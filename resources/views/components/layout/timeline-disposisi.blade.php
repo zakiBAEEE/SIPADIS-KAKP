@@ -86,13 +86,13 @@
                 <div class="flex-1 pb-8">
                     @if ($disposisi->penerima->role->name == 'Staf')
                         <p class="text-sm text-black font-bold">
-                            {{ $disposisi->penerima->divisi->nama_divisi }} ({{ $disposisi->penerima->role->name }})
+                            {{ $disposisi->penerima->timKerja->nama_timKerja }} ({{ $disposisi->penerima->role->name }})
                         </p>
                     @else
                         <p class="text-sm text-black font-bold">{{ $disposisi->penerima->name ?? '' }}</p>
-                        @if ($disposisi->penerima && $disposisi->penerima->divisi)
+                        @if ($disposisi->penerima && $disposisi->penerima->timKerja)
                             <p class="text-xs text-gray-500">
-                                {{ $disposisi->penerima->divisi->nama_divisi }} ({{ $disposisi->penerima->role->name }})
+                                {{ $disposisi->penerima->timKerja->nama_timKerja }} ({{ $disposisi->penerima->role->name }})
                             </p>
                         @endif
                     @endif

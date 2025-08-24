@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        if (!$user->is_active || ($user->divisi && !$user->divisi->is_active)) {
+        if (!$user->is_active || ($user->timKerja && !$user->timKerja->is_active)) {
             Auth::logout(); // penting! agar tidak lanjut login
             return redirect()->route('login')->withErrors([
                 'username' => 'Akun Anda atau tim kerja Anda telah dinonaktifkan.',

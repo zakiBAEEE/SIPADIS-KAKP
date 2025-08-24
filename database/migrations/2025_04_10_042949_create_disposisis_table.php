@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -18,11 +17,15 @@ return new class extends Migration
             $table->string('surat_id');
             $table->foreign('surat_id')->references('id')->on('surat_masuk')->onDelete('cascade');
 
-            // Yang lain tetap pakai foreignId karena users.id tetap big integer
+            // Foreign key ke users
             $table->foreignId('dari_user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('ke_user_id')->constrained('users')->onDelete('cascade');
 
             $table->text('catatan')->nullable();
+
+            $table->string('status')->default('Menunggu');       // default: Menunggu
+            $table->string('tipe_aksi')->default('teruskan');    // default: teruskan
+
             $table->timestamps();
         });
     }

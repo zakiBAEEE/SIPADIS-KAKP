@@ -25,8 +25,8 @@
                         {{ \Carbon\Carbon::parse($disposisi->created_at)->translatedFormat('d F Y H:i') }}
                     </td>
                     <td class="p-3">
-                        @if ($disposisi->pengirim && $disposisi->pengirim->divisi)
-                            {{ $disposisi->pengirim->divisi->nama_divisi }}
+                        @if ($disposisi->pengirim && $disposisi->pengirim->timKerja)
+                            {{ $disposisi->pengirim->timKerja->nama_timKerja }}
                             ({{ $disposisi->pengirim->role->name }})
                             || {{ $disposisi->pengirim->name }}
                         @else
@@ -37,8 +37,8 @@
                         {{ $disposisi->catatan }}
                     </td>
                     <td class="p-3">
-                        @if ($disposisi->penerima && $disposisi->penerima->divisi)
-                            {{ $disposisi->penerima->divisi->nama_divisi }} ({{ $disposisi->penerima->role->name }}) ||
+                        @if ($disposisi->penerima && $disposisi->penerima->timKerja)
+                            {{ $disposisi->penerima->timKerja->nama_timKerja }} ({{ $disposisi->penerima->role->name }}) ||
                             {{ $disposisi->penerima->name }}
                         @else
                             {{ $disposisi->penerima->role->name ?? '-' }} || {{ $disposisi->penerima->name }}

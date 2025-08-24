@@ -61,23 +61,6 @@ class DisposisiService
         return $disposisi;
     }
 
-    // public function tandaiSebagaiDilihat(SuratMasuk $surat, User $currentUser): void
-    // {
-    //     $adminRoles = ['Super Admin'];
-    //     if (in_array($currentUser->role->name, $adminRoles)) {
-    //         return; // Hentikan fungsi jika yang membuka adalah Admin
-    //     }
-
-    //     $disposisi = $surat->disposisis()
-    //         ->where('ke_user_id', $currentUser->id)
-    //         ->where('status', 'Menunggu')
-    //         ->first();
-
-    //     if ($disposisi) {
-    //         $disposisi->update(['status' => 'Dilihat']);
-    //     }
-    // }
-
     public function tandaiSebagaiDilihat(SuratMasuk $surat, User $currentUser): void
     {
         $adminRoles = ['Super Admin'];
@@ -95,9 +78,9 @@ class DisposisiService
             $disposisi->update(['status' => 'Dilihat']);
         }
 
-        // Tambahan logika jika user adalah Staf: semua staf dalam divisi sama → update
+        // Tambahan logika jika user adalah Staf: semua staf dalam tim kerja sama → update
         if (strtolower($currentUser->role->name) === 'staf') {
-            $stafIds = User::where('divisi_id', $currentUser->divisi_id)
+            $stafIds = User::where('tim_kerja_id', $currentUser->tim_kerja_id)
                 ->whereHas('role', fn($q) => $q->where('name', 'Staf'))
                 ->pluck('id');
 

@@ -13,7 +13,7 @@
                     Role
                 </th>
                 <th class="px-2.5 py-2 text-start font-bold">
-                    Divisi
+                    Tim Kerja
                 </th>
                 <th class="px-2.5 py-2 text-start font-bold">
                     Status
@@ -36,8 +36,8 @@
                         {{ $user->role->name }}
                     </td>
                     <td class="p-3">
-                        @if ($user->divisi && $user->divisi->nama_divisi)
-                            {{ $user->divisi->nama_divisi }}
+                        @if ($user->timKerja && $user->timKerja->nama_timKerja)
+                            {{ $user->timKerja->nama_timKerja }}
                         @else
                             --
                         @endif

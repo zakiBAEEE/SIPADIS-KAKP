@@ -15,7 +15,7 @@ class User extends Authenticatable
         'username',
         'password',
         'role_id',
-        'divisi_id',
+        'tim_kerja_id',
         'is_active',
     ];
 
@@ -32,9 +32,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function divisi()
+    public function timKerja()
     {
-        return $this->belongsTo(Divisi::class);
+        return $this->belongsTo(TimKerja::class);
     }
 
     public function role()

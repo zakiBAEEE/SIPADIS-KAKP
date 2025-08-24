@@ -12,14 +12,14 @@ class LembagaController extends Controller
     public function index()
     {
         $lembaga = Lembaga::first(); // Asumsikan hanya 1 entri lembaga
-        return view('pages.super-admin.lembaga', compact('lembaga'));
+        return view('pages.lembaga.lembaga', compact('lembaga'));
     }
 
 
     public function edit()
     {
         $lembaga = Lembaga::first();
-        return view('pages.super-admin.edit-lembaga', compact('lembaga'));
+        return view('pages.lembaga.edit-lembaga', compact('lembaga'));
     }
 
 

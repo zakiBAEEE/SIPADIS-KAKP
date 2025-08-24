@@ -19,38 +19,7 @@ class SuratKategoriSheetExport implements FromArray, WithHeadings, WithTitle
         $this->title = $title;
     }
 
-    // public function array(): array
-    // {
-    //     $grouped = collect($this->surats)->groupBy(function ($item) {
-    //         return $item[$this->field] ?? '-';
-    //     });
-
-
-    //     foreach ($grouped as $value => $items) {
-    //         $value = $value ?? '-'; // Pastikan tidak null
-    //         $rows[] = [$this->title . ': ' . $value];
-    //         $rows[] = $this->headings();
-
-    //         foreach ($items as $surat) {
-    //             $rows[] = [
-    //                 $surat->nomor_surat ?? '-',
-    //                 $surat->tanggal_surat ?? '-',
-    //                 $surat->asal_instansi ?? '-',
-    //                 $surat->klasifikasi_surat ?? '-',
-    //                 $surat->sifat ?? '-',
-    //                 $surat->status ?? '-',
-    //                 optional($surat->disposisiTerakhir?->penerima?->divisi)->nama_divisi ?? '-',
-    //             ];
-    //         }
-
-    //         $rows[] = [];
-    //     }
-
-
-    //     return $rows;
-    // }
-
-
+   
     public function array(): array
     {
         $grouped = collect($this->surats)->groupBy(function ($item) {

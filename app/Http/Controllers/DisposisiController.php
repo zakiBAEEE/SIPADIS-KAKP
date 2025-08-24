@@ -20,7 +20,7 @@ class DisposisiController extends Controller
         $this->disposisiService = $disposisiService;
     }
 
-
+// Function store ini fungsi untuk mendisposisikan suatu surat dari satu user ke user lain
     public function store(Request $request, SuratMasuk $surat)
     {
         $validated = $request->validate([
@@ -30,7 +30,7 @@ class DisposisiController extends Controller
 
         $pengirim = Auth::user();
 
-        $penerima = User::with('divisi')->findOrFail($validated['ke_user_id']);
+        $penerima = User::with('timKerja')->findOrFail($validated['ke_user_id']);
 
         if ($pengirim->id === $penerima->id) {
             return redirect()->back()->with('error', 'Tidak bisa mendisposisikan surat ke diri sendiri.');
@@ -40,8 +40,8 @@ class DisposisiController extends Controller
             return redirect()->back()->with('error', 'User penerima sudah tidak aktif.');
         }
 
-        if ($penerima->divisi && !$penerima->divisi->is_active) {
-            return redirect()->back()->with('error', 'Divisi penerima sudah tidak aktif.');
+        if ($penerima->timKerja && !$penerima->timKerja->is_active) {
+            return redirect()->back()->with('error', 'Tim Kerja penerima sudah tidak aktif.');
         }
 
         $previousDisposisi = $surat->disposisis()
@@ -89,11 +89,11 @@ class DisposisiController extends Controller
 
         try {
             DB::transaction(function () use ($katimja, $surat, $validated) {
-                // Ambil semua staf aktif dalam divisi Katimja, dan hanya jika divisinya juga aktif
-                $stafs = User::where('divisi_id', $katimja->divisi_id)
+                // Ambil semua staf aktif dalam Tim Kerja Katimja, dan hanya jika Tim Kerja juga aktif
+                $stafs = User::where('tim_kerja_id', $katimja->timK_kerja_id)
                     ->where('is_active', true)
                     ->whereHas('role', fn($q) => $q->where('name', 'Staf'))
-                    ->whereHas('divisi', fn($q) => $q->where('is_active', true))
+                    ->whereHas('tim_kerja', fn($q) => $q->where('is_active', true))
                     ->get();
 
                 foreach ($stafs as $staf) {
@@ -130,7 +130,7 @@ class DisposisiController extends Controller
             DB::transaction(function () use ($disposisi, $validated) {
 
                 $pengirim = Auth::user();
-                $penerima = User::with('divisi')->findOrFail($validated['ke_user_id']);
+                $penerima = User::with('timKerja')->findOrFail($validated['ke_user_id']);
 
                 if ($pengirim->id === $penerima->id) {
                     return redirect()->back()->with('error', 'Tidak bisa mendisposisikan surat ke diri sendiri.');
@@ -140,8 +140,8 @@ class DisposisiController extends Controller
                     return redirect()->back()->with('error', 'User penerima sudah tidak aktif.');
                 }
 
-                if ($penerima->divisi && !$penerima->divisi->is_active) {
-                    return redirect()->back()->with('error', 'Divisi penerima sudah tidak aktif.');
+                if ($penerima->timKerja && !$penerima->timKerja->is_active) {
+                    return redirect()->back()->with('error', 'Tim Kerja penerima sudah tidak aktif.');
                 }
 
                 if (!$penerima) {
@@ -181,96 +181,6 @@ class DisposisiController extends Controller
 
     }
 
-
-    // public function kembalikan(Request $request, Disposisi $disposisi)
-    // {
-    //     $validated = $request->validate([
-    //         'catatan_pengembalian' => 'required|string|max:1000'
-    //     ]);
-
-    //     try {
-    //         DB::transaction(function () use ($disposisi, $validated) {
-    //             $user = Auth::user();
-    //             $userRole = $user->role->name;
-
-    //             $keUserId = null;
-
-    //             if ($userRole === 'Kepala LLDIKTI') {
-    //                 // Kembali ke Admin pencatat surat
-    //                 $keUserId = User::whereHas('role', function ($q) {
-    //                     $q->where('name', 'Admin');
-    //                 })->first()?->id;
-
-    //             } elseif ($userRole === 'KBU') {
-    //                 // Kembali ke Kepala
-    //                 $keUserId = User::whereHas('role', function ($q) {
-    //                     $q->where('name', 'Kepala LLDIKTI');
-    //                 })->first()?->id;
-
-    //             } elseif ($userRole === 'Katimja') {
-    //                 // Kembali ke user yang memiliki role sesuai parent_role_id
-    //                 $divisi = $user->divisi;
-    //                 $parentRoleId = $divisi->parent_role_id ?? null;
-
-    //                 $keUserId = User::whereHas('role', function ($q) use ($parentRoleId) {
-    //                     $q->where('id', $parentRoleId);
-    //                 })->first()?->id;
-    //             }
-
-    //             // Fallback kalau tetap null
-    //             if (!$keUserId) {
-    //                 throw new \Exception("Gagal menentukan user tujuan pengembalian.");
-    //             }
-
-    //             // Ambil user tujuan beserta divisinya
-    //             $targetUser = User::with('divisi')->findOrFail($keUserId);
-
-    //             // Validasi user tujuan aktif
-    //             if (!$targetUser->is_active) {
-    //                 throw new \Exception("User tujuan pengembalian sudah tidak aktif.");
-    //             }
-
-    //             // Validasi divisi aktif (jika ada)
-    //             if ($targetUser->divisi && !$targetUser->divisi->is_active) {
-    //                 throw new \Exception("Divisi dari user tujuan pengembalian sudah tidak aktif.");
-    //             }
-
-    //             // Update disposisi lama jadi 'Dikembalikan'
-    //             //KODE INI DI COMMENT DEMI MENYELESAIKAN KEAMBIGUAN PADA AGENDA DAN TERKIRIM
-    //             // $disposisi->update(['status' => 'Dikembalikan']);
-
-    //             // Jadi ini:
-    //             $disposisiYangDikembalikan = Disposisi::where('surat_id', $disposisi->surat_id)
-    //                 ->where('dari_user_id', $keUserId) // user yang sekarang ingin mengembalikan
-    //                 ->latest() // ambil yang paling baru
-    //                 ->first();
-
-    //             if ($disposisiYangDikembalikan) {
-    //                 $disposisiYangDikembalikan->update(['status' => 'Dikembalikan']);
-    //             }
-
-    //             // Buat disposisi pengembalian baru
-    //             Disposisi::create([
-    //                 'surat_id' => $disposisi->surat_id,
-    //                 'dari_user_id' => $user->id,
-    //                 'ke_user_id' => $targetUser->id,
-    //                 'catatan' => $validated['catatan_pengembalian'],
-    //                 'status' => 'Menunggu',
-    //                 'tipe_aksi' => 'Kembalikan',
-    //             ]);
-
-    //             // $disposisi->suratMasuk->update(['status' => 'dikembalikan']);
-    //         });
-
-    //         return redirect()->route('surat.inbox')->with('success', 'Disposisi berhasil dikembalikan.');
-    //     } catch (\Exception $e) {
-    //         \Log::error('Gagal mengembalikan disposisi: ' . $e->getMessage());
-    //         return redirect()->back()->with('error', $e->getMessage());
-    //     }
-
-
-    // }
-
     public function kembalikanSuratStaf(Request $request, Disposisi $disposisi)
     {
         $user = Auth::user();
@@ -288,16 +198,16 @@ class DisposisiController extends Controller
                 $surat = $disposisi->suratMasuk;
 
                 // Ambil user tujuan pengembalian (biasanya Katimja)
-                $targetUser = User::with('divisi')->findOrFail($disposisi->dari_user_id);
+                $targetUser = User::with('timKerja')->findOrFail($disposisi->dari_user_id);
 
                 // Validasi user tujuan aktif
                 if (!$targetUser->is_active) {
                     throw new \Exception('User tujuan pengembalian sudah tidak aktif.');
                 }
 
-                // Validasi divisi aktif (jika ada)
-                if ($targetUser->divisi && !$targetUser->divisi->is_active) {
-                    throw new \Exception('Divisi dari user tujuan pengembalian sudah tidak aktif.');
+                // Validasi Tim Kerja aktif (jika ada)
+                if ($targetUser->timKerja && !$targetUser->timKerja->is_active) {
+                    throw new \Exception('Tim Kerja dari user tujuan pengembalian sudah tidak aktif.');
                 }
 
                 // Update semua disposisi aktif dari staf untuk surat ini jadi "Dikembalikan"
@@ -329,7 +239,6 @@ class DisposisiController extends Controller
 
     public function kirimKeKepala(Request $request, SuratMasuk $surat)
     {
-
         $pengirim = Auth::user();
 
         $kepala = User::whereHas('role', fn($q) => $q->where('name', 'Kepala LLDIKTI'))
@@ -382,7 +291,7 @@ class DisposisiController extends Controller
         $surat = SuratMasuk::with(['disposisis.pengirim', 'disposisis.penerima'])->findOrFail($id);
         $lembaga = Lembaga::first();
 
-        return view('pages.super-admin.disposisi-cetak', [
+        return view('pages.disposisi.disposisi-cetak', [
             'surat' => $surat,
             'disposisis' => $surat->disposisis,
             'lembaga' => $lembaga,

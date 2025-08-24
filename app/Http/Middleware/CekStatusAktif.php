@@ -13,10 +13,10 @@ class CekStatusAktif
     {
         $user = Auth::user();
 
-        if ($user && (!$user->is_active || ($user->divisi && !$user->divisi->is_active))) {
+        if ($user && (!$user->is_active || ($user->timKerja && !$user->timKerja->is_active))) {
             Auth::logout();
             return redirect()->route('login')->withErrors([
-                'username' => 'Akun atau divisi Anda telah dinonaktifkan.',
+                'username' => 'Akun atau tim kerja Anda telah dinonaktifkan.',
             ]);
         }
 

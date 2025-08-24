@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Divisi;
+use App\Models\TimKerja;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
@@ -17,24 +17,23 @@ class TimKerjaController extends Controller
 
 
         // Query untuk data utama
-        $divisis = Divisi::orderBy('created_at', 'desc')->paginate(8);
+        $timKerjas = TimKerja::orderBy('created_at', 'desc')->paginate(8);
 
         // Kirim KEDUA variabel ke view menggunakan compact
-        return view('pages.super-admin.tim-kerja', compact('divisis', 'indukRoles'));
+        return view('pages.tim-kerja.tim-kerja', compact('timKerjas', 'indukRoles'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nama_divisi' => 'required|string|max:255|unique:divisis,nama_divisi',
-            'parent_role_id' => 'required|exists:roles,id',
+            'nama_timKerja' => 'required|string|max:255|unique:timKerja,nama_timKerja',
         ]);
 
         try {
-            Divisi::create([
-                'nama_divisi' => $request->nama_divisi,
+            TimKerja::create([
+                'nama_timKerja' => $request->nama_timKerja,
                 'is_active' => true,
-                'parent_role_id' => $request->parent_role_id,
+
             ]);
 
             return redirect()->route('tim-kerja.index')
@@ -49,20 +48,20 @@ class TimKerjaController extends Controller
 
     public function edit($id)
     {
-        $divisi = Divisi::findOrFail($id);
+        $timKerja = TimKerja::findOrFail($id);
     }
 
     public function update(Request $request, $id)
     {
-        $divisi = Divisi::findOrFail($id);
+        $timKerja = TimKerja::findOrFail($id);
 
         $request->validate([
-            'nama_divisi' => 'required|string|max:255|unique:divisis,nama_divisi,' . $divisi->id,
+            'nama_timKerja' => 'required|string|max:255|unique:timKerja,nama_timKerja,' . $timKerja->id,
             'is_active' => 'required|boolean',
         ]);
 
-        $divisi->update([
-            'nama_divisi' => $request->nama_divisi,
+        $timKerja->update([
+            'nama_timKerja' => $request->nama_timKerja,
             'is_active' => $request->is_active,
         ]);
 
@@ -73,13 +72,13 @@ class TimKerjaController extends Controller
     // DELETE: Hapus data
     public function destroy($id)
     {
-        $divisi = Divisi::findOrFail($id);
+        $timKerja = TimKerja::findOrFail($id);
 
-        if ($divisi->users()->exists()) {
-            return back()->with('error', 'Divisi ini tidak dapat dihapus karena masih memiliki pengguna di dalamnya.');
+        if ($timKerja->users()->exists()) {
+            return back()->with('error', 'Tim Kerja ini tidak dapat dihapus karena masih memiliki pengguna di dalamnya.');
         }
 
-        $divisi->delete();
+        $timKerja->delete();
 
         return redirect()->route('tim-kerja.index')->with('success', 'Tim kerja berhasil dihapus.');
     }

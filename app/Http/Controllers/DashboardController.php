@@ -60,7 +60,7 @@ class DashboardController extends Controller
         $ditolakHariIniCount = $this->getSuratDitolakHariIniCount($userId);
         $selesaiHariIniCount = $this->getSuratSelesaiHariIniCount($userId);
 
-        return view('pages.shared.dashboard', [
+        return view('pages.dashboard', [
             'rekapSifatAktif' => $rekapSifatAktif,
             'listSuratAktif' => $listSuratAktif,
             'inboxSuratCount' => $inboxSuratCount,
@@ -81,6 +81,7 @@ class DashboardController extends Controller
 
         return Disposisi::whereIn('id', $latestDisposisi)
             ->where('ke_user_id', $userId)
+            ->where('tipe_aksi', 'Teruskan')
             ->whereIn('status', ['Menunggu', 'Dilihat'])
             ->count();
     }
@@ -92,7 +93,7 @@ class DashboardController extends Controller
 
         return Disposisi::whereIn('id', $latestDisposisi)
             ->where('ke_user_id', $userId)
-            ->where('status', 'Dikembalikan')
+            ->where('tipe_aksi', 'Kembalikan')
             ->count();
     }
 

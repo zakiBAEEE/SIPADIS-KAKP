@@ -47,15 +47,13 @@ class SuratStatusUpdated extends Notification
             ->line('**' . ucfirst($this->surat->status) . '**')
             ->line('Surat ini diperbarui oleh: **' . $this->updatedBy->name . '** ('
                 . $this->updatedBy->role->name
-                . ($this->updatedBy->divisi ? ' - ' . $this->updatedBy->divisi->nama_divisi : '')
+                . ($this->updatedBy->timKerja ? ' - ' . $this->updatedBy->timKerja->nama_timKerja : '')
                 . ').')
             ->line('')
             ->line('**Penjelasan Status Surat:**')
             ->line('- **Diproses** : Surat sedang dalam proses disposisi oleh pihak terkait.')
             ->line('- **Ditindaklanjuti** : Surat sedang dalam tahap tindak lanjut oleh unit yang bersangkutan.')
             ->line('- **Selesai** : Proses tindak lanjut terhadap surat telah selesai dilakukan.')
-            ->line('')
-            ->action('🔍 Lihat Detail Surat', url('/surat/' . $this->surat->id))
             ->line('')
             ->line('Demikian informasi ini kami sampaikan. Atas perhatian dan kerja sama Bapak/Ibu, kami ucapkan terima kasih.')
             ->salutation('Hormat kami,')

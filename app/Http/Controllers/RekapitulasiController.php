@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Services\SuratRekapitulasiService;
 use App\Models\SuratMasuk;
 use Carbon\Carbon;
 use App\Exports\RekapitulasiExport;
@@ -13,14 +12,6 @@ use PDF;
 
 class RekapitulasiController extends Controller
 {
-
-    protected $rekapitulasiService;
-
-    public function __construct(SuratRekapitulasiService $rekapitulasiService)
-    {
-        $this->rekapitulasiService = $rekapitulasiService;
-    }
-
 
     public function rekapitulasi(Request $request)
     {
@@ -84,13 +75,13 @@ class RekapitulasiController extends Controller
         $query = SuratMasuk::whereBetween('tanggal_surat', [$start, $end]);
 
         $surats = $query->with([
-            'disposisiTerakhir.penerima.divisi'
+            'disposisiTerakhir.penerima.timKerja'
         ])->get();
 
-        $rekapDivisi = $surats->filter(function ($surat) {
-            return $surat->disposisiTerakhir && $surat->disposisiTerakhir->penerima && $surat->disposisiTerakhir->penerima->divisi;
+        $rekapTimKerja = $surats->filter(function ($surat) {
+            return $surat->disposisiTerakhir && $surat->disposisiTerakhir->penerima && $surat->disposisiTerakhir->penerima->timKerja;
         })->groupBy(function ($surat) {
-            return $surat->disposisiTerakhir->penerima->divisi->nama_divisi ?? 'Tanpa Divisi';
+            return $surat->disposisiTerakhir->penerima->timKerja->nama_timKerja ?? 'Tanpa Tim Kerja';
         });
 
         $rekapPerWaktu = match ($groupBy) {
@@ -108,7 +99,7 @@ class RekapitulasiController extends Controller
             ];
         });
 
-        return view('pages.super-admin.rekapitulasi', [
+        return view('pages.rekapitulasi.rekapitulasi', [
             'rekapPerWaktuDetail' => $rekapPerWaktuDetail,
             'groupBy' => $groupBy,
             'waktu' => $waktu,
@@ -116,7 +107,7 @@ class RekapitulasiController extends Controller
                 'Klasifikasi' => $surats->groupBy('klasifikasi_surat'),
                 'Sifat' => $surats->groupBy('sifat'),
                 'Status' => $surats->groupBy('status'),
-                'divisi' => $rekapDivisi,
+                'timKerja' => $rekapTimKerja,
             ],
             'tanggalInput' => $tanggal ?? null, // hanya untuk tampilan kembali di form
         ]);
@@ -183,14 +174,14 @@ class RekapitulasiController extends Controller
         $query = SuratMasuk::whereBetween('tanggal_surat', [$start, $end]);
 
         $surats = $query->with([
-            'disposisiTerakhir.penerima.divisi'
+            'disposisiTerakhir.penerima.timKerja'
         ])->get();
 
-        // Group berdasarkan divisi
-        $rekapDivisi = $surats->filter(function ($surat) {
-            return $surat->disposisiTerakhir && $surat->disposisiTerakhir->penerima && $surat->disposisiTerakhir->penerima->divisi;
+        // Group berdasarkan Tim Kerja
+        $rekapTimKerja = $surats->filter(function ($surat) {
+            return $surat->disposisiTerakhir && $surat->disposisiTerakhir->penerima && $surat->disposisiTerakhir->penerima->TimKerja;
         })->groupBy(function ($surat) {
-            return $surat->disposisiTerakhir->penerima->divisi->nama_divisi ?? 'Tanpa Divisi';
+            return $surat->disposisiTerakhir->penerima->TimKerja->nama_timKerja ?? 'Tanpa Tim Kerja';
         });
 
         // Group berdasarkan waktu
@@ -218,7 +209,7 @@ class RekapitulasiController extends Controller
                 'Klasifikasi' => $surats->groupBy('klasifikasi_surat'),
                 'Sifat' => $surats->groupBy('sifat'),
                 'Status' => $surats->groupBy('status'),
-                'Divisi' => $rekapDivisi,
+                'Tim Kerja' => $rekapTimKerja,
             ],
         ]);
 

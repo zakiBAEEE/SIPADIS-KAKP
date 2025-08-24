@@ -32,8 +32,8 @@
                         @include('components.base.input-surat', [
                             'label' => 'Tim Kerja',
                             'placeholder' => 'Masukkan Tim Kerja',
-                            'name' => 'nama_divisi',
-                            'value' => $namaDivisi,
+                            'name' => 'nama_timKerja',
+                            'value' => $namaTimKerja,
                         ])
                     </div>
 

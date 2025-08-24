@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     /**
-     * Jalankan migrasi.
+     * Run the migrations.
      */
     public function up(): void
     {
@@ -14,21 +14,33 @@ return new class extends Migration {
             // Jadikan 'id' sebagai string karena akan di-generate manual
             $table->string('id')->primary();
 
-            $table->string('nomor_surat', 100);
+            $table->string('nomor_surat', 100)->unique();
             $table->string('pengirim', 255);
+
+            // Kolom tambahan hasil gabungan migration
+            $table->string('asal_instansi')->nullable();
+            $table->string('email_pengirim')->nullable();
+
             $table->date('tanggal_surat');
-            // $table->date('tanggal_terima');
             $table->string('perihal', 255);
             $table->string('klasifikasi_surat', 100)->nullable();
             $table->string('sifat', 100)->nullable();
             $table->string('file_path')->nullable();
-            $table->enum('status', ['draft', 'diproses', 'selesai', 'ditolak', 'ditindaklanjuti'])->default('draft');
+
+            $table->enum('status', [
+                'draft',
+                'diproses',
+                'selesai',
+                'ditolak',
+                'ditindaklanjuti'
+            ])->default('draft');
+
             $table->timestamps();
         });
     }
 
     /**
-     * Rollback migrasi.
+     * Reverse the migrations.
      */
     public function down(): void
     {

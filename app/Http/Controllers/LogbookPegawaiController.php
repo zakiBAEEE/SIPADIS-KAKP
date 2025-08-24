@@ -17,7 +17,7 @@ class LogbookPegawaiController extends Controller
 
         // Jika belum ada user_id, tampilkan halaman kosong atau view pemilihan user
         if (!$userId) {
-            return view('pages.shared.logbook', [
+            return view('pages.logbook.logbook', [
                 'users' => $users,
                 'user' => null,
                 'isStaff' => null,
@@ -74,7 +74,7 @@ class LogbookPegawaiController extends Controller
 
             $statusCounts = []; // non-staff tidak butuh count status surat
 
-           
+
 
             $klasifikasiList = ['Umum', 'Pengaduan', 'Permintaan Informasi'];
 
@@ -99,7 +99,7 @@ class LogbookPegawaiController extends Controller
 
         }
 
-        return view('pages.shared.logbook', [
+        return view('pages.logbook.logbook', [
             'users' => $users,
             'user' => $user,
             'isStaff' => $isStaff,

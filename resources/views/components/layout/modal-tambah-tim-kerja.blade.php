@@ -23,21 +23,10 @@
                 <div class="p-4 flex flex-col gap-2">
                     <div>
                         @include('components.base.input-surat', [
-                            'label' => 'Divisi',
-                            'placeholder' => 'Masukkan Divisi',
-                            'name' => 'nama_divisi',
+                            'label' => 'Tim Kerja',
+                            'placeholder' => 'Masukkan Tim Kerja',
+                            'name' => 'nama_timKerja',
                         ])
-                    </div>
-                    <div>
-                        <select name="parent_role_id" class="border border-gray-300 rounded p-2 w-full">
-                            @foreach ($indukRoles as $role)
-                                <option value="{{ $role->id }}"
-                                    {{ old('parent_role_id') == $role->id ? 'selected' : '' }}>
-                                    {{ $role->name }}
-                                </option>
-                            @endforeach
-                        </select>
-
                     </div>
                 </div>
                 <div class="p-4 flex justify-end gap-2">

@@ -31,14 +31,14 @@
                     @php
                         $user = Auth::user();
 
-                        $stafs = \App\Models\User::where('divisi_id', $user->divisi_id)
+                        $stafs = \App\Models\User::where('tim_kerja_id', $user->tim_kerja_id)
                             ->whereHas('role', fn($q) => $q->where('name', 'Staf'))
                             ->get();
                     @endphp
 
                     @if ($stafs->count())
                         <div class="p-4 pt-0">
-                            <p class="text-sm font-semibold text-slate-700 mb-2">Daftar Staf di Divisi Ini:</p>
+                            <p class="text-sm font-semibold text-slate-700 mb-2">Daftar Staf di Tim Kerja Ini:</p>
                             <ul class="list-disc pl-6 text-sm text-slate-600 space-y-1">
                                 @foreach ($stafs as $staf)
                                     @if ($staf->is_active)
@@ -49,7 +49,7 @@
                         </div>
                     @else
                         <div class="p-4 pt-0">
-                            <p class="text-sm text-red-600">Tidak ada staf terdaftar di divisi ini.</p>
+                            <p class="text-sm text-red-600">Tidak ada staf terdaftar di Tim Kerja ini.</p>
                         </div>
                     @endif
 

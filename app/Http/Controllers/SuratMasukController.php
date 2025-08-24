@@ -2,32 +2,25 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Log;
-use App\Services\SuratMasukService; // <--- TAMBAHKAN BARIS INI
-use App\Services\SuratRekapitulasiService;
 use App\Services\DisposisiService;
 use App\Models\SuratMasuk;
-use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use App\Services\UserService;      // <-- Import Service
+use App\Services\UserService;
 
 
 class SuratMasukController extends Controller
 {
 
-    protected $rekapitulasiService;
-    protected $suratMasukService;
     protected $disposisiService;
     protected $userService;
 
 
-    public function __construct(SuratRekapitulasiService $rekapitulasiService, SuratMasukService $suratMasukService, DisposisiService $disposisiService, UserService $userService)
+    public function __construct(DisposisiService $disposisiService, UserService $userService)
     {
-        $this->rekapitulasiService = $rekapitulasiService;
-        $this->suratMasukService = $suratMasukService;
         $this->disposisiService = $disposisiService;
         $this->userService = $userService;
     }
@@ -93,7 +86,7 @@ class SuratMasukController extends Controller
             ->paginate(8)
             ->appends($request->query());
 
-        return view('pages.shared.terkirim', compact('surats'));
+        return view('pages.disposisi.riwayat', compact('surats'));
     }
 
     public function suratMasukDraft(Request $request)
@@ -159,13 +152,13 @@ class SuratMasukController extends Controller
             ->appends($request->query());
 
 
-        return view('pages.super-admin.surat-masuk-draft', compact('surats'));
+        return view('pages.disposisi.surat-masuk-draft', compact('surats'));
 
     }
 
     public function add()
     {
-        return view('pages.super-admin.tambah-surat-masuk');
+        return view('pages.surat.tambah-surat-masuk');
     }
 
     public function store(Request $request)
@@ -246,12 +239,12 @@ class SuratMasukController extends Controller
             ->where('tipe_aksi', '!=', 'Kembalikan')
             ->with(['pengirim.role', 'penerima.role'])
             ->get();
-        return view('pages.super-admin.detail-surat', compact('surat', 'daftarUserDisposisi', 'daftarUserSuratDikembalikan','cleanTimeline'));
+        return view('pages.surat.detail-surat', compact('surat', 'daftarUserDisposisi', 'daftarUserSuratDikembalikan', 'cleanTimeline'));
     }
 
     public function edit(SuratMasuk $surat)
     {
-        return view('pages.super-admin.edit-surat', compact('surat'));
+        return view('pages.surat.edit-surat', compact('surat'));
     }
 
     public function update(Request $request, SuratMasuk $surat)

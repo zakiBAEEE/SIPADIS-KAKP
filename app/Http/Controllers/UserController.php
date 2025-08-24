@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Role;
-use App\Models\Divisi;
+use App\Models\TimKerja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -15,7 +15,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $query = User::with(['role', 'divisi'])->orderBy('created_at', 'desc');
+        $query = User::with(['role', 'timKerja'])->orderBy('created_at', 'desc');
 
         if ($request->filled('nama')) {
             $query->where('name', 'like', '%' . $request->nama . '%');
@@ -34,9 +34,9 @@ class UserController extends Controller
         $users = $query->paginate(10);
 
         $roles = Role::all();
-        $divisis = Divisi::all();
+        $timKerjas = TimKerja::all();
 
-        return view('pages.super-admin.pegawai', compact('users', 'roles', 'divisis'));
+        return view('pages.pegawai.pegawai', compact('users', 'roles', 'timKerjas'));
     }
 
 
@@ -46,7 +46,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username',
             'role_id' => 'required|exists:roles,id',
-            'divisi_id' => 'nullable|exists:divisis,id',
+            'tim_kerja_id' => 'nullable|exists:tim_kerjas,id',
             'password' => ['required', 'confirmed', Password::min(8)],
         ]);
 
@@ -65,19 +65,19 @@ class UserController extends Controller
         }
 
         if ($roleName === 'Katimja') {
-            if (!$validated['divisi_id']) {
+            if (!$validated['tim_kerja_id']) {
                 return redirect()->back()
-                    ->with('error', 'Katimja wajib memiliki divisi.');
+                    ->with('error', 'Katimja wajib memiliki Tim Kerja.');
             }
 
             $sudahAdaKatimja = User::where('role_id', $validated['role_id'])
-                ->where('divisi_id', $validated['divisi_id'])
+                ->where('tim_kerja_id', $validated['tim_kerja_id'])
                 ->where('is_active', true)
                 ->exists();
 
             if ($sudahAdaKatimja) {
                 return redirect()->back()
-                    ->with('error', 'Divisi ini sudah memiliki Katimja aktif.');
+                    ->with('error', 'Tim Kerja ini sudah memiliki Katimja aktif.');
             }
         }
 
@@ -119,15 +119,15 @@ class UserController extends Controller
             }
         }
 
-        if ($roleName === 'Katimja' && $user->divisi_id && $validated['is_active']) {
+        if ($roleName === 'Katimja' && $user->timKerja && $validated['is_active']) {
             $sudahAda = User::where('role_id', $user->role_id)
-                ->where('divisi_id', $user->divisi_id)
+                ->where('tim_kerja_id', $user->tim_kerja_id)
                 ->where('id', '!=', $user->id)
                 ->where('is_active', true)
                 ->exists();
 
             if ($sudahAda) {
-                return redirect()->back()->with('error', "Divisi ini sudah memiliki Katimja aktif.");
+                return redirect()->back()->with('error', "Tim Kerja ini sudah memiliki Katimja aktif.");
             }
         }
 

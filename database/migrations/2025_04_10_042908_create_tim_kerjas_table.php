@@ -10,19 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('tim_kerjas', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 150);
-            $table->string('username', 150)->unique();
-            $table->string('password');
-
-            // Relasi
-            $table->foreignId('role_id')->constrained('roles');
-            $table->foreignId('tim_kerja_id')->nullable()->constrained('tim_kerjas');
-
+            $table->string('nama_timKerja', 150);
             // Kolom tambahan hasil penggabungan migration
             $table->boolean('is_active')->default(true);
-
             $table->timestamps();
         });
     }
@@ -32,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('timKerjas');
     }
 };

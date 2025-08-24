@@ -117,7 +117,7 @@
     <div class="section-header2">{{ $waktu }}</div>
 
     {{-- LOOP PER KATEGORI --}}
-    @foreach (['Klasifikasi', 'Sifat', 'Status', 'Divisi'] as $i => $kategori)
+    @foreach (['Klasifikasi', 'Sifat', 'Status', 'Tim Kerja'] as $i => $kategori)
         <div class="section-header">Kategori: {{ $kategori }}</div>
 
         @foreach ($rekap[$kategori] as $label => $items)

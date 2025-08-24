@@ -48,7 +48,7 @@
                         @enderror
                     </div>
 
-                    {{-- Peran dan Divisi --}}
+                    {{-- Peran dan Tim Kerja --}}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label for="tambah_role_id" class="block text-sm font-medium text-gray-700 mb-1">Peran
@@ -70,23 +70,23 @@
                         </div>
 
                         <div>
-                            <label for="tambah_divisi_id" class="block text-sm font-medium text-gray-700 mb-1">Divisi
+                            <label for="tambah_tim_kerja_id" class="block text-sm font-medium text-gray-700 mb-1">Tim Kerja
                                 (Opsional)</label>
-                            <select name="divisi_id" id="tambah_divisi_id"
+                            <select name="tim_kerja_id" id="tambah_timKerja_id"
                                 class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm 
                     disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
                                 {{ old('role_id') !== 'Katimja' ? 'disabled' : '' }}>
-                                <option value="">-- Pilih Divisi --</option>
-                                @foreach ($divisis as $divisi)
-                                    @if ($divisi->is_active)
-                                        <option value="{{ $divisi->id }}"
-                                            {{ old('divisi_id') == $divisi->id ? 'selected' : '' }}>
-                                            {{ $divisi->nama_divisi }}
+                                <option value="">-- Pilih Tim Kerja --</option>
+                                @foreach ($timKerjas as $timKerja)
+                                    @if ($timKerja->is_active)
+                                        <option value="{{ $timKerja->id }}"
+                                            {{ old('tim_kerja_id') == $timKerja->id ? 'selected' : '' }}>
+                                            {{ $timKerja->nama_timKerja }}
                                         </option>
                                     @endif
                                 @endforeach
                             </select>
-                            @error('divisi_id')
+                            @error('tim_kerja_id')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>

@@ -18,16 +18,16 @@
             </tr>
         </thead>
         <tbody class="group text-sm text-slate-800">
-            @forelse ($divisis as $divisi)
+            @forelse ($timKerjas as $timKerja)
                 <tr class="even:bg-slate-100">
                     <td class="p-3">
-                        {{ $divisi->id }}
+                        {{ $timKerja->id }}
                     </td>
                     <td class="p-3">
-                        {{ $divisi->nama_divisi }}
+                        {{ $timKerja->nama_timKerja }}
                     </td>
                     <td class="p-3">
-                        @if ($divisi->is_active)
+                        @if ($timKerja->is_active)
                             <span class="bg-green-100 text-green-800 px-2 py-1 text-xs rounded-full">
                                 Aktif
                             </span>
@@ -40,11 +40,11 @@
                     <td class="p-3">
                         <div class="flex flex-row gap-x-1">
                             @include('components.layout.modal-edit-tim-kerja', [
-                                'id' => $divisi->id,
-                                'namaDivisi' => $divisi->nama_divisi,
-                                'isActive' => $divisi->is_active,
+                                'id' => $timKerja->id,
+                                'namaTimKerja' => $timKerja->nama_timKerja,
+                                'isActive' => $timKerja->is_active,
                             ])
-                            <form action="{{ route('tim-kerja.destroy', $divisi->id) }}" method="POST"
+                            <form action="{{ route('tim-kerja.destroy', $timKerja->id) }}" method="POST"
                                 onsubmit="return confirm('Yakin ingin menghapus tim kerja ini?')">
                                 @csrf
                                 @method('DELETE')

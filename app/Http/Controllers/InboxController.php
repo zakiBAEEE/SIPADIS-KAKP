@@ -9,8 +9,6 @@ use Carbon\Carbon;
 
 class InboxController extends Controller
 {
-
-
     public function index(Request $request)
     {
         $user = Auth::user();
@@ -62,55 +60,9 @@ class InboxController extends Controller
             ->paginate(10)
             ->appends($request->query());
 
-        return view('pages.shared.inbox', [
+        return view('pages.disposisi.inbox', [
             'disposisis' => $disposisis,
             'pageTitle' => 'Inbox Disposisi'
-        ]);
-    }
-    public function outbox(Request $request)
-    {
-        $query = Disposisi::where('dari_user_id', Auth::id())
-            ->with(['suratMasuk', 'penerima.role']);
-
-        if ($request->filled('nomor_surat')) {
-            $query->whereHas('suratMasuk', function ($q) use ($request) {
-                $q->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
-            });
-        }
-
-        // ✅ Filter: Status penerima
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        // ✅ Filter: Tipe Aksi
-        if ($request->filled('tipe_aksi')) {
-            $query->where('tipe_aksi', $request->tipe_aksi);
-        }
-
-        // ✅ Filter: Perihal surat
-        if ($request->filled('perihal')) {
-            $query->whereHas('suratMasuk', function ($q) use ($request) {
-                $q->where('perihal', 'like', '%' . $request->perihal . '%');
-            });
-        }
-
-        // ✅ Filter: Rentang tanggal kirim (created_at)
-        if ($request->filled('filter_disposisi_created_at')) {
-            $range = explode(' to ', $request->filter_disposisi_created_at);
-            if (count($range) === 2) {
-                $query->whereBetween('created_at', [$range[0], $range[1]]);
-            }
-        }
-
-        // ✅ Ambil hasil akhir
-        $disposisis = $query->orderBy('created_at', 'desc')
-            ->paginate(10)
-            ->appends($request->query());
-
-        return view('pages.shared.outbox', [
-            'disposisis' => $disposisis,
-            'pageTitle' => 'Riwayat Disposisi Terkirim'
         ]);
     }
 
@@ -149,8 +101,6 @@ class InboxController extends Controller
             ->paginate(10)
             ->appends($request->query());
 
-        return view('pages.shared.ditolak', compact('disposisis'));
+        return view('pages.disposisi.dikembalikan', compact('disposisis'));
     }
-
-
 }
