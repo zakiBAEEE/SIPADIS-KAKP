@@ -107,7 +107,7 @@ class RekapitulasiController extends Controller
                 'Klasifikasi' => $surats->groupBy('klasifikasi_surat'),
                 'Sifat' => $surats->groupBy('sifat'),
                 'Status' => $surats->groupBy('status'),
-                'timKerja' => $rekapTimKerja,
+                'TimKerja' => $rekapTimKerja,
             ],
             'tanggalInput' => $tanggal ?? null, // hanya untuk tampilan kembali di form
         ]);
