@@ -35,7 +35,7 @@
             </div>
             <form action="{{ route('surat.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @include('components.form.form-surat-masuk')
+                @include('components.form.form-tambah-surat-masuk')
                 <div class="px-4">
                     @include('components.base.file-picker', [
                         'label' => 'Upload Surat',
