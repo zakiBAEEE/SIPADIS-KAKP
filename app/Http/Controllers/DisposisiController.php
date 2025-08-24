@@ -122,63 +122,38 @@ class DisposisiController extends Controller
     public function kembalikan(Request $request, Disposisi $disposisi)
     {
         $validated = $request->validate([
+            'ke_user_id' => 'required|exists:users,id',
             'catatan_pengembalian' => 'required|string|max:1000'
         ]);
 
         try {
             DB::transaction(function () use ($disposisi, $validated) {
-                $user = Auth::user();
-                $userRole = $user->role->name;
 
-                $keUserId = null;
+                $pengirim = Auth::user();
+                $penerima = User::with('divisi')->findOrFail($validated['ke_user_id']);
 
-                if ($userRole === 'Kepala LLDIKTI') {
-                    // Kembali ke Admin pencatat surat
-                    $keUserId = User::whereHas('role', function ($q) {
-                        $q->where('name', 'Admin');
-                    })->first()?->id;
-
-                } elseif ($userRole === 'KBU') {
-                    // Kembali ke Kepala
-                    $keUserId = User::whereHas('role', function ($q) {
-                        $q->where('name', 'Kepala LLDIKTI');
-                    })->first()?->id;
-
-                } elseif ($userRole === 'Katimja') {
-                    // Kembali ke user yang memiliki role sesuai parent_role_id
-                    $divisi = $user->divisi;
-                    $parentRoleId = $divisi->parent_role_id ?? null;
-
-                    $keUserId = User::whereHas('role', function ($q) use ($parentRoleId) {
-                        $q->where('id', $parentRoleId);
-                    })->first()?->id;
+                if ($pengirim->id === $penerima->id) {
+                    return redirect()->back()->with('error', 'Tidak bisa mendisposisikan surat ke diri sendiri.');
                 }
 
-                // Fallback kalau tetap null
-                if (!$keUserId) {
+                if (!$penerima->is_active) {
+                    return redirect()->back()->with('error', 'User penerima sudah tidak aktif.');
+                }
+
+                if ($penerima->divisi && !$penerima->divisi->is_active) {
+                    return redirect()->back()->with('error', 'Divisi penerima sudah tidak aktif.');
+                }
+
+                if (!$penerima) {
                     throw new \Exception("Gagal menentukan user tujuan pengembalian.");
-                }
-
-                // Ambil user tujuan beserta divisinya
-                $targetUser = User::with('divisi')->findOrFail($keUserId);
-
-                // Validasi user tujuan aktif
-                if (!$targetUser->is_active) {
-                    throw new \Exception("User tujuan pengembalian sudah tidak aktif.");
-                }
-
-                // Validasi divisi aktif (jika ada)
-                if ($targetUser->divisi && !$targetUser->divisi->is_active) {
-                    throw new \Exception("Divisi dari user tujuan pengembalian sudah tidak aktif.");
                 }
 
                 // Update disposisi lama jadi 'Dikembalikan'
                 //KODE INI DI COMMENT DEMI MENYELESAIKAN KEAMBIGUAN PADA AGENDA DAN TERKIRIM
                 // $disposisi->update(['status' => 'Dikembalikan']);
 
-                // Jadi ini:
                 $disposisiYangDikembalikan = Disposisi::where('surat_id', $disposisi->surat_id)
-                    ->where('dari_user_id', $keUserId) // user yang sekarang ingin mengembalikan
+                    ->where('dari_user_id', $penerima->id) // user yang sekarang ingin mengembalikan
                     ->latest() // ambil yang paling baru
                     ->first();
 
@@ -186,17 +161,15 @@ class DisposisiController extends Controller
                     $disposisiYangDikembalikan->update(['status' => 'Dikembalikan']);
                 }
 
-                // Buat disposisi pengembalian baru
                 Disposisi::create([
                     'surat_id' => $disposisi->surat_id,
-                    'dari_user_id' => $user->id,
-                    'ke_user_id' => $targetUser->id,
+                    'dari_user_id' => $pengirim->id,
+                    'ke_user_id' => $penerima->id,
                     'catatan' => $validated['catatan_pengembalian'],
                     'status' => 'Menunggu',
                     'tipe_aksi' => 'Kembalikan',
                 ]);
 
-                // $disposisi->suratMasuk->update(['status' => 'dikembalikan']);
             });
 
             return redirect()->route('surat.inbox')->with('success', 'Disposisi berhasil dikembalikan.');
@@ -207,6 +180,96 @@ class DisposisiController extends Controller
 
 
     }
+
+
+    // public function kembalikan(Request $request, Disposisi $disposisi)
+    // {
+    //     $validated = $request->validate([
+    //         'catatan_pengembalian' => 'required|string|max:1000'
+    //     ]);
+
+    //     try {
+    //         DB::transaction(function () use ($disposisi, $validated) {
+    //             $user = Auth::user();
+    //             $userRole = $user->role->name;
+
+    //             $keUserId = null;
+
+    //             if ($userRole === 'Kepala LLDIKTI') {
+    //                 // Kembali ke Admin pencatat surat
+    //                 $keUserId = User::whereHas('role', function ($q) {
+    //                     $q->where('name', 'Admin');
+    //                 })->first()?->id;
+
+    //             } elseif ($userRole === 'KBU') {
+    //                 // Kembali ke Kepala
+    //                 $keUserId = User::whereHas('role', function ($q) {
+    //                     $q->where('name', 'Kepala LLDIKTI');
+    //                 })->first()?->id;
+
+    //             } elseif ($userRole === 'Katimja') {
+    //                 // Kembali ke user yang memiliki role sesuai parent_role_id
+    //                 $divisi = $user->divisi;
+    //                 $parentRoleId = $divisi->parent_role_id ?? null;
+
+    //                 $keUserId = User::whereHas('role', function ($q) use ($parentRoleId) {
+    //                     $q->where('id', $parentRoleId);
+    //                 })->first()?->id;
+    //             }
+
+    //             // Fallback kalau tetap null
+    //             if (!$keUserId) {
+    //                 throw new \Exception("Gagal menentukan user tujuan pengembalian.");
+    //             }
+
+    //             // Ambil user tujuan beserta divisinya
+    //             $targetUser = User::with('divisi')->findOrFail($keUserId);
+
+    //             // Validasi user tujuan aktif
+    //             if (!$targetUser->is_active) {
+    //                 throw new \Exception("User tujuan pengembalian sudah tidak aktif.");
+    //             }
+
+    //             // Validasi divisi aktif (jika ada)
+    //             if ($targetUser->divisi && !$targetUser->divisi->is_active) {
+    //                 throw new \Exception("Divisi dari user tujuan pengembalian sudah tidak aktif.");
+    //             }
+
+    //             // Update disposisi lama jadi 'Dikembalikan'
+    //             //KODE INI DI COMMENT DEMI MENYELESAIKAN KEAMBIGUAN PADA AGENDA DAN TERKIRIM
+    //             // $disposisi->update(['status' => 'Dikembalikan']);
+
+    //             // Jadi ini:
+    //             $disposisiYangDikembalikan = Disposisi::where('surat_id', $disposisi->surat_id)
+    //                 ->where('dari_user_id', $keUserId) // user yang sekarang ingin mengembalikan
+    //                 ->latest() // ambil yang paling baru
+    //                 ->first();
+
+    //             if ($disposisiYangDikembalikan) {
+    //                 $disposisiYangDikembalikan->update(['status' => 'Dikembalikan']);
+    //             }
+
+    //             // Buat disposisi pengembalian baru
+    //             Disposisi::create([
+    //                 'surat_id' => $disposisi->surat_id,
+    //                 'dari_user_id' => $user->id,
+    //                 'ke_user_id' => $targetUser->id,
+    //                 'catatan' => $validated['catatan_pengembalian'],
+    //                 'status' => 'Menunggu',
+    //                 'tipe_aksi' => 'Kembalikan',
+    //             ]);
+
+    //             // $disposisi->suratMasuk->update(['status' => 'dikembalikan']);
+    //         });
+
+    //         return redirect()->route('surat.inbox')->with('success', 'Disposisi berhasil dikembalikan.');
+    //     } catch (\Exception $e) {
+    //         \Log::error('Gagal mengembalikan disposisi: ' . $e->getMessage());
+    //         return redirect()->back()->with('error', $e->getMessage());
+    //     }
+
+
+    // }
 
     public function kembalikanSuratStaf(Request $request, Disposisi $disposisi)
     {
