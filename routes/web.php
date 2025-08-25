@@ -27,8 +27,12 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
         Route::middleware(['role:Staf'])->group(function () {
             Route::post('{surat}/tandai-selesai', [DisposisiController::class, 'tandaiSelesai'])->name('tandaiSelesai');
             Route::post('{surat}/tandai-ditindaklanjuti', [DisposisiController::class, 'tandaiDitindaklanjuti'])->name('tandaiDitindaklanjuti');
+        });
+
+        Route::middleware(['role:Admin,Staf'])->group(function () {
             Route::post('{surat}/tandai-ditolak', [DisposisiController::class, 'tandaiDitolak'])->name('tandaiDitolak');
         });
+
         Route::middleware(['role:Admin'])->group(function () {
             Route::get('/draft', [SuratMasukController::class, 'suratMasukDraft'])->name('draft');
             Route::get('tambah', [SuratMasukController::class, 'add'])->name('tambah');
@@ -74,7 +78,6 @@ Route::middleware(['auth', 'cekAktif'])->group(function () {
             ->name('kembalikanSuratStaf');
         Route::post('{surat}/disposisiSemuaStaf', [DisposisiController::class, 'disposisiKeSemuaStaf'])->name('disposisiSemuaStaf');
         Route::post('{surat}/disposisi', [DisposisiController::class, 'store'])->name('store');
-        Route::get('{id}/cetak', [DisposisiController::class, 'cetak'])->name('cetak');
     });
 
     Route::middleware(['role:Admin,Kepala LLDIKTI,KBU,Katimja,Staf'])->group(function () {

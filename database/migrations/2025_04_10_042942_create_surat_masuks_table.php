@@ -14,7 +14,7 @@ return new class extends Migration {
             // Jadikan 'id' sebagai string karena akan di-generate manual
             $table->string('id')->primary();
 
-            $table->string('nomor_surat', 100)->unique();
+            $table->string('nomor_surat', 100);
             $table->string('pengirim', 255);
 
             // Kolom tambahan hasil gabungan migration
@@ -34,6 +34,8 @@ return new class extends Migration {
                 'ditolak',
                 'ditindaklanjuti'
             ])->default('draft');
+
+            $table->string('keterangan', 500)->nullable();
 
             $table->timestamps();
         });

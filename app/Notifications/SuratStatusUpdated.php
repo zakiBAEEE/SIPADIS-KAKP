@@ -37,7 +37,7 @@ class SuratStatusUpdated extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
+        $mail = (new MailMessage)
             ->subject('📄 Pembaruan Status Surat | LLDIKTI Wilayah II')
             ->greeting('Yth. Bapak/Ibu,')
             ->line('Dengan hormat,')
@@ -49,17 +49,28 @@ class SuratStatusUpdated extends Notification
                 . $this->updatedBy->role->name
                 . ($this->updatedBy->timKerja ? ' - ' . $this->updatedBy->timKerja->nama_timKerja : '')
                 . ').')
-            ->line('')
-            ->line('**Penjelasan Status Surat:**')
+            ->line('');
+
+        // Tambahkan alasan hanya jika status ditolak
+        if ($this->surat->status === 'ditolak' && $this->surat->keterangan) {
+            $mail->line('**Alasan Penolakan:**')
+                ->line($this->surat->keterangan)
+                ->line('');
+        }
+
+        $mail->line('**Penjelasan Status Surat:**')
             ->line('- **Diproses** : Surat sedang dalam proses disposisi oleh pihak terkait.')
             ->line('- **Ditindaklanjuti** : Surat sedang dalam tahap tindak lanjut oleh unit yang bersangkutan.')
             ->line('- **Selesai** : Proses tindak lanjut terhadap surat telah selesai dilakukan.')
+            ->line('- **Ditolak** : Proses surat berhenti, surat ditolak dari LLDIKTI karena alasan tertentu.')
             ->line('')
             ->line('Demikian informasi ini kami sampaikan. Atas perhatian dan kerja sama Bapak/Ibu, kami ucapkan terima kasih.')
             ->salutation('Hormat kami,')
             ->salutation('Tim LLDIKTI Wilayah II');
 
+        return $mail;
     }
+
 
     /**
      * Get the array representation of the notification.

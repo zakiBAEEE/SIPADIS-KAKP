@@ -38,7 +38,8 @@
                     </td>
                     <td class="p-3">
                         @if ($disposisi->penerima && $disposisi->penerima->timKerja)
-                            {{ $disposisi->penerima->timKerja->nama_timKerja }} ({{ $disposisi->penerima->role->name }}) ||
+                            {{ $disposisi->penerima->timKerja->nama_timKerja }} ({{ $disposisi->penerima->role->name }})
+                            ||
                             {{ $disposisi->penerima->name }}
                         @else
                             {{ $disposisi->penerima->role->name ?? '-' }} || {{ $disposisi->penerima->name }}
@@ -47,7 +48,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="text-center p-3">Belum ada disposisi.</td>
+                    <td colspan="5" class="text-center p-3">Belum ada data disposisi.</td>
                 </tr>
             @endforelse
         </tbody>

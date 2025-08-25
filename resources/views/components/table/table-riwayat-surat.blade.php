@@ -78,7 +78,7 @@
 
                         @if ($role == 'Katimja' || $role == 'Staf')
                             <p class="text-sm">{{ $lastDisposisi->penerima->timKerja->nama_timKerja }}
-                        @else
+                            @else
                             <p class="text-sm">{{ $lastDisposisi->penerima->role->name }} ||
                                 {{ $lastDisposisi->penerima->name }}</p>
                         @endif
@@ -93,12 +93,37 @@
                             };
                         @endphp
 
+                        @php
+                            switch ($surat->status) {
+                                case 'draft':
+                                    $badgeClass = 'bg-gray-200 text-gray-700';
+                                    $statusText = 'Draft';
+                                    break;
+                                case 'diproses':
+                                    $badgeClass = 'bg-yellow-200 text-yellow-700';
+                                    $statusText = 'Diproses';
+                                    break;
+                                case 'selesai':
+                                    $badgeClass = 'bg-green-200 text-green-700';
+                                    $statusText = 'Selesai';
+                                    break;
+                                case 'ditolak':
+                                    $badgeClass = 'bg-red-200 text-red-700';
+                                    $statusText = 'Ditolak';
+                                    break;
+                                case 'ditindaklanjuti':
+                                    $badgeClass = 'bg-blue-200 text-blue-700';
+                                    $statusText = 'Ditindaklanjuti';
+                                    break;
+                                default:
+                                    $badgeClass = 'bg-gray-200 text-gray-700';
+                                    $statusText = ucfirst($surat->status);
+                                    break;
+                            }
+                        @endphp
+
                         <span class="px-3 py-1 text-sm font-medium rounded-full {{ $badgeClass }}">
-                            @if ($surat->status == 'diproses')
-                                Diproses
-                            @else
-                                Selesai
-                            @endif
+                            {{ $statusText }}
                         </span>
                     </td>
 

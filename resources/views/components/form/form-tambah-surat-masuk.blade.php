@@ -5,7 +5,7 @@
      <div class="flex md:flex-row gap-3 flex-col">
          <div class="mb-4 space-y-1.5 md:w-1/2 w-full">
              @include('components.base.input-surat', [
-                 'label' => 'Nomor Surat',
+                 'label' => 'Nomor Surat (Sebaiknya Bersifat Unik)',
                  'placeholder' => 'Masukkan Nomor Surat',
                  'name' => 'nomor_surat',
              ])

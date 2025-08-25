@@ -20,7 +20,7 @@ class DisposisiController extends Controller
         $this->disposisiService = $disposisiService;
     }
 
-// Function store ini fungsi untuk mendisposisikan suatu surat dari satu user ke user lain
+    // Function store ini fungsi untuk mendisposisikan suatu surat dari satu user ke user lain
     public function store(Request $request, SuratMasuk $surat)
     {
         $validated = $request->validate([
@@ -90,10 +90,10 @@ class DisposisiController extends Controller
         try {
             DB::transaction(function () use ($katimja, $surat, $validated) {
                 // Ambil semua staf aktif dalam Tim Kerja Katimja, dan hanya jika Tim Kerja juga aktif
-                $stafs = User::where('tim_kerja_id', $katimja->timK_kerja_id)
+                $stafs = User::where('tim_kerja_id', $katimja->tim_kerja_id)
                     ->where('is_active', true)
                     ->whereHas('role', fn($q) => $q->where('name', 'Staf'))
-                    ->whereHas('tim_kerja', fn($q) => $q->where('is_active', true))
+                    ->whereHas('timKerja', fn($q) => $q->where('is_active', true))
                     ->get();
 
                 foreach ($stafs as $staf) {
@@ -107,8 +107,6 @@ class DisposisiController extends Controller
                     ]);
                 }
 
-                // Update status surat
-                $surat->update(['status' => 'diproses']);
             });
 
             return redirect()->route('surat.terkirim', $surat->id)->with('success', 'Surat berhasil didisposisikan ke semua staf.');
@@ -153,7 +151,7 @@ class DisposisiController extends Controller
                 // $disposisi->update(['status' => 'Dikembalikan']);
 
                 $disposisiYangDikembalikan = Disposisi::where('surat_id', $disposisi->surat_id)
-                    ->where('dari_user_id', $penerima->id) // user yang sekarang ingin mengembalikan
+                    ->where('ke_user_id', $pengirim->id) // user yang sekarang ingin mengembalikan
                     ->latest() // ambil yang paling baru
                     ->first();
 
@@ -334,22 +332,21 @@ class DisposisiController extends Controller
         return redirect()->back()->with('success', 'Status surat berhasil diperbarui menjadi Ditindaklanjuti.');
     }
 
-    public function tandaiDitolak(SuratMasuk $surat)
+    public function tandaiDitolak(Request $request, SuratMasuk $surat)
     {
-        // Hanya izinkan staf (jika tidak pakai middleware, tetap aman)
-        if (auth()->user()->role->name !== 'Staf') {
-            abort(403, 'Akses ditolak.');
-        }
+       
+        $request->validate([
+            'keterangan' => 'required|string|max:500',
+        ]);
 
         // Ubah status menjadi 'ditindaklanjuti'
         $surat->status = 'ditolak';
+        $surat->keterangan = $request->keterangan;
         $surat->save();
 
         if (!empty($surat->email_pengirim)) {
             $this->kirimNotifikasi($surat);
         }
-
-
         return redirect()->back()->with('success', 'Status surat berhasil diperbarui menjadi Ditolak.');
     }
 

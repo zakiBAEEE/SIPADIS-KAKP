@@ -70,13 +70,12 @@
                         </div>
 
                         <div>
-                            <label for="tambah_tim_kerja_id" class="block text-sm font-medium text-gray-700 mb-1">Tim Kerja
+                            <label for="tambah_divisi_id" class="block text-sm font-medium text-gray-700 mb-1">Divisi
                                 (Opsional)</label>
-                            <select name="tim_kerja_id" id="tambah_timKerja_id"
+                            <select name="tim_kerja_id" id="tambah_divisi_id"
                                 class="w-full h-10 px-3 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm 
-                    disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
-                                {{ old('role_id') !== 'Katimja' ? 'disabled' : '' }}>
-                                <option value="">-- Pilih Tim Kerja --</option>
+    disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed">
+                                <option value="">-- Pilih Divisi --</option>
                                 @foreach ($timKerjas as $timKerja)
                                     @if ($timKerja->is_active)
                                         <option value="{{ $timKerja->id }}"
@@ -86,7 +85,7 @@
                                     @endif
                                 @endforeach
                             </select>
-                            @error('tim_kerja_id')
+                            @error('divisi_id')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>

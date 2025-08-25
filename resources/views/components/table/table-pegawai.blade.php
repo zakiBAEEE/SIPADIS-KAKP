@@ -75,7 +75,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4" class="text-center p-3">Belum ada disposisi.</td>
+                    <td colspan="4" class="text-center p-3">Data Pegawai Tidak Ditemukan</td>
                 </tr>
             @endforelse
         </tbody>

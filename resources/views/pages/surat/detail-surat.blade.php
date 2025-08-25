@@ -80,7 +80,7 @@
                                 ->first();
                         @endphp
 
-            
+
 
                         @if (($activeDisposisi && $activeDisposisi->ke_user_id === auth()->id()) || $belumPernahDidisposisikan)
 
@@ -149,19 +149,11 @@
                                 @endif
 
                                 {{-- Tombol ditolak: --}}
-                                @if (($status === 'ditindaklanjuti' && $role === 'Staf') || ($status === 'draft' && $role === 'Admin'))
-                                    <form action="{{ route('surat.tandaiDitolak', $surat->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menandai surat ini sebagai Ditolak?')">
-                                        @csrf
-                                        <button type="submit"
-                                            class="px-3 py-1 rounded-md text-sm font-semibold bg-red-100 text-red-700 hover:bg-red-200">
-                                            Tandai Ditolak
-                                        </button>
-                                    </form>
+                                @if (($status === 'ditindaklanjuti' && $role === 'Staf') || $role === 'Admin')
+                                    @include('components.modal.modal-tolak-surat')
                                 @endif
                             </div>
                         @endif
-
 
                     </div>
                 </div>
@@ -294,12 +286,6 @@
                     {{-- Konten Tabel --}}
 
                     <div x-show="tab === 'table'" x-transition>
-                        <div class="flex flex-row justify-end mb-3">
-                            @if (in_array(auth()->user()->role->name, ['Admin']))
-                                @include('components.base.tombol-print-disposisi', ['surat' => $surat])
-                            @endif
-
-                        </div>
                         @include('components.table.table-disposisi', [
                             'disposisis' => $surat->disposisis,
                         ])

@@ -24,6 +24,7 @@ class SuratMasuk extends Model
         'file_path',
         'created_at',
         'status',
+        'keterangan',
     ];
     public function disposisis()
     {

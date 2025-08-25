@@ -71,6 +71,10 @@ class SuratMasukController extends Controller
             $query->where('perihal', 'like', '%' . $request->perihal . '%');
         }
 
+        if ($request->filled('asal_instansi')) {
+            $query->where('asal_instansi', 'like', '%' . $request->asal_instansi . '%');
+        }
+
         // Filter klasifikasi
         if ($request->filled('klasifikasi_surat')) {
             $query->where('klasifikasi_surat', $request->klasifikasi_surat);
@@ -81,6 +85,9 @@ class SuratMasukController extends Controller
             $query->where('sifat', $request->sifat);
         }
 
+        if ($request->filled('status')) {
+            $query->where('status', strtolower($request->status));
+        }
         // Ambil hasil paginasi
         $surats = $query->orderBy('created_at', 'desc')
             ->paginate(8)

@@ -32,7 +32,7 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-col md:flex-row gap-3 items-center">
+    <div class="flex flex-col md:flex-row gap-3">
         <div class="mb-4 space-y-1.5 md:w-1/2 w-full">
             @include('components.base.input-surat', [
                 'label' => 'Pengirim',
@@ -41,7 +41,7 @@
                 'value' => request('pengirim'),
             ])
         </div>
-        <div class="flex flex-col sm:flex-row w-full">
+        <div class="flex flex-col sm:flex-row flex-1">
             <div class="mb-4 space-y-1.5 md:w-1/2 w-full ">
                 @include('components.base.dropdown', [
                     'label' => 'Klasifikasi',
@@ -67,4 +67,21 @@
             'name' => 'perihal',
             'value' => request('perihal'),
         ])
+    </div>
+    <div class="mb-4 w-full">
+        @include('components.base.input-surat', [
+            'label' => 'Pengirim',
+            'placeholder' => 'Masukkan Instansi Pengirim Surat',
+            'name' => 'asal_instansi',
+            'value' => request('asal_instansi'),
+        ])
+    </div>
+    <div class="mb-4 space-y-1.5 md:w-1/2 w-full">
+        @include('components.base.dropdown', [
+            'label' => 'Status',
+            'value' => ['Diproses', 'Selesai', 'Ditolak', 'Ditindaklanjuti'],
+            'name' => 'status',
+            'selected' => request('status'),
+        ])
+
     </div>
