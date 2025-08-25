@@ -16,8 +16,8 @@
                     <option value="{{ $pegawai->id }}" {{ request('user_id') == $pegawai->id ? 'selected' : '' }}>
                         {{ $pegawai->name }} -
                         {{ $pegawai->role->name }}
-                        @if (in_array($pegawai->role->name, ['Katimja', 'Staf']) && $pegawai->timKerja)
-                            ({{ $pegawai->timKerja->nama_timkerja }})
+                        @if (in_array($pegawai->role->name, ['Katimja', 'Staf']))
+                            ({{ $pegawai->timKerja->nama_timKerja }})
                         @endif
                     </option>
                 @endforeach
