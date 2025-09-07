@@ -151,9 +151,14 @@
                                 @endif
 
                                 {{-- Tombol ditolak: --}}
-                                @if (($status == 'ditindaklanjuti' && $role === 'Staf') || ($role === 'Admin' && $surat->status != 'ditolak'))
+                                @if (
+                                    $status != 'ditolak' &&
+                                        (($status == 'ditindaklanjuti' && $role === 'Staf') ||
+                                            ($role === 'Admin' && $activeDisposisi && $activeDisposisi->ke_user_id === auth()->id()) ||
+                                            $belumPernahDidisposisikan))
                                     @include('components.modal.modal-tolak-surat')
                                 @endif
+
                             </div>
                         @endif
 
