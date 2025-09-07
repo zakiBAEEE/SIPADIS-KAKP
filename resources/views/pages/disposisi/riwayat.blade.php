@@ -24,7 +24,7 @@
     <x-layout.page-list-layout>
 
         <x-slot:title>
-            Riwayat Terkirim
+            Riwayat
         </x-slot:title>
 
         <x-slot:filterId>
