@@ -31,6 +31,8 @@ class SuratMasukController extends Controller
         $userId = auth()->id(); // Ambil ID user yang sedang login
 
        $user = auth()->user(); // pastikan route pakai middleware('auth')
+    //    dd($request->all(), $request->input('filter_created_at'), strlen($request->input('filter_created_at')));
+
 
 // aman dari null:
 if ($user?->role?->name === 'Admin') {
@@ -54,18 +56,24 @@ if ($user?->role?->name === 'Admin') {
         }
 
         // Filter tanggal surat
-        if ($request->filled('filter_tanggal_surat')) {
-            $range = explode(' to ', $request->filter_tanggal_surat);
-            if (count($range) === 2) {
-                $query->whereBetween('tanggal_surat', [$range[0], $range[1]]);
-            } elseif (count($range) === 1) {
-                $query->whereDate('tanggal_surat', $range[0]);
-            }
-        }
+     if ($request->filled('filter_tanggal_surat')) {
+    $range = preg_split('/\s*-\s*|\s+to\s+/i', $request->filter_tanggal_surat);
+
+    if (count($range) === 2) {
+        $start = \Carbon\Carbon::parse(trim($range[0]))->startOfDay();
+        $end   = \Carbon\Carbon::parse(trim($range[1]))->endOfDay();
+
+        $query->whereBetween('tanggal_surat', [$start->toDateString(), $end->toDateString()]);
+    } elseif (count($range) === 1) {
+        $query->whereDate('tanggal_surat', trim($range[0]));
+    }
+}
+
+
 
         // Filter tanggal terima
         if ($request->filled('filter_created_at')) {
-            $range = explode(' to ', $request->filter_created_at);
+            $range = explode('-', $request->filter_created_at);
             if (count($range) === 2) {
                 $query->whereBetween('created_at', [$range[0], $range[1]]);
             } elseif (count($range) === 1) {
@@ -107,9 +115,6 @@ if ($user?->role?->name === 'Admin') {
     {
         $query = SuratMasuk::doesntHave('disposisis')
                    ->where('status', 'draft');
-
-
-        // Filter berdasarkan berbagai parameter
 
 
         if ($request->filled('nomor_surat')) {
