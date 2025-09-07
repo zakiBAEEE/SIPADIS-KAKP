@@ -110,8 +110,9 @@ class DashboardController extends Controller
         $today = \Carbon\Carbon::today();
 
         return Disposisi::where('dari_user_id', $userId)
-            ->whereDate('created_at', $today)
-            ->count();
+    ->whereDate('created_at', $today)
+    ->distinct('surat_id')
+    ->count('surat_id');
     }
 
 
