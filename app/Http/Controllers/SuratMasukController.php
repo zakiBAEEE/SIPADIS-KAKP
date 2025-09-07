@@ -26,8 +26,6 @@ class SuratMasukController extends Controller
     }
 
 
-
-
     public function suratTerkirim(Request $request)
     {
         $userId = auth()->id(); // Ambil ID user yang sedang login
@@ -98,7 +96,9 @@ class SuratMasukController extends Controller
 
     public function suratMasukDraft(Request $request)
     {
-        $query = SuratMasuk::doesntHave('disposisis');
+        $query = SuratMasuk::doesntHave('disposisis')
+                   ->where('status', 'draft');
+
 
         // Filter berdasarkan berbagai parameter
 
