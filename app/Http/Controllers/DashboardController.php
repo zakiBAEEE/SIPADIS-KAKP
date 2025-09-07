@@ -76,6 +76,14 @@ class DashboardController extends Controller
 
     protected function getInboxSuratCount($userId)
     {
+
+         $user = auth()->user();
+
+    if ($user && $user->role->name === 'Admin') {
+        // Khusus Admin → hitung surat dengan status draft
+        return SuratMasuk::where('status', 'draft')->count();
+    }
+
         $latestDisposisi = Disposisi::selectRaw('MAX(id) as id')
             ->groupBy('surat_id');
 
