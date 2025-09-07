@@ -62,7 +62,7 @@
                         $terakhirKembalikan = $disposisiTerakhir && $disposisiTerakhir->tipe_aksi === 'Kembalikan';
                     @endphp
 
-                    @if ($isAdmin && ($belumPernahDidisposisikan || $terakhirKembalikan))
+                    @if ($isAdmin && ($belumPernahDidisposisikan || $terakhirKembalikan) && $surat->status != 'ditolak')
                         <a href="{{ route('surat.edit', ['surat' => $surat->id]) }}"
                             class="inline-flex items-center gap-1 rounded-md border border-orange-400 bg-orange-100 px-2 py-1 text-sm font-medium text-orange-800 hover:bg-orange-200 hover:shadow transition duration-150 ease-in-out">
                             @include('components.base.ikon-edit')
@@ -85,20 +85,22 @@
                         @if (($activeDisposisi && $activeDisposisi->ke_user_id === auth()->id()) || $belumPernahDidisposisikan)
 
                             {{-- Khusus untuk Admin --}}
-                            @if ($isAdmin)
-                                @if ($belumPernahDidisposisikan)
-                                    @include('components.modal.modal-kirimKeKepala')
+                            @if ($surat->status != 'ditolak')
+                                @if ($isAdmin)
+                                    @if ($belumPernahDidisposisikan)
+                                        @include('components.modal.modal-kirimKeKepala')
+                                    @else
+                                        @include('components.modal.modal-tambah-disposisi')
+                                    @endif
                                 @else
-                                    @include('components.modal.modal-tambah-disposisi')
-                                @endif
-                            @else
-                                {{-- Non-Admin --}}
-                                @if (!in_array(auth()->user()->role->name, ['Staf', 'Katimja']))
-                                    @include('components.modal.modal-tambah-disposisi')
-                                @endif
+                                    {{-- Non-Admin --}}
+                                    @if (!in_array(auth()->user()->role->name, ['Staf', 'Katimja']))
+                                        @include('components.modal.modal-tambah-disposisi')
+                                    @endif
 
-                                @if (in_array(auth()->user()->role->name, ['Katimja']))
-                                    @include('components.modal.modal-kirimKeStaf')
+                                    @if (in_array(auth()->user()->role->name, ['Katimja']))
+                                        @include('components.modal.modal-kirimKeStaf')
+                                    @endif
                                 @endif
                             @endif
 
@@ -149,7 +151,7 @@
                                 @endif
 
                                 {{-- Tombol ditolak: --}}
-                                @if (($status === 'ditindaklanjuti' && $role === 'Staf') || $role === 'Admin')
+                                @if (($status === 'ditindaklanjuti' && $role === 'Staf') || ($role === 'Admin' && $surat->status != 'ditolak'))
                                     @include('components.modal.modal-tolak-surat')
                                 @endif
                             </div>
