@@ -73,16 +73,27 @@
                     <td class="p-3">
                         @php
                             $lastDisposisi = $surat->disposisis->last();
-                            $role = $lastDisposisi->penerima->role->name;
                         @endphp
 
-                        @if ($role == 'Katimja' || $role == 'Staf')
-                            <p class="text-sm">{{ $lastDisposisi->penerima->timKerja->nama_timKerja }}
+                        @if ($lastDisposisi)
+                            @php
+                                $role = $lastDisposisi->penerima->role->name;
+                            @endphp
+
+                            @if ($role == 'Katimja' || $role == 'Staf')
+                                <p class="text-sm">{{ $lastDisposisi->penerima->timKerja->nama_timKerja }}</p>
                             @else
-                            <p class="text-sm">{{ $lastDisposisi->penerima->role->name }} ||
-                                {{ $lastDisposisi->penerima->name }}</p>
+                                <p class="text-sm">
+                                    {{ $lastDisposisi->penerima->role->name }} ||
+                                    {{ $lastDisposisi->penerima->name }}
+                                </p>
+                            @endif
+                        @else
+                            {{-- Jika belum pernah didisposisikan --}}
+                            <p class="text-sm">Admin</p>
                         @endif
                     </td>
+
                     <td class="p-3">
                         @php
                             $status = $surat->status;

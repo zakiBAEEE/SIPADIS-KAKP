@@ -30,9 +30,18 @@ class SuratMasukController extends Controller
     {
         $userId = auth()->id(); // Ambil ID user yang sedang login
 
-        $query = SuratMasuk::whereHas('disposisis', function ($q) use ($userId) {
-            $q->where('dari_user_id', $userId);
-        });
+       $user = auth()->user(); // pastikan route pakai middleware('auth')
+
+// aman dari null:
+if ($user?->role?->name === 'Admin') {
+    // KHUSUS ADMIN: status != draft
+    $query = SuratMasuk::where('status', '!=', 'draft');
+} else {
+    // SELAIN ADMIN: pakai whereHas disposisis oleh user tsb
+    $query = SuratMasuk::whereHas('disposisis', function ($q) use ($user) {
+        $q->where('dari_user_id', $user->id);
+    });
+}
 
         // Filter nomor surat
         if ($request->filled('nomor_surat')) {
